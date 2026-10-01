@@ -1,5 +1,8 @@
 import type { MfaMethod } from "./user";
 
+/** Window event fired after the API client rotated the access token (new Roles may be in it). */
+export const SESSION_REFRESHED_EVENT = "nodera:session-refreshed";
+
 export interface Session {
   accessToken: string;
   refreshToken: string;

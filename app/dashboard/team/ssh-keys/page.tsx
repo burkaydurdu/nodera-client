@@ -7,7 +7,9 @@ import { useTranslations } from "next-intl";
 import { DeleteSSHKey, ListSSHKeys } from "@/api/sshKeys";
 import type { SSHKey } from "@/core/sshKey";
 import useTeam from "@/contexts/TeamContext/useTeam";
+import { useCan } from "@/hooks/Authz/useCan";
 import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
+import { useNavigate } from "@/hooks/Navigation/useNavigate";
 import Card from "@/components/Card";
 import EmptyBox from "@/components/EmptyBox";
 import Loading from "@/components/Loading";
@@ -16,12 +18,24 @@ import NoderaButton from "@/components/NoderaButton";
 import PageHeader from "@/components/PageHeader";
 import AddSSHKeyModal from "@/components/SSHKeys/AddSSHKeyModal";
 import SSHKeyTable from "@/components/SSHKeys/SSHKeyTable";
+import TeamTabs from "@/components/Teams/TeamTabs";
+import type { TeamTabKey } from "@/components/Teams/TeamTabs/type";
+
+const TEAM_PATH = "/dashboard/team";
 
 export default function Page() {
   const t = useTranslations("sshKeys");
   const { message, modal } = App.useApp();
   const { getErrorMessage } = useErrorMessage();
+  const { navigate } = useNavigate();
   const { currentTeam, isLoading: teamsLoading, error: teamsError, reload } = useTeam();
+  const canManage = useCan("team.manage");
+  const canWrite = useCan("sshkey.write");
+
+  const openTab = (key: TeamTabKey) => {
+    if (key === "sshKeys") return;
+    navigate(key === "members" ? TEAM_PATH : `${TEAM_PATH}?tab=${key}`);
+  };
 
   const [keys, setKeys] = useState<SSHKey[]>([]);
   const [loading, setLoading] = useState(true);
@@ -86,21 +100,24 @@ export default function Page() {
   };
 
   const header = (
-    <PageHeader
-      title={t("title")}
-      description={currentTeam ? t("description", { team: currentTeam.name }) : undefined}
-      extra={
-        currentTeam && keys.length > 0 ? (
-          <NoderaButton
-            variant="filled"
-            icon={<PlusOutlined />}
-            onClick={() => setModalOpen(true)}
-          >
-            {t("add")}
-          </NoderaButton>
-        ) : undefined
-      }
-    />
+    <>
+      <PageHeader
+        title={t("title")}
+        description={currentTeam ? t("description", { team: currentTeam.name }) : undefined}
+        extra={
+          currentTeam && canWrite && keys.length > 0 ? (
+            <NoderaButton
+              variant="filled"
+              icon={<PlusOutlined />}
+              onClick={() => setModalOpen(true)}
+            >
+              {t("add")}
+            </NoderaButton>
+          ) : undefined
+        }
+      />
+      <TeamTabs active="sshKeys" showInvitations={canManage} onChange={openTab} />
+    </>
   );
 
   if (teamsLoading || (loading && currentTeam)) {
@@ -151,14 +168,18 @@ export default function Page() {
         <Card className="mx-auto w-full max-w-xl">
           <EmptyBox
             title={t("emptyTitle")}
-            description={t("emptyDescription")}
-            actionLabel={t("add")}
-            onAction={() => setModalOpen(true)}
+            description={canWrite ? t("emptyDescription") : t("readOnly")}
+            actionLabel={canWrite ? t("add") : undefined}
+            onAction={canWrite ? () => setModalOpen(true) : undefined}
           />
         </Card>
       ) : (
         <Card flush>
-          <SSHKeyTable keys={keys} deletingId={deletingId} onDelete={confirmDelete} />
+          <SSHKeyTable
+            keys={keys}
+            deletingId={deletingId}
+            onDelete={canWrite ? confirmDelete : undefined}
+          />
         </Card>
       )}
       <AddSSHKeyModal

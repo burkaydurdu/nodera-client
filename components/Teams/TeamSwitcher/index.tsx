@@ -9,6 +9,7 @@ import { useTranslations } from "next-intl";
 import type { Team } from "@/core/team";
 import useTeam from "@/contexts/TeamContext/useTeam";
 import CreateTeamModal from "@/components/Teams/CreateTeamModal";
+import RoleBadge from "@/components/Teams/RoleBadge";
 import type { TeamSwitcherProps } from "./type";
 
 const NEW_TEAM_KEY = "__new_team__";
@@ -30,7 +31,10 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
         icon: <TeamOutlined />,
         label: (
           <span className="flex items-center justify-between gap-4">
-            <span className="truncate">{team.name}</span>
+            <span className="flex min-w-0 items-center gap-2">
+              <span className="truncate">{team.name}</span>
+              <RoleBadge role={team.role} />
+            </span>
             {team.id === currentTeam?.id && <CheckOutlined className="text-brand-600" />}
           </span>
         ),

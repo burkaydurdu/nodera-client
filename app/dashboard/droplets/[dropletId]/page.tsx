@@ -11,6 +11,7 @@ import {
   type DropletActionType,
   isTransitional,
 } from "@/core/droplet";
+import { useCan } from "@/hooks/Authz/useCan";
 import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
 import { usePolling } from "@/hooks/Polling/usePolling";
@@ -36,6 +37,7 @@ export default function Page() {
   const { message } = App.useApp();
   const { navigate } = useNavigate();
   const { getErrorMessage } = useErrorMessage();
+  const canAct = useCan("droplet.write");
 
   const [droplet, setDroplet] = useState<Droplet | null>(null);
   const [loading, setLoading] = useState(true);
@@ -178,12 +180,14 @@ export default function Page() {
       )}
       {polling.stalled && <PollingStalledAlert onRetry={polling.retry} />}
       <DropletOverview droplet={droplet} />
-      <DropletActions
-        droplet={droplet}
-        busy={busy}
-        onAction={runAction}
-        onDelete={runDelete}
-      />
+      {canAct && (
+        <DropletActions
+          droplet={droplet}
+          busy={busy}
+          onAction={runAction}
+          onDelete={runDelete}
+        />
+      )}
       <div className="grid grid-cols-1 gap-section lg:grid-cols-2">
         <DropletSSHKeys keys={droplet.sshKeys ?? []} />
         <DropletTimeline history={droplet.history ?? []} />

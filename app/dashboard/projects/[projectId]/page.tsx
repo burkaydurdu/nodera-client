@@ -14,6 +14,7 @@ import {
 } from "@/core/droplet";
 import { ErrorCode } from "@/core/error";
 import useTeam from "@/contexts/TeamContext/useTeam";
+import { useCan } from "@/hooks/Authz/useCan";
 import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
 import { usePolling } from "@/hooks/Polling/usePolling";
@@ -35,6 +36,7 @@ export default function Page() {
   const { navigate } = useNavigate();
   const { getErrorMessage } = useErrorMessage();
   const { isLoading: teamsLoading } = useTeam();
+  const canCreate = useCan("droplet.write");
   const {
     project,
     missing: projectMissing,
@@ -105,7 +107,7 @@ export default function Page() {
     droplets.some((droplet) => isTransitional(droplet.status))
   );
 
-  const createButton = (
+  const createButton = canCreate ? (
     <NoderaButton
       variant="filled"
       icon={<PlusOutlined />}
@@ -113,7 +115,7 @@ export default function Page() {
     >
       {t("create")}
     </NoderaButton>
-  );
+  ) : undefined;
 
   const header = (
     <PageHeader
@@ -131,9 +133,9 @@ export default function Page() {
     <Card className="mx-auto w-full max-w-xl">
       <EmptyBox
         title={t("emptyTitle")}
-        description={t("emptyDescription")}
-        actionLabel={t("create")}
-        onAction={() => navigate(createPath)}
+        description={canCreate ? t("emptyDescription") : t("emptyReadOnly")}
+        actionLabel={canCreate ? t("create") : undefined}
+        onAction={canCreate ? () => navigate(createPath) : undefined}
       />
     </Card>
   );

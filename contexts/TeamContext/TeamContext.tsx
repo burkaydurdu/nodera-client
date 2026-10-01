@@ -1,13 +1,16 @@
 "use client";
 
-import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
+import { createContext, ReactNode, useCallback, useEffect, useRef, useState } from "react";
 import { GetTeams } from "@/api/teams";
+import { SESSION_REFRESHED_EVENT } from "@/core/session";
 import type { Team } from "@/core/team";
 import {
   clearLastProjectId,
   clearLastTeamId,
+  clearPendingInvitation,
   getLastProjectId,
   getLastTeamId,
+  getPendingInvitation,
   setLastProjectId,
   setLastTeamId,
 } from "@/core/storage";
@@ -58,29 +61,47 @@ export const TeamProvider = ({ children }: { children: ReactNode }) => {
     setLastProjectIdState(null);
   }, []);
 
+  // A sign-up from an invitation link has no Team id to remember: the Invitation is accepted
+  // on verification and the invited Team is recognised here by the name the lookup gave. The
+  // entry is spent by this first list either way, so a stale name never steers a later pick.
+  const invitedTeam = (list: Team[]): Team | null => {
+    const pending = getPendingInvitation();
+    if (!pending?.autoAccepted) return null;
+    clearPendingInvitation();
+    return list.find((team) => team.name === pending.teamName) ?? null;
+  };
+
   const pickTeam = (list: Team[]): string | null => {
     const remembered = getLastTeamId();
-    const picked = list.find((team) => team.id === remembered) ?? list[0] ?? null;
+    const picked =
+      invitedTeam(list) ?? list.find((team) => team.id === remembered) ?? list[0] ?? null;
     if (picked) setLastTeamId(picked.id);
     else clearLastTeamId();
     return picked?.id ?? null;
   };
 
-  const reload = useCallback(async () => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await GetTeams();
-      const list = response.data ?? [];
-      setTeams(list);
-      setCurrentTeamId(pickTeam(list));
-    } catch (err) {
-      setError(getErrorMessage(err));
-    } finally {
-      setIsLoading(false);
-    }
-  }, [getErrorMessage]);
+  const load = useCallback(
+    async (silent: boolean) => {
+      if (!silent) setIsLoading(true);
+      setError(null);
+      try {
+        const response = await GetTeams();
+        const list = response.data ?? [];
+        setTeams(list);
+        setCurrentTeamId(pickTeam(list));
+      } catch (err) {
+        if (!silent) setError(getErrorMessage(err));
+      } finally {
+        if (!silent) setIsLoading(false);
+      }
+    },
+    [getErrorMessage]
+  );
 
+  const reload = useCallback(() => load(false), [load]);
+
+  // `reload` changes with the translator (locale switch); listing it would refetch the Teams
+  // on every language change, so the effect keys on the user only.
   useEffect(() => {
     if (currentUser) {
       reload();
@@ -91,6 +112,25 @@ export const TeamProvider = ({ children }: { children: ReactNode }) => {
     setLastProjectIdState(null);
     setIsLoading(!currentUser);
   }, [currentUser?.id]);
+
+  // A rotated access token may carry new Roles (ADR-0005): the list is refetched quietly so
+  // useCan follows without a hard reload. One refetch per rotation, never while one is in
+  // flight, and a failure here is left to the next user action — a reload must not trigger
+  // another refresh.
+  const silentReload = useRef(false);
+  const userId = currentUser?.id ?? null;
+  useEffect(() => {
+    if (!userId) return;
+    const onRefreshed = () => {
+      if (silentReload.current) return;
+      silentReload.current = true;
+      load(true).finally(() => {
+        silentReload.current = false;
+      });
+    };
+    window.addEventListener(SESSION_REFRESHED_EVENT, onRefreshed);
+    return () => window.removeEventListener(SESSION_REFRESHED_EVENT, onRefreshed);
+  }, [userId, load]);
 
   const selectTeam = useCallback(
     (teamId: string) => {
@@ -105,7 +145,12 @@ export const TeamProvider = ({ children }: { children: ReactNode }) => {
 
   const addTeam = useCallback(
     (team: Team) => {
-      setTeams((list) => [...list, team]);
+      // Upsert: accepting an Invitation to a Team one already belongs to answers the same Team.
+      setTeams((list) =>
+        list.some((item) => item.id === team.id)
+          ? list.map((item) => (item.id === team.id ? team : item))
+          : [...list, team]
+      );
       setLastTeamId(team.id);
       forgetProject();
       setCurrentTeamId(team.id);

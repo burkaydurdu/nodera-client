@@ -1,6 +1,8 @@
+import type { Role } from "./authz";
+
 export type UserStatus = "pending_verification" | "active" | "suspended";
 export type MfaMethod = "none" | "email";
-export type TeamRole = "owner";
+export type TeamRole = Role;
 
 export interface TeamSummary {
   id: string;

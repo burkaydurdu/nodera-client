@@ -27,7 +27,8 @@
     "profile": "Profil",
     "droplets": "Droplet'ler",
     "catalog": "Katalog",
-    "sshKeys": "SSH anahtarları"
+    "sshKeys": "SSH anahtarları",
+    "team": "Ekip"
   },
   "validation": {
     "emailRequired": "E-posta adresinizi girin.",
@@ -130,7 +131,9 @@
       "activeBadge": "Son kullanılan",
       "retry": "Tekrar dene",
       "noTeamTitle": "Ekip bulunamadı",
-      "noTeamDescription": "Hesabınıza bağlı bir ekip yok. Sorun devam ederse destek ekibiyle iletişime geçin."
+      "noTeamDescription": "Hesabınıza bağlı bir ekip yok. Sorun devam ederse destek ekibiyle iletişime geçin.",
+      "emptyReadOnlyTitle": "Henüz proje yok",
+      "emptyReadOnly": "Rolünüz bu ekipte proje oluşturamaz. İlkini oluşturması için bir sahip veya geliştiriciden yardım isteyin."
     },
     "projectForm": {
       "modalTitle": "Yeni proje",
@@ -256,7 +259,21 @@
     "22-10001": "Droplet bulunamadı.",
     "22-10002": "Bu işlem Droplet'in mevcut durumunda yapılamaz.",
     "22-10003": "SSH anahtarlarından biri geçersiz.",
-    "23-10001": "Proje bulunamadı."
+    "23-10001": "Proje bulunamadı.",
+    "5-10004": "Bu ekipteki rolünüz buna izin vermiyor.",
+    "5-10005": "Bir ekipte en az bir sahip kalmalı. Önce başka birini sahip yapın.",
+    "5-10006": "Kendi rolünüzü değiştiremezsiniz; bunu başka bir sahip yapmalı.",
+    "5-10007": "Bu kişi ekibin üyesi değil.",
+    "8-10001": "Davet bulunamadı.",
+    "8-10002": "Bu davet artık geçerli değil. Ekip sahibinden yeni bir davet isteyin.",
+    "8-10003": "Bu davet başka bir e-posta adresine gönderildi.",
+    "8-10004": "Bu adres zaten ekibin bir üyesine ait.",
+    "8-10005": "Bu adres için zaten bekleyen bir davet var.",
+    "8-10006": "Davet az önce gönderildi. Yeniden göndermeden önce bekleyin.",
+    "8-10007": "E-posta adresi davetle eşleşmiyor. Davet edilen adresle kaydolun.",
+    "8-10008": "Davet oluşturulamadı. Lütfen tekrar deneyin.",
+    "8-10009": "Davet güncellenemedi. Lütfen tekrar deneyin.",
+    "22-10008": "Bu ekipteki rolünüz buna izin vermiyor."
   },
   "teams": {
     "switcher": {
@@ -273,6 +290,28 @@
       "submit": "Ekip oluştur",
       "cancel": "Vazgeç",
       "success": "“{name}” ekibi oluşturuldu ve seçildi."
+    },
+    "roles": {
+      "owner": "Sahip",
+      "developer": "Geliştirici",
+      "finance": "Finans"
+    },
+    "roleDescriptions": {
+      "owner": "Ekibi yönetir: üyeler, davetler, projeler, Droplet'ler, SSH anahtarları ve faturalama.",
+      "developer": "Proje, Droplet ve SSH anahtarı oluşturur; faturalamaya erişemez.",
+      "finance": "Droplet'leri ve fiyatlarını görür, fatura ve ödeme yöntemlerini yönetir; Droplet oluşturamaz veya güç işlemi yapamaz."
+    },
+    "tabs": {
+      "members": "Üyeler",
+      "invitations": "Davetler",
+      "sshKeys": "SSH anahtarları"
+    },
+    "settings": {
+      "title": "Ekip",
+      "description": "{team} ekibinin üyeleri, davetleri ve SSH anahtarları.",
+      "retry": "Tekrar dene",
+      "noTeamTitle": "Ekip bulunamadı",
+      "noTeamDescription": "Hesabınıza bağlı bir ekip yok. Sorun devam ederse destek ekibiyle iletişime geçin."
     }
   },
   "catalog": {
@@ -335,7 +374,8 @@
       "emptyDescription": "İlk droplet'inizi oluşturun: bir bölge, bir plan ve bir imaj seçin; dakikalar içinde hazır olur.",
       "accessPendingTitle": "Proje hazırlanıyor",
       "accessPending": "Bu proje az önce oluşturuldu ve henüz droplet için hazır değil. Birkaç saniye sonra tekrar deneyin.",
-      "retry": "Tekrar dene"
+      "retry": "Tekrar dene",
+      "emptyReadOnly": "Rolünüz bu ekipte Droplet oluşturamaz. Bir sahip veya geliştiriciden oluşturmasını isteyin."
     },
     "create": {
       "title": "Droplet oluştur",
@@ -495,6 +535,118 @@
       "submit": "Anahtar ekle",
       "cancel": "Vazgeç",
       "created": "“{name}” anahtarı eklendi."
+    },
+    "readOnly": "Rolünüz bu ekipte SSH anahtarı ekleyemez; anahtarları sahipler ve geliştiriciler yönetir."
+  },
+  "members": {
+    "title": "Üyeler",
+    "description": "{team} ekibindeki herkes ve yetkileri.",
+    "columns": {
+      "name": "Ad",
+      "email": "E-posta",
+      "role": "Rol",
+      "joined": "Katılma"
+    },
+    "you": "(siz)",
+    "roleOf": "{name} için rol",
+    "remove": "Çıkar",
+    "leave": "Ayrıl",
+    "cancel": "Vazgeç",
+    "retry": "Tekrar dene",
+    "empty": "Üye yok.",
+    "roleChanged": "{name} artık {role}.",
+    "removeTitle": "{name} çıkarılsın mı?",
+    "removeConfirm": "Saniyeler içinde {team} ekibine ve Droplet'lerine erişimi kesilir. Daha sonra yeniden davet edebilirsiniz.",
+    "removed": "{name} ekipten çıkarıldı.",
+    "leaveTitle": "{team} ekibinden ayrılmak istiyor musunuz?",
+    "leaveConfirm": "Ekibe ve Droplet'lerine erişiminizi kaybedersiniz. Geri dönmek için bir sahibin sizi yeniden davet etmesi gerekir.",
+    "left": "{team} ekibinden ayrıldınız."
+  },
+  "invitations": {
+    "title": "Davetler",
+    "description": "{team} ekibine kimlerin davet edildiği, en yeniden eskiye.",
+    "invite": "Davet et",
+    "columns": {
+      "email": "E-posta",
+      "role": "Rol",
+      "status": "Durum",
+      "invitedBy": "Davet eden",
+      "expires": "Son geçerlilik"
+    },
+    "resend": "Yeniden gönder",
+    "resendIn": "{seconds} sn sonra yeniden gönder",
+    "resent": "Davet {email} adresine yeniden gönderildi.",
+    "revoke": "İptal et",
+    "revokeTitle": "{email} adresine gönderilen davet iptal edilsin mi?",
+    "revokeConfirm": "E-postadaki bağlantı çalışmaz hale gelir. İstediğiniz zaman yeni bir davet gönderebilirsiniz.",
+    "revoked": "{email} adresine gönderilen davet iptal edildi.",
+    "cancel": "Vazgeç",
+    "retry": "Tekrar dene",
+    "empty": "Davet yok.",
+    "emptyTitle": "İlk çalışma arkadaşınızı davet edin",
+    "emptyDescription": "Bir e-posta adresini bir rolle davet edin. Ekibe katılmak için bir bağlantı alırlar; davetler yedi gün sonra sona erer.",
+    "status": {
+      "pending": "Bekliyor",
+      "accepted": "Kabul edildi",
+      "declined": "Reddedildi",
+      "revoked": "İptal edildi",
+      "expired": "Süresi doldu"
+    },
+    "form": {
+      "modalTitle": "Üye davet et",
+      "description": "Seçtiğiniz rolle ekibe katılmaları için bağlantı içeren bir e-posta alırlar.",
+      "email": "E-posta",
+      "emailPlaceholder": "arkadas@sirket.com",
+      "role": "Rol",
+      "submit": "Daveti gönder",
+      "cancel": "Vazgeç",
+      "sent": "Davet {email} adresine gönderildi."
+    },
+    "pending": {
+      "label": "Davetler",
+      "empty": "Bekleyen davet yok.",
+      "invitedBy": "{name} sizi {team} ekibine {role} olarak davet etti.",
+      "expires": "Son geçerlilik: {date}",
+      "accept": "Kabul et",
+      "decline": "Reddet",
+      "accepted": "{team} ekibine katıldınız. Ekip şimdi seçili.",
+      "declined": "{team} ekibine davet reddedildi."
+    },
+    "banner": {
+      "title": "{team} ekibine {role} olarak davet edildiniz.",
+      "signUpHint": "{email} adresiyle kaydolun. E-postanızı doğruladığınız anda davet kabul edilir.",
+      "emailHint": "Davet {email} adresine gönderildi.",
+      "notPending": "Bu davet artık geçerli değil. Yine de hesap oluşturabilirsiniz; ekip sahibinden yeni bir davet isteyin."
+    },
+    "accept": {
+      "title": "Ekip daveti",
+      "invitedText": "{inviter} sizi {team} ekibine {role} olarak katılmaya davet etti.",
+      "expires": "Davetin son geçerlilik tarihi: {date}.",
+      "accept": "Daveti kabul et",
+      "decline": "Reddet",
+      "acceptedTitle": "{team} ekibine hoş geldiniz",
+      "acceptedMessage": "{role} olarak katıldınız. Ekip sizin için seçildi.",
+      "goToDashboard": "Panele git",
+      "declinedTitle": "Davet reddedildi",
+      "declinedMessage": "{team} ekibine katılmadınız. Ekip sahibi sizi yeniden davet edebilir.",
+      "invalidTitle": "Bu davet artık geçerli değil",
+      "invalidMessage": "Davet zaten yanıtlanmış, iptal edilmiş veya süresi dolmuş. Ekip sahibinden yeni bir davet isteyin.",
+      "status": {
+        "pending": "{team} ekibine davet bekliyor.",
+        "accepted": "{team} ekibine davet zaten kabul edilmiş.",
+        "declined": "{team} ekibine davet reddedilmiş.",
+        "revoked": "{team} ekibine davet ekip tarafından iptal edilmiş.",
+        "expired": "{team} ekibine davetin süresi dolmuş."
+      },
+      "missingToken": "Bu davet bağlantısı geçersiz veya eksik.",
+      "signedOutMessage": "{team} ekibine katılmak için {email} adresiyle giriş yapın veya hesap oluşturun.",
+      "signIn": "Giriş yap",
+      "signUp": "Hesap oluştur",
+      "otherAccountTitle": "Bu davet başka bir e-posta adresi için",
+      "otherAccountMessage": "Davet {email} adresine gönderildi, ancak {current} olarak giriş yaptınız. Kabul etmek için o hesaba geçin.",
+      "switchAccount": "Çıkış yap ve hesap değiştir",
+      "backToDashboard": "Panele dön",
+      "backToLogin": "Girişe dön"
     }
   }
 }

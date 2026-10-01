@@ -1,3 +1,4 @@
+import type { PendingInvitation } from "./invitation";
 import type { Session, MfaChallenge } from "./session";
 
 export const ACCESS_TOKEN_KEY = "nodera.access_token";
@@ -5,6 +6,7 @@ export const REFRESH_TOKEN_KEY = "nodera.refresh_token";
 export const LAST_TEAM_ID_KEY = "nodera.last_team_id";
 export const LAST_PROJECT_ID_KEY = "nodera.last_project_id";
 export const MFA_CHALLENGE_KEY = "nodera.mfa_challenge";
+export const PENDING_INVITATION_KEY = "nodera.pending_invitation";
 
 const hasWindow = () => typeof window !== "undefined";
 
@@ -79,4 +81,25 @@ export function setMfaChallenge(challenge: MfaChallenge): void {
 export function clearMfaChallenge(): void {
   if (!hasWindow()) return;
   sessionStorage.removeItem(MFA_CHALLENGE_KEY);
+}
+
+export function getPendingInvitation(): PendingInvitation | null {
+  if (!hasWindow()) return null;
+  const raw = sessionStorage.getItem(PENDING_INVITATION_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as PendingInvitation;
+  } catch {
+    return null;
+  }
+}
+
+export function setPendingInvitation(invitation: PendingInvitation): void {
+  if (!hasWindow()) return;
+  sessionStorage.setItem(PENDING_INVITATION_KEY, JSON.stringify(invitation));
+}
+
+export function clearPendingInvitation(): void {
+  if (!hasWindow()) return;
+  sessionStorage.removeItem(PENDING_INVITATION_KEY);
 }

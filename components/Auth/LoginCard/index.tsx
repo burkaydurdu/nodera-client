@@ -4,9 +4,16 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Login } from "@/api/auth";
 import { ErrorCode } from "@/core/error";
+import { registerWithInvitationPath } from "@/core/invitation";
 import { isValidEmail } from "@/core/validation";
-import { setMfaChallenge } from "@/core/storage";
+import {
+  clearPendingInvitation,
+  getPendingInvitation,
+  setMfaChallenge,
+  setPendingInvitation,
+} from "@/core/storage";
 import useAuth from "@/contexts/AuthContext/useAuth";
+import { useAfterSignIn } from "@/hooks/Auth/useAfterSignIn";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
 import { useCountdown } from "@/hooks/Countdown/useCountdown";
 import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
@@ -16,12 +23,14 @@ import NoderaAlert from "@/components/NoderaAlert";
 import NoderaButton from "@/components/NoderaButton";
 import NoderaLink from "@/components/NoderaLink";
 import NoderaTextField from "@/components/NoderaTextField";
+import type { LoginCardProps } from "./type";
 
-export default function LoginCard() {
+export default function LoginCard({ invitationToken = null }: LoginCardProps) {
   const t = useTranslations("auth.login");
   const tv = useTranslations("validation");
   const { setSession } = useAuth();
   const { navigate } = useNavigate();
+  const afterSignIn = useAfterSignIn();
   const { getErrorMessage } = useErrorMessage();
   const lock = useCountdown(0);
 
@@ -32,6 +41,18 @@ export default function LoginCard() {
   const [formError, setFormError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const wasLocked = useRef(false);
+
+  // Stored rather than passed along: the MFA step is another page and must still end on the
+  // accept page. A sign-up's pending Invitation (accepted on verification) is left alone so
+  // the invited Team is still selected when the user verifies after coming back here.
+  useEffect(() => {
+    if (invitationToken) {
+      setPendingInvitation({ token: invitationToken, teamName: "", autoAccepted: false });
+      return;
+    }
+    const pending = getPendingInvitation();
+    if (pending && !pending.autoAccepted) clearPendingInvitation();
+  }, [invitationToken]);
 
   // When the lock countdown ends the stale "try again in N s" message goes with it.
   useEffect(() => {
@@ -86,7 +107,7 @@ export default function LoginCard() {
         return;
       }
       await setSession(data.session);
-      navigate("/dashboard", { replace: true });
+      afterSignIn();
     } catch (error) {
       if (IsErrorCode(error, ErrorCode.UserEmailNotVerified)) {
         navigate(`/verify-email?email=${encodeURIComponent(trimmedEmail)}`);
@@ -153,7 +174,12 @@ export default function LoginCard() {
       </NoderaButton>
 
       <p className="text-center text-sm text-text-muted">
-        {t("noAccount")} <NoderaLink href="/register">{t("register")}</NoderaLink>
+        {t("noAccount")}{" "}
+        <NoderaLink
+          href={invitationToken ? registerWithInvitationPath(invitationToken) : "/register"}
+        >
+          {t("register")}
+        </NoderaLink>
       </p>
     </div>
   );

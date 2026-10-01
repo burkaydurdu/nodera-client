@@ -6,6 +6,8 @@ export interface LogoutOptions {
   everywhere?: boolean;
   /** Skip the API call — used when the server already ended the session. */
   silent?: boolean;
+  /** Leave a stored invitation in place (the accept page's "switch account" action). */
+  keepInvitation?: boolean;
 }
 
 export interface AuthContextValues {

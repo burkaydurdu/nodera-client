@@ -10,6 +10,7 @@ import {
   clearLastProjectId,
   clearLastTeamId,
   clearMfaChallenge,
+  clearPendingInvitation,
   clearSession,
   getAccessToken,
   storeSession,
@@ -84,6 +85,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     clearMfaChallenge();
     clearLastTeamId();
     clearLastProjectId();
+    if (!options?.keepInvitation) clearPendingInvitation();
     setCurrentUserState(null);
   }, []);
 

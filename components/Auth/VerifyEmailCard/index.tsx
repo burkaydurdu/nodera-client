@@ -6,7 +6,7 @@ import { ResendVerifyEmail, VerifyEmail } from "@/api/auth";
 import { CODE_LENGTH, VERIFY_EMAIL_RESEND_SECONDS } from "@/core/auth";
 import { isValidEmail } from "@/core/validation";
 import useAuth from "@/contexts/AuthContext/useAuth";
-import { useNavigate } from "@/hooks/Navigation/useNavigate";
+import { useAfterSignIn } from "@/hooks/Auth/useAfterSignIn";
 import { useCountdown } from "@/hooks/Countdown/useCountdown";
 import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
 import { GetRetryAfterSeconds } from "@/utils/error";
@@ -25,7 +25,7 @@ export default function VerifyEmailCard({
   const t = useTranslations("auth.verifyEmail");
   const tv = useTranslations("validation");
   const { setSession } = useAuth();
-  const { navigate } = useNavigate();
+  const afterSignIn = useAfterSignIn();
   const { getErrorMessage } = useErrorMessage();
   const resend = useCountdown(codeJustSent ? VERIFY_EMAIL_RESEND_SECONDS : 0);
 
@@ -70,7 +70,7 @@ export default function VerifyEmailCard({
     try {
       const response = await VerifyEmail({ email: trimmedEmail, code: value });
       await setSession(response.data);
-      navigate("/dashboard", { replace: true });
+      afterSignIn();
     } catch (err) {
       setError(getErrorMessage(err));
       setCode("");

@@ -122,7 +122,7 @@ export default function ProjectCard({ project }: { project: Project }) { … } /
 - **Auth state** comes from `useAuth()` (`currentUser`, `setSession`, `logout`, `refreshUser`);
   the selected Team from `useTeam()` (`teams`, `currentTeam`, `selectTeam`, `addTeam`) — pages
   never call `GetTeams` themselves. Storage keys live in `core/storage.ts`. Public routes are listed once in
-  `contexts/RoutingContext/RoutingContext.tsx` (`NO_AUTH_PATHS`).
+  `core/routes.ts` (`NO_AUTH_PATHS`, `OPEN_PATHS`; re-exported by `RoutingContext`).
 
 ## Before committing
 

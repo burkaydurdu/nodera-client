@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { AuthProvider } from "@/contexts/AuthContext/AuthContext";
+import { InvitationProvider } from "@/contexts/InvitationContext/InvitationContext";
 import { RoutingProvider } from "@/contexts/RoutingContext/RoutingContext";
 import { TeamProvider } from "@/contexts/TeamContext/TeamContext";
 import AntdProvider from "@/components/AntdProvider";
@@ -36,11 +37,13 @@ export default async function RootLayout({
           <AntdProvider>
             <AuthProvider>
               <TeamProvider>
-                <RoutingProvider>
-                  <Suspense fallback={<Loading fullScreen />}>
-                    <div className="min-h-screen">{children}</div>
-                  </Suspense>
-                </RoutingProvider>
+                <InvitationProvider>
+                  <RoutingProvider>
+                    <Suspense fallback={<Loading fullScreen />}>
+                      <div className="min-h-screen">{children}</div>
+                    </Suspense>
+                  </RoutingProvider>
+                </InvitationProvider>
               </TeamProvider>
             </AuthProvider>
           </AntdProvider>

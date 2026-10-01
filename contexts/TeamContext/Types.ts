@@ -9,7 +9,7 @@ export interface TeamContextValues {
   /** i18n-resolved message when loading the Teams failed. */
   error: string | null;
   selectTeam: (teamId: string) => void;
-  /** Adds a freshly created Team to the list and selects it. */
+  /** Adds a freshly created or joined Team to the list (replacing a same-id entry) and selects it. */
   addTeam: (team: Team) => void;
   reload: () => Promise<void>;
   /** The Project of this Team last opened or created (persisted); null when none is known. */

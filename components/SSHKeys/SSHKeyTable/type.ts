@@ -5,5 +5,6 @@ export interface SSHKeyTableProps {
   loading?: boolean;
   /** Id of the key whose delete is in flight. */
   deletingId?: string | null;
-  onDelete: (key: SSHKey) => void;
+  /** Absent when the Role lacks `sshkey.write`: the column is not rendered. */
+  onDelete?: (key: SSHKey) => void;
 }

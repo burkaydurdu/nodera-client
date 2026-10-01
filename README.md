@@ -59,19 +59,24 @@ app/                     App Router pages — orchestration only (data, routing,
   dashboard/projects/[projectId]/droplets/new create-Droplet flow (Region, Plan, Image, hostname, SSH keys)
   dashboard/droplets/[dropletId]              Droplet detail: IPs, locked price, timeline, power/delete
   dashboard/catalog      Regions and Plans with hourly / monthly prices
-  dashboard/team/ssh-keys the Team's SSH keys
+  dashboard/team         Team settings: Members (roles, remove, leave) and Invitations tabs
+  dashboard/team/ssh-keys the Team's SSH keys (third tab of the Team area)
   dashboard/profile      details, password, MFA, sessions
+  invitations/accept     accept page of the invitation email link (works in every sign-in state)
 api/                     axios client (bearer, X-Target-Server per path, camel↔snake, refresh-once
                          on 401) and one wrapper file per backend area (auth, users, teams,
-                         projects, catalog, droplets, sshKeys)
+                         members, invitations, projects, catalog, droplets, sshKeys)
 components/              design-system primitives (Nodera*, Card, FormSection, PageHeader,
                          EmptyBox, DashboardLayout, Navbar, SideMenu, CodeInput, …)
-components/<Feature>/    feature components: Auth/, Teams/, Projects/, Profile/
+components/<Feature>/    feature components: Auth/, Teams/, Members/, Invitations/, Projects/,
+                         Droplets/, SSHKeys/, Profile/
 contexts/                AuthContext (session + current user), TeamContext (teams + selected
-                         team), RoutingContext (auth guard)
+                         team), InvitationContext (pending invitations badge), RoutingContext
+                         (auth guard)
 core/                    shared types and pure helpers (error codes, password rule, countries,
-                         storage keys, locale)
-hooks/                   useCountdown, useErrorMessage, useNavigate, useSetLanguage
+                         storage keys, locale, authz role matrix)
+hooks/                   useCountdown, useErrorMessage, useNavigate, useSetLanguage, useCan,
+                         useAfterSignIn
 i18n/request.ts          next-intl config: locale from the NEXT_LOCALE cookie (default en)
 locales/{tr,en}/         every user-visible string, both locales, same keys
 theme/tokens.ts          THE palette / radii / spacing / font — single source of truth
@@ -110,7 +115,12 @@ under `:root[data-theme="dark"]`.
 - On a 401 the client refreshes once (concurrent 401s wait on the same refresh), retries the
   original request, and on a failed refresh clears the tokens and goes to `/login`.
 - `RoutingContext` sends signed-in users away from the public pages and signed-out users to
-  `/login`; `/` resolves to the dashboard or the login page.
+  `/login`; `/` resolves to the dashboard or the login page. `/invitations/accept` is open to
+  both; `/login?invitation=` and `/register?invitation=` carry the token through sign-in
+  (sessionStorage `nodera.pending_invitation`) so the flow ends on the accept page or, after a
+  sign-up, on the invited Team.
+- Roles (`owner`, `developer`, `finance`) come with each Team from `/v1/teams`; `useCan(permission)`
+  mirrors the backend matrix (`core/authz.ts`) to hide controls. The server stays the authority.
 - API errors are mapped to `errors.<domain>-<code>` in the locale files, with `errors.wrong`
   as the fallback; 429 responses show a countdown from `Retry-After`.
 

@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 import {
   AppstoreOutlined,
   CloudServerOutlined,
-  KeyOutlined,
   ShoppingOutlined,
+  TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import classNames from "classnames";
@@ -54,10 +54,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       icon: <ShoppingOutlined />,
     },
     {
-      key: "sshKeys",
-      label: t("sshKeys"),
-      href: "/dashboard/team/ssh-keys",
-      icon: <KeyOutlined />,
+      key: "team",
+      label: t("team"),
+      href: "/dashboard/team",
+      icon: <TeamOutlined />,
     },
     {
       key: "profile",

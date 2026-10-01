@@ -45,23 +45,27 @@ export default function SSHKeyTable({
       width: 180,
       render: (value: string) => formatDateTime(value, locale),
     },
-    {
-      title: "",
-      key: "actions",
-      width: 110,
-      align: "right",
-      render: (_: unknown, key) => (
-        <NoderaButton
-          variant="text"
-          size="small"
-          onClick={() => onDelete(key)}
-          loading={deletingId === key.id}
-          className="text-danger!"
-        >
-          {t("delete")}
-        </NoderaButton>
-      ),
-    },
+    ...(onDelete
+      ? [
+          {
+            title: "",
+            key: "actions",
+            width: 110,
+            align: "right" as const,
+            render: (_: unknown, key: SSHKey) => (
+              <NoderaButton
+                variant="text"
+                size="small"
+                onClick={() => onDelete(key)}
+                loading={deletingId === key.id}
+                className="text-danger!"
+              >
+                {t("delete")}
+              </NoderaButton>
+            ),
+          },
+        ]
+      : []),
   ];
 
   return (

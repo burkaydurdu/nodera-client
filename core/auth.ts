@@ -4,6 +4,8 @@ export interface RegisterPayload {
   fullName: string;
   country: string;
   locale: string;
+  /** Present when signing up from an invitation link; the Invitation is accepted on verification. */
+  invitationToken?: string;
 }
 
 export interface LoginPayload {

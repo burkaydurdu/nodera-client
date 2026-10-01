@@ -7,6 +7,7 @@ import { GetProjects } from "@/api/projects";
 import type { Project } from "@/core/project";
 import { getLastProjectId } from "@/core/storage";
 import useTeam from "@/contexts/TeamContext/useTeam";
+import { useCan } from "@/hooks/Authz/useCan";
 import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
 import EmptyBox from "@/components/EmptyBox";
@@ -22,6 +23,7 @@ export default function Page() {
   const t = useTranslations("dashboard.projects");
   const { getErrorMessage } = useErrorMessage();
   const { navigate } = useNavigate();
+  const canCreate = useCan("project.write");
   const {
     currentTeam,
     isLoading: teamsLoading,
@@ -143,11 +145,15 @@ export default function Page() {
           title={t("title")}
           description={t("description", { team: currentTeam.name })}
         />
-        <FirstProjectStep
-          key={currentTeam.id}
-          teamId={currentTeam.id}
-          onCreated={handleCreated}
-        />
+        {canCreate ? (
+          <FirstProjectStep
+            key={currentTeam.id}
+            teamId={currentTeam.id}
+            onCreated={handleCreated}
+          />
+        ) : (
+          <EmptyBox title={t("emptyReadOnlyTitle")} description={t("emptyReadOnly")} />
+        )}
       </>
     );
   }
@@ -158,13 +164,15 @@ export default function Page() {
         title={t("title")}
         description={t("description", { team: currentTeam.name })}
         extra={
-          <NoderaButton
-            variant="filled"
-            icon={<PlusOutlined />}
-            onClick={() => setModalOpen(true)}
-          >
-            {t("newProject")}
-          </NoderaButton>
+          canCreate ? (
+            <NoderaButton
+              variant="filled"
+              icon={<PlusOutlined />}
+              onClick={() => setModalOpen(true)}
+            >
+              {t("newProject")}
+            </NoderaButton>
+          ) : undefined
         }
       />
       <ProjectList

@@ -7,6 +7,7 @@ import { CODE_LENGTH } from "@/core/auth";
 import type { MfaChallenge } from "@/core/session";
 import { clearMfaChallenge, getMfaChallenge } from "@/core/storage";
 import useAuth from "@/contexts/AuthContext/useAuth";
+import { useAfterSignIn } from "@/hooks/Auth/useAfterSignIn";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
 import { useCountdown } from "@/hooks/Countdown/useCountdown";
 import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
@@ -22,6 +23,7 @@ export default function OTPCard() {
   const tv = useTranslations("validation");
   const { setSession } = useAuth();
   const { navigate } = useNavigate();
+  const afterSignIn = useAfterSignIn();
   const { getErrorMessage } = useErrorMessage();
   const resend = useCountdown(0);
 
@@ -65,7 +67,7 @@ export default function OTPCard() {
         code: value,
       });
       await setSession(response.data);
-      navigate("/dashboard", { replace: true });
+      afterSignIn();
     } catch (err) {
       setError(getErrorMessage(err));
       setCode("");

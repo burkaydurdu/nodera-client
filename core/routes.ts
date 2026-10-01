@@ -1,0 +1,17 @@
+/** Signed-out pages; a signed-in user is sent to the dashboard (or on to an invitation). */
+export const NO_AUTH_PATHS = [
+  "/login",
+  "/register",
+  "/verify-email",
+  "/otp",
+  "/forgot-password",
+  "/reset-password",
+];
+
+/** Pages that render for everyone: the invitation link must work in every sign-in state. */
+export const OPEN_PATHS = ["/invitations/accept"];
+
+export const LOGIN_PATH = "/login";
+export const DASHBOARD_PATH = "/dashboard";
+
+export const isOpenPath = (pathname: string): boolean => OPEN_PATHS.includes(pathname);

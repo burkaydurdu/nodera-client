@@ -27,7 +27,8 @@
     "profile": "Profile",
     "droplets": "Droplets",
     "catalog": "Catalog",
-    "sshKeys": "SSH keys"
+    "sshKeys": "SSH keys",
+    "team": "Team"
   },
   "validation": {
     "emailRequired": "Enter your email address.",
@@ -130,7 +131,9 @@
       "activeBadge": "Last used",
       "retry": "Try again",
       "noTeamTitle": "No team found",
-      "noTeamDescription": "Your account has no team yet. Contact support if this keeps happening."
+      "noTeamDescription": "Your account has no team yet. Contact support if this keeps happening.",
+      "emptyReadOnlyTitle": "No projects yet",
+      "emptyReadOnly": "Your role cannot create projects in this team. Ask an owner or a developer to create the first one."
     },
     "projectForm": {
       "modalTitle": "New project",
@@ -256,7 +259,21 @@
     "22-10001": "Droplet not found.",
     "22-10002": "This action is not available in the Droplet's current status.",
     "22-10003": "One of the SSH keys is invalid.",
-    "23-10001": "Project not found."
+    "23-10001": "Project not found.",
+    "5-10004": "Your role in this team does not allow that.",
+    "5-10005": "A team must keep at least one owner. Make someone else an owner first.",
+    "5-10006": "You cannot change your own role; another owner has to.",
+    "5-10007": "This person is not a member of the team.",
+    "8-10001": "Invitation not found.",
+    "8-10002": "This invitation is no longer valid. Ask the team owner for a new one.",
+    "8-10003": "This invitation was sent to another email address.",
+    "8-10004": "This address already belongs to a member of the team.",
+    "8-10005": "This address already has a pending invitation.",
+    "8-10006": "The invitation was sent a moment ago. Wait before resending.",
+    "8-10007": "The email address does not match the invitation. Sign up with the invited address.",
+    "8-10008": "The invitation could not be created. Please try again.",
+    "8-10009": "The invitation could not be updated. Please try again.",
+    "22-10008": "Your role in this team does not allow that."
   },
   "teams": {
     "switcher": {
@@ -273,6 +290,28 @@
       "submit": "Create team",
       "cancel": "Cancel",
       "success": "Team “{name}” created and selected."
+    },
+    "roles": {
+      "owner": "Owner",
+      "developer": "Developer",
+      "finance": "Finance"
+    },
+    "roleDescriptions": {
+      "owner": "Runs the team: members, invitations, projects, Droplets, SSH keys and billing.",
+      "developer": "Creates projects, Droplets and SSH keys; no access to billing.",
+      "finance": "Sees Droplets and their prices, handles invoices and payment methods; cannot create or power Droplets."
+    },
+    "tabs": {
+      "members": "Members",
+      "invitations": "Invitations",
+      "sshKeys": "SSH keys"
+    },
+    "settings": {
+      "title": "Team",
+      "description": "Members, invitations and SSH keys of {team}.",
+      "retry": "Try again",
+      "noTeamTitle": "No team found",
+      "noTeamDescription": "Your account has no team yet. Contact support if this keeps happening."
     }
   },
   "catalog": {
@@ -335,7 +374,8 @@
       "emptyDescription": "Create your first Droplet: pick a Region, a Plan and an Image, and it will be ready in minutes.",
       "accessPendingTitle": "The project is being set up",
       "accessPending": "This project was created a moment ago and is not ready for Droplets yet. Try again in a few seconds.",
-      "retry": "Try again"
+      "retry": "Try again",
+      "emptyReadOnly": "Your role cannot create Droplets in this team. Ask an owner or a developer to create one."
     },
     "create": {
       "title": "Create Droplet",
@@ -495,6 +535,118 @@
       "submit": "Add key",
       "cancel": "Cancel",
       "created": "Key “{name}” added."
+    },
+    "readOnly": "Your role cannot add SSH keys in this team; owners and developers manage them."
+  },
+  "members": {
+    "title": "Members",
+    "description": "Everyone in {team} and what they can do.",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "joined": "Joined"
+    },
+    "you": "(you)",
+    "roleOf": "Role of {name}",
+    "remove": "Remove",
+    "leave": "Leave",
+    "cancel": "Cancel",
+    "retry": "Try again",
+    "empty": "No members.",
+    "roleChanged": "{name} is now {role}.",
+    "removeTitle": "Remove {name}?",
+    "removeConfirm": "They lose access to {team} and its Droplets within seconds. You can invite them again later.",
+    "removed": "{name} was removed from the team.",
+    "leaveTitle": "Leave {team}?",
+    "leaveConfirm": "You lose access to the team and its Droplets. An owner has to invite you again to come back.",
+    "left": "You left {team}."
+  },
+  "invitations": {
+    "title": "Invitations",
+    "description": "Who was invited to {team}, newest first.",
+    "invite": "Invite",
+    "columns": {
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "invitedBy": "Invited by",
+      "expires": "Expires"
+    },
+    "resend": "Resend",
+    "resendIn": "Resend in {seconds} s",
+    "resent": "The invitation was sent again to {email}.",
+    "revoke": "Revoke",
+    "revokeTitle": "Revoke the invitation to {email}?",
+    "revokeConfirm": "The link in the email stops working. You can send a new invitation at any time.",
+    "revoked": "The invitation to {email} was revoked.",
+    "cancel": "Cancel",
+    "retry": "Try again",
+    "empty": "No invitations.",
+    "emptyTitle": "Invite your first colleague",
+    "emptyDescription": "Invite an email address with a role. They receive a link to join the team; invitations expire after seven days.",
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "revoked": "Revoked",
+      "expired": "Expired"
+    },
+    "form": {
+      "modalTitle": "Invite a member",
+      "description": "They receive an email with a link to join the team with the role you choose.",
+      "email": "Email",
+      "emailPlaceholder": "colleague@company.com",
+      "role": "Role",
+      "submit": "Send invitation",
+      "cancel": "Cancel",
+      "sent": "Invitation sent to {email}."
+    },
+    "pending": {
+      "label": "Invitations",
+      "empty": "No pending invitations.",
+      "invitedBy": "{name} invited you to {team} as {role}.",
+      "expires": "Expires {date}",
+      "accept": "Accept",
+      "decline": "Decline",
+      "accepted": "You joined {team}. It is now selected.",
+      "declined": "The invitation to {team} was declined."
+    },
+    "banner": {
+      "title": "You were invited to {team} as {role}.",
+      "signUpHint": "Sign up with {email}. The invitation is accepted as soon as you verify your email.",
+      "emailHint": "The invitation was sent to {email}.",
+      "notPending": "This invitation is no longer valid. You can still create an account; ask the team owner for a new invitation."
+    },
+    "accept": {
+      "title": "Team invitation",
+      "invitedText": "{inviter} invited you to join {team} as {role}.",
+      "expires": "The invitation expires on {date}.",
+      "accept": "Accept invitation",
+      "decline": "Decline",
+      "acceptedTitle": "Welcome to {team}",
+      "acceptedMessage": "You joined as {role}. The team is selected for you.",
+      "goToDashboard": "Go to the dashboard",
+      "declinedTitle": "Invitation declined",
+      "declinedMessage": "You did not join {team}. The team owner can invite you again.",
+      "invalidTitle": "This invitation is no longer valid",
+      "invalidMessage": "It was already answered, revoked or has expired. Ask the team owner for a new one.",
+      "status": {
+        "pending": "The invitation to {team} is pending.",
+        "accepted": "The invitation to {team} was already accepted.",
+        "declined": "The invitation to {team} was declined.",
+        "revoked": "The invitation to {team} was revoked by the team.",
+        "expired": "The invitation to {team} has expired."
+      },
+      "missingToken": "This invitation link is invalid or incomplete.",
+      "signedOutMessage": "Sign in or create an account with {email} to join {team}.",
+      "signIn": "Sign in",
+      "signUp": "Create an account",
+      "otherAccountTitle": "This invitation is for another email address",
+      "otherAccountMessage": "It was sent to {email}, but you are signed in as {current}. Switch to that account to accept it.",
+      "switchAccount": "Sign out and switch account",
+      "backToDashboard": "Back to the dashboard",
+      "backToLogin": "Back to sign in"
     }
   }
 }

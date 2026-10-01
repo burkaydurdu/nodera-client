@@ -10,20 +10,29 @@ import {
   getRefreshToken,
   storeSession,
 } from "@/core/storage";
-import type { Session } from "@/core/session";
+import { isOpenPath } from "@/core/routes";
+import { SESSION_REFRESHED_EVENT, type Session } from "@/core/session";
 
 const BASE_URL = process.env.GATEWAY_API_URL;
 const REFRESH_PATH = "/v1/auth/refresh";
 const LOGIN_PATH = "/login";
 const AUTH_PREFIX = "/v1/auth/";
 const SESSION_BOUND_AUTH_PATHS = ["/v1/auth/logout", "/v1/auth/logout-all"];
+/** Public endpoints outside /v1/auth; the gateway marks them `public: true`. */
+const PUBLIC_PATHS = ["/v1/invitations/lookup"];
+
+const pathOf = (url: string) => url.split("?")[0];
 
 /**
- * A 401 from a public auth endpoint means "wrong code" or "expired challenge", not
+ * A 401 from a public endpoint means "wrong code", "expired challenge" or "bad token", not
  * "your session is dead": those must reach the form, never trigger a refresh.
  */
-const isPublicAuthPath = (url: string | undefined): boolean =>
-  !!url && url.startsWith(AUTH_PREFIX) && !SESSION_BOUND_AUTH_PATHS.includes(url);
+const isPublicPath = (url: string | undefined): boolean => {
+  if (!url) return false;
+  const path = pathOf(url);
+  if (PUBLIC_PATHS.includes(path)) return true;
+  return path.startsWith(AUTH_PREFIX) && !SESSION_BOUND_AUTH_PATHS.includes(path);
+};
 
 type RetriableConfig = InternalAxiosRequestConfig & { _retry?: boolean };
 
@@ -91,15 +100,22 @@ async function refreshSession(): Promise<Session> {
 
   const session = camelizeKeys(response.data) as unknown as Session;
   storeSession(session);
+  // A refresh is also how a Role change reaches the client (ADR-0005); listeners reload what
+  // depends on it. They must only reload, never refresh again, or a dead token would loop.
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent(SESSION_REFRESHED_EVENT));
+  }
   return session;
 }
 
 function redirectToLogin(): void {
   clearSession();
   clearMfaChallenge();
-  if (typeof window !== "undefined" && window.location.pathname !== LOGIN_PATH) {
-    window.location.assign(new URL(LOGIN_PATH, window.location.origin).toString());
-  }
+  if (typeof window === "undefined") return;
+  // An open page (the invitation accept page) works signed out: the dead session is dropped
+  // and the page carries on in its signed-out state instead of losing the link.
+  if (isOpenPath(window.location.pathname) || window.location.pathname === LOGIN_PATH) return;
+  window.location.assign(new URL(LOGIN_PATH, window.location.origin).toString());
 }
 
 APIClient.interceptors.response.use(
@@ -117,7 +133,7 @@ APIClient.interceptors.response.use(
     const status = error.response?.status;
     const original = error.config as RetriableConfig | undefined;
 
-    if (status !== 401 || !original || original._retry || isPublicAuthPath(original.url)) {
+    if (status !== 401 || !original || original._retry || isPublicPath(original.url)) {
       return Promise.reject(error);
     }
 
