@@ -1,0 +1,9 @@
+node_modules
+.next
+.git
+.husky
+.env
+.env.*
+!.env.example
+README.md
+CLAUDE.md

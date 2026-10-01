@@ -1,0 +1,28 @@
+echo "Nodera client: checking format, lint, types and locales before commit"
+
+yarn check-format ||
+(
+  echo "Prettier check failed. Run: yarn format, stage the changes and commit again."
+  false
+)
+
+yarn check-lint ||
+(
+  echo "ESLint check failed. Fix the errors listed above and commit again."
+  false
+)
+
+yarn check-types ||
+(
+  echo "Type check failed. Fix the errors listed above and commit again."
+  false
+)
+
+# Locale files: en/common.json must contain every key from tr/common.json (and vice versa). Requires jq.
+yarn locale:validate ||
+(
+  echo "Locale validation failed. Run: yarn locale:validate (install jq if needed: brew install jq)."
+  false
+)
+
+echo "All checks passed."

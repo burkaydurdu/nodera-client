@@ -1,0 +1,59 @@
+/** Error envelope returned by every Nodera service and the gateway. */
+export interface ApiError {
+  code: number;
+  domain: number;
+  message: string;
+}
+
+/** 400 responses carry an array of field errors instead of the envelope. */
+export interface ValidationError {
+  field: string;
+  message: string;
+}
+
+export enum ErrorDomain {
+  User = 1,
+  Session = 2,
+  Mfa = 3,
+  Otp = 4,
+  Team = 5,
+  Project = 6,
+  SSHKey = 7,
+  Provider = 20,
+  Catalog = 21,
+  Droplet = 22,
+  Access = 23,
+  Common = 100,
+}
+
+/** `${domain}-${code}` identifiers used both as i18n keys (errors.*) and for branching. */
+export const ErrorCode = {
+  UserNotFound: "1-10001",
+  UserEmailNotVerified: "1-10002",
+  UserSuspended: "1-10003",
+  UserLocked: "1-10005",
+  UserIncorrectCurrentPassword: "1-10006",
+  UserInvalidResetToken: "1-10007",
+  UserMfaMethodAlreadySet: "1-10010",
+  SessionInvalidRefresh: "2-10001",
+  SessionRefreshReused: "2-10002",
+  MfaInvalidChallenge: "3-10002",
+  MfaResendNotSupported: "3-10003",
+  OtpInvalidCode: "4-10001",
+  OtpAttemptsExhausted: "4-10002",
+  OtpCooldown: "4-10003",
+  TeamNotFound: "5-10001",
+  TeamNotFoundAlt: "5-10003",
+  ProjectNameTaken: "6-10002",
+  SSHKeyNameTaken: "7-10002",
+  SSHKeyFingerprintTaken: "7-10003",
+  CatalogPlanSoldOut: "21-10004",
+  CatalogPlanPriceChanged: "21-10005",
+  DropletActionNotAllowed: "22-10002",
+  AccessProjectNotFound: "23-10001",
+  CommonRateLimited: "100-10004",
+} as const;
+
+export type ErrorCodeValue = (typeof ErrorCode)[keyof typeof ErrorCode];
+
+export const FALLBACK_ERROR_KEY = "errors.wrong";

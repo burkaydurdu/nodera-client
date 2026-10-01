@@ -1,0 +1,99 @@
+@layer theme, base, antd, components, utilities;
+@import "tailwindcss/theme" layer(theme);
+@import "tailwindcss/preflight" layer(base);
+@import "tailwindcss/utilities" layer(utilities);
+
+/*
+ * Design tokens. The VALUES live in theme/tokens.ts (single source of truth) and reach the
+ * page as `--nodera-*` custom properties injected by app/layout.tsx. This block only tells
+ * Tailwind which utilities exist (bg-brand-600, text-text-muted, rounded-card, p-card, …).
+ */
+@theme {
+  --color-brand-50: var(--nodera-brand-50);
+  --color-brand-100: var(--nodera-brand-100);
+  --color-brand-200: var(--nodera-brand-200);
+  --color-brand-300: var(--nodera-brand-300);
+  --color-brand-400: var(--nodera-brand-400);
+  --color-brand-500: var(--nodera-brand-500);
+  --color-brand-600: var(--nodera-brand-600);
+  --color-brand-700: var(--nodera-brand-700);
+  --color-brand-800: var(--nodera-brand-800);
+  --color-brand-900: var(--nodera-brand-900);
+
+  --color-surface: var(--nodera-surface);
+  --color-surface-muted: var(--nodera-surface-muted);
+  --color-surface-raised: var(--nodera-surface-raised);
+  --color-border: var(--nodera-border);
+  --color-text: var(--nodera-text);
+  --color-text-muted: var(--nodera-text-muted);
+  --color-text-inverse: var(--nodera-text-inverse);
+  --color-danger: var(--nodera-danger);
+  --color-danger-soft: var(--nodera-danger-soft);
+  --color-success: var(--nodera-success);
+  --color-success-soft: var(--nodera-success-soft);
+  --color-warning: var(--nodera-warning);
+  --color-warning-soft: var(--nodera-warning-soft);
+
+  --color-status-provisioning: var(--nodera-status-provisioning);
+  --color-status-provisioning-soft: var(--nodera-status-provisioning-soft);
+  --color-status-active: var(--nodera-status-active);
+  --color-status-active-soft: var(--nodera-status-active-soft);
+  --color-status-off: var(--nodera-status-off);
+  --color-status-off-soft: var(--nodera-status-off-soft);
+  --color-status-failed: var(--nodera-status-failed);
+  --color-status-failed-soft: var(--nodera-status-failed-soft);
+  --color-status-deleting: var(--nodera-status-deleting);
+  --color-status-deleting-soft: var(--nodera-status-deleting-soft);
+
+  --radius-card: var(--nodera-radius-card);
+  --radius-input: var(--nodera-radius-input);
+  --radius-button: var(--nodera-radius-button);
+  --radius-badge: var(--nodera-radius-badge);
+
+  --spacing-page: var(--nodera-spacing-page);
+  --spacing-card: var(--nodera-spacing-card);
+  --spacing-section: var(--nodera-spacing-section);
+  --spacing-field: var(--nodera-spacing-field);
+  --spacing-tight: var(--nodera-spacing-tight);
+
+  --font-sans: var(--nodera-font-sans);
+  --font-mono: var(--nodera-font-mono);
+
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px rgba(15, 23, 42, 0.05);
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--color-border);
+  }
+
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-text);
+    background-color: var(--color-surface-muted);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+/* Ant Design fine-tuning that has no theme token */
+.ant-menu-light.ant-menu-root.ant-menu-inline,
+.ant-menu-light.ant-menu-root.ant-menu-vertical {
+  border-inline-end: none !important;
+}
+
+.nodera-code-input input {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
