@@ -18,7 +18,7 @@ export default function CreateTeamForm({
 }: CreateTeamFormProps) {
   const t = useTranslations("teams.create");
   const tv = useTranslations("validation");
-  const { getErrorMessage } = useErrorMessage();
+  const { getErrorMessage, getFieldErrorMessage } = useErrorMessage();
 
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState<string | null>(null);
@@ -45,7 +45,7 @@ export default function CreateTeamForm({
       onCreated(response.data);
     } catch (error) {
       const fieldError = GetValidationErrors(error).find((fe) => fe.field === "name");
-      if (fieldError) setNameError(fieldError.message);
+      if (fieldError) setNameError(getFieldErrorMessage(fieldError));
       setFormError(getErrorMessage(error));
     } finally {
       setLoading(false);

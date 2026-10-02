@@ -22,6 +22,7 @@ import TeamTabs from "@/components/Teams/TeamTabs";
 import type { TeamTabKey } from "@/components/Teams/TeamTabs/type";
 
 const TEAM_PATH = "/dashboard/team";
+const BILLING_PATH = "/dashboard/team/billing";
 
 export default function Page() {
   const t = useTranslations("sshKeys");
@@ -31,9 +32,14 @@ export default function Page() {
   const { currentTeam, isLoading: teamsLoading, error: teamsError, reload } = useTeam();
   const canManage = useCan("team.manage");
   const canWrite = useCan("sshkey.write");
+  const canReadBilling = useCan("billing.read");
 
   const openTab = (key: TeamTabKey) => {
     if (key === "sshKeys") return;
+    if (key === "billing") {
+      navigate(BILLING_PATH);
+      return;
+    }
     navigate(key === "members" ? TEAM_PATH : `${TEAM_PATH}?tab=${key}`);
   };
 
@@ -116,7 +122,12 @@ export default function Page() {
           ) : undefined
         }
       />
-      <TeamTabs active="sshKeys" showInvitations={canManage} onChange={openTab} />
+      <TeamTabs
+        active="sshKeys"
+        showInvitations={canManage}
+        showBilling={canReadBilling}
+        onChange={openTab}
+      />
     </>
   );
 

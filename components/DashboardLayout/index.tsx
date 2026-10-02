@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
+import BillingStatusBanner from "@/components/Billing/BillingStatusBanner";
 import Navbar from "@/components/Navbar";
 import SideMenu from "@/components/SideMenu";
 import type { SideMenuItem } from "@/components/SideMenu/type";
@@ -85,7 +86,10 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           <SideMenu items={items} path={pathname} />
         </aside>
         <main className="min-w-0 flex-1 p-4 sm:p-6 lg:p-page">
-          <div className="mx-auto flex w-full max-w-5xl flex-col gap-section">{children}</div>
+          <div className="mx-auto flex w-full max-w-5xl flex-col gap-section">
+            <BillingStatusBanner />
+            {children}
+          </div>
         </main>
       </div>
     </div>

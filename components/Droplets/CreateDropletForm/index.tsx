@@ -19,6 +19,8 @@ import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
 import { GetStatus, IsErrorCode } from "@/utils/error";
 import { formatUsd, samePrice } from "@/utils/price";
 import { retryUntil } from "@/utils/retry";
+import PaymentBlockedAlert from "@/components/Billing/PaymentBlockedAlert";
+import type { PaymentBlockedReason } from "@/components/Billing/PaymentBlockedAlert/type";
 import Card from "@/components/Card";
 import PlanTable from "@/components/Catalog/PlanTable";
 import RegionList from "@/components/Catalog/RegionList";
@@ -63,6 +65,7 @@ export default function CreateDropletForm({
   const [addKeyOpen, setAddKeyOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [conflict, setConflict] = useState<CatalogConflict | null>(null);
+  const [blocked, setBlocked] = useState<PaymentBlockedReason | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
   // Leaving the page must stop the retry window of a create that is still being waited on.
   const submitAbort = useRef<AbortController | null>(null);
@@ -175,6 +178,7 @@ export default function CreateDropletForm({
     setTouched(true);
     setFormError(null);
     setConflict(null);
+    setBlocked(null);
     if (!complete || submitting || !region || !plan || !image) return;
 
     const keys = sshKeys.filter((key) => selectedKeyIds.includes(key.id));
@@ -204,7 +208,13 @@ export default function CreateDropletForm({
       onCreated(response.data);
     } catch (error) {
       if (controller.signal.aborted) return;
-      if (GetStatus(error) === 409) {
+      // Billing blocks (402 / 423) are about the Team, not the form: they get the same calls
+      // to action as the dashboard banner instead of a generic error.
+      if (IsErrorCode(error, ErrorCode.DropletPaymentMethodRequired)) {
+        setBlocked("paymentMethodRequired");
+      } else if (IsErrorCode(error, ErrorCode.DropletTeamSuspended)) {
+        setBlocked("suspended");
+      } else if (GetStatus(error) === 409) {
         await explainConflict(error, plan);
       } else if (IsErrorCode(error, ErrorCode.AccessProjectNotFound)) {
         setFormError(t("projectNotReady"));
@@ -256,6 +266,7 @@ export default function CreateDropletForm({
           ]}
         />
         {conflictAlert}
+        {blocked && <PaymentBlockedAlert reason={blocked} />}
         {formError && <NoderaAlert variant="error" message={formError} />}
 
         <Card>

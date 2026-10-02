@@ -18,3 +18,21 @@ export function samePrice(
   if (Number.isNaN(left) || Number.isNaN(right)) return a === b;
   return Math.abs(left - right) < 1e-9;
 }
+
+/**
+ * Billing amounts arrive as decimal strings already rounded by the billing service; they are
+ * shown verbatim with the currency code so nothing is re-rounded on the client.
+ */
+export function formatMoney(
+  value: string | null | undefined,
+  currency: string | null | undefined
+): string {
+  if (!value) return "";
+  return currency ? `${value} ${currency}` : value;
+}
+
+/** A tax rate stored in basis points, shown as a percentage ("2000" → "20%"). */
+export function formatRateBps(rateBps: number): string {
+  const percent = rateBps / 100;
+  return `${Number.isInteger(percent) ? percent : percent.toFixed(2)}%`;
+}

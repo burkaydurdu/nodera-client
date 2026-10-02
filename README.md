@@ -18,7 +18,8 @@ yarn dev                  # http://localhost:3002
 
 The app talks to the customer gateway (`GATEWAY_API_URL`, default `http://localhost:3460`).
 Every request carries `X-Target-Server`, chosen by `api/proxy.ts` from the path: catalog and
-Droplet routes go to `droplet`, everything else to `customer`. Start the Go backend from the
+Droplet routes go to `droplet`, `/v1/teams/:id/billing/*` and `/v1/billing/*` to `billing`,
+everything else to `customer`. Start the Go backend from the
 sibling `nodera` repository first.
 
 Other scripts:
@@ -61,15 +62,20 @@ app/                     App Router pages — orchestration only (data, routing,
   dashboard/catalog      Regions and Plans with hourly / monthly prices
   dashboard/team         Team settings: Members (roles, remove, leave) and Invitations tabs
   dashboard/team/ssh-keys the Team's SSH keys (third tab of the Team area)
+  dashboard/team/billing  Billing (fourth tab, billing.read): Profile, Payment methods, Invoices
+                         (`?invoice=` opens one), Usage — sub-tab in `?tab=`
+  billing/cards/complete  return page of the hosted card form (signed in)
+  billing/confirm         3-D Secure payment confirmation link (works in every sign-in state)
+  billing/invoice-pdf     signed invoice PDF link from the email (works in every sign-in state)
   dashboard/profile      details, password, MFA, sessions
   invitations/accept     accept page of the invitation email link (works in every sign-in state)
 api/                     axios client (bearer, X-Target-Server per path, camel↔snake, refresh-once
                          on 401) and one wrapper file per backend area (auth, users, teams,
-                         members, invitations, projects, catalog, droplets, sshKeys)
+                         members, invitations, projects, catalog, droplets, sshKeys, billing)
 components/              design-system primitives (Nodera*, Card, FormSection, PageHeader,
                          EmptyBox, DashboardLayout, Navbar, SideMenu, CodeInput, …)
 components/<Feature>/    feature components: Auth/, Teams/, Members/, Invitations/, Projects/,
-                         Droplets/, SSHKeys/, Profile/
+                         Droplets/, SSHKeys/, Billing/, Profile/
 contexts/                AuthContext (session + current user), TeamContext (teams + selected
                          team), InvitationContext (pending invitations badge), RoutingContext
                          (auth guard)

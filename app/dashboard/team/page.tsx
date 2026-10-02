@@ -18,6 +18,7 @@ import type { TeamTabKey } from "@/components/Teams/TeamTabs/type";
 
 const TAB_PARAM = "tab";
 const SSH_KEYS_PATH = "/dashboard/team/ssh-keys";
+const BILLING_PATH = "/dashboard/team/billing";
 
 function TeamSettingsContent() {
   const t = useTranslations("teams.settings");
@@ -25,6 +26,7 @@ function TeamSettingsContent() {
   const { navigate } = useNavigate();
   const { currentTeam, isLoading, error, reload } = useTeam();
   const canManage = useCan("team.manage");
+  const canReadBilling = useCan("billing.read");
 
   // The Invitations tab is owner-only; anyone else asking for it lands on Members.
   const requested = searchParams.get(TAB_PARAM);
@@ -34,6 +36,10 @@ function TeamSettingsContent() {
   const openTab = (key: TeamTabKey) => {
     if (key === "sshKeys") {
       navigate(SSH_KEYS_PATH);
+      return;
+    }
+    if (key === "billing") {
+      navigate(BILLING_PATH);
       return;
     }
     navigate(key === "members" ? "/dashboard/team" : `/dashboard/team?${TAB_PARAM}=${key}`);
@@ -81,7 +87,12 @@ function TeamSettingsContent() {
   return (
     <>
       {header}
-      <TeamTabs active={active} showInvitations={canManage} onChange={openTab} />
+      <TeamTabs
+        active={active}
+        showInvitations={canManage}
+        showBilling={canReadBilling}
+        onChange={openTab}
+      />
       {active === "invitations" ? (
         <InvitationsPanel key={currentTeam.id} team={currentTeam} />
       ) : (

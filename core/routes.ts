@@ -8,8 +8,11 @@ export const NO_AUTH_PATHS = [
   "/reset-password",
 ];
 
-/** Pages that render for everyone: the invitation link must work in every sign-in state. */
-export const OPEN_PATHS = ["/invitations/accept"];
+/**
+ * Pages that render for everyone: the invitation link, the payment confirmation link and the
+ * invoice PDF link from the emails must work in every sign-in state.
+ */
+export const OPEN_PATHS = ["/invitations/accept", "/billing/confirm", "/billing/invoice-pdf"];
 
 export const LOGIN_PATH = "/login";
 export const DASHBOARD_PATH = "/dashboard";

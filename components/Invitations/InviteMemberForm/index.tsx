@@ -26,7 +26,7 @@ export default function InviteMemberForm({
   const tr = useTranslations("teams.roles");
   const td = useTranslations("teams.roleDescriptions");
   const tv = useTranslations("validation");
-  const { getErrorMessage } = useErrorMessage();
+  const { getErrorMessage, getFieldErrorMessage } = useErrorMessage();
 
   const [email, setEmail] = useState("");
   const [role, setRole] = useState<TeamRole>(DEFAULT_ROLE);
@@ -56,7 +56,7 @@ export default function InviteMemberForm({
       onCreated(response.data);
     } catch (error) {
       const fieldError = GetValidationErrors(error).find((fe) => fe.field === "email");
-      if (fieldError) setEmailError(fieldError.message);
+      if (fieldError) setEmailError(getFieldErrorMessage(fieldError));
       else setFormError(getErrorMessage(error));
     } finally {
       setLoading(false);

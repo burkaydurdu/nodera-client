@@ -35,7 +35,7 @@ export default function RegisterCard({ invitationToken = null }: RegisterCardPro
   const tv = useTranslations("validation");
   const locale = useLocale() as Locale;
   const { navigate } = useNavigate();
-  const { getErrorMessage } = useErrorMessage();
+  const { getErrorMessage, getFieldErrorMessage } = useErrorMessage();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -119,11 +119,11 @@ export default function RegisterCard({ invitationToken = null }: RegisterCardPro
       if (fieldErrors.length > 0) {
         const next: FieldErrors = {};
         for (const fe of fieldErrors) {
-          if (fe.field === "email") next.email = fe.message;
-          else if (fe.field === "password") next.password = fe.message;
-          else if (fe.field === "fullName" || fe.field === "full_name")
-            next.fullName = fe.message;
-          else if (fe.field === "country") next.country = fe.message;
+          const text = getFieldErrorMessage(fe);
+          if (fe.field === "email") next.email = text;
+          else if (fe.field === "password") next.password = text;
+          else if (fe.field === "full_name") next.fullName = text;
+          else if (fe.field === "country") next.country = text;
         }
         setErrors(next);
       }

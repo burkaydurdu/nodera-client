@@ -57,6 +57,22 @@ export function GetValidationErrors(error: unknown): ValidationError[] {
   return [];
 }
 
+/**
+ * The validator tag a field error failed on. The services answer
+ * "Validation failed on the '<tag>' tag"; the tag is what the client translates.
+ */
+export function GetValidationTag(fieldError: ValidationError): string | null {
+  const match = /'([^']+)' tag/.exec(fieldError.message ?? "");
+  return match ? match[1] : null;
+}
+
+/** No answer (network) or a server-side failure: worth retrying the same request. */
+export function IsRetryableError(error: unknown): boolean {
+  if (IsNetworkError(error)) return true;
+  const status = GetStatus(error);
+  return status != null && status >= 500;
+}
+
 export function IsNetworkError(error: unknown): boolean {
   return error instanceof AxiosError && !error.response;
 }

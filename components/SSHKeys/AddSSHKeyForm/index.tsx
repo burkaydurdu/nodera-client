@@ -19,7 +19,7 @@ export default function AddSSHKeyForm({
   autoFocus = false,
 }: AddSSHKeyFormProps) {
   const t = useTranslations("sshKeys.form");
-  const { getErrorMessage } = useErrorMessage();
+  const { getErrorMessage, getFieldErrorMessage } = useErrorMessage();
 
   const [name, setName] = useState("");
   const [publicKey, setPublicKey] = useState("");
@@ -57,8 +57,8 @@ export default function AddSSHKeyForm({
       const fieldErrors = GetValidationErrors(error);
       const nameField = fieldErrors.find((fe) => fe.field === "name");
       const keyField = fieldErrors.find((fe) => fe.field === "public_key");
-      if (nameField) setNameError(nameField.message);
-      if (keyField) setKeyError(keyField.message);
+      if (nameField) setNameError(getFieldErrorMessage(nameField));
+      if (keyField) setKeyError(getFieldErrorMessage(keyField));
       // Name and fingerprint clashes carry their own codes and translations; the
       // generic duplicate text covers a 409 without one.
       const knownDuplicate =

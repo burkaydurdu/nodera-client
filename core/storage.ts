@@ -1,3 +1,4 @@
+import type { PendingCardVerification, PendingPaymentConfirmation } from "./billing";
 import type { PendingInvitation } from "./invitation";
 import type { Session, MfaChallenge } from "./session";
 
@@ -7,6 +8,8 @@ export const LAST_TEAM_ID_KEY = "nodera.last_team_id";
 export const LAST_PROJECT_ID_KEY = "nodera.last_project_id";
 export const MFA_CHALLENGE_KEY = "nodera.mfa_challenge";
 export const PENDING_INVITATION_KEY = "nodera.pending_invitation";
+export const CARD_VERIFICATION_KEY = "nodera.card_verification";
+export const PAYMENT_CONFIRMATION_KEY = "nodera.payment_confirmation";
 
 const hasWindow = () => typeof window !== "undefined";
 
@@ -102,4 +105,46 @@ export function setPendingInvitation(invitation: PendingInvitation): void {
 export function clearPendingInvitation(): void {
   if (!hasWindow()) return;
   sessionStorage.removeItem(PENDING_INVITATION_KEY);
+}
+
+export function getPendingCardVerification(): PendingCardVerification | null {
+  if (!hasWindow()) return null;
+  const raw = sessionStorage.getItem(CARD_VERIFICATION_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as PendingCardVerification;
+  } catch {
+    return null;
+  }
+}
+
+export function setPendingCardVerification(verification: PendingCardVerification): void {
+  if (!hasWindow()) return;
+  sessionStorage.setItem(CARD_VERIFICATION_KEY, JSON.stringify(verification));
+}
+
+export function clearPendingCardVerification(): void {
+  if (!hasWindow()) return;
+  sessionStorage.removeItem(CARD_VERIFICATION_KEY);
+}
+
+export function getPendingPaymentConfirmation(): PendingPaymentConfirmation | null {
+  if (!hasWindow()) return null;
+  const raw = sessionStorage.getItem(PAYMENT_CONFIRMATION_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as PendingPaymentConfirmation;
+  } catch {
+    return null;
+  }
+}
+
+export function setPendingPaymentConfirmation(confirmation: PendingPaymentConfirmation): void {
+  if (!hasWindow()) return;
+  sessionStorage.setItem(PAYMENT_CONFIRMATION_KEY, JSON.stringify(confirmation));
+}
+
+export function clearPendingPaymentConfirmation(): void {
+  if (!hasWindow()) return;
+  sessionStorage.removeItem(PAYMENT_CONFIRMATION_KEY);
 }

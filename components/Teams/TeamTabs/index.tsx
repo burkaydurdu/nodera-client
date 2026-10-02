@@ -4,13 +4,19 @@ import { Tabs } from "antd";
 import { useTranslations } from "next-intl";
 import type { TeamTabKey, TeamTabsProps } from "./type";
 
-export default function TeamTabs({ active, showInvitations, onChange }: TeamTabsProps) {
+export default function TeamTabs({
+  active,
+  showInvitations,
+  showBilling,
+  onChange,
+}: TeamTabsProps) {
   const t = useTranslations("teams.tabs");
 
   const items = [
     { key: "members", label: t("members") },
     ...(showInvitations ? [{ key: "invitations", label: t("invitations") }] : []),
     { key: "sshKeys", label: t("sshKeys") },
+    ...(showBilling ? [{ key: "billing", label: t("billing") }] : []),
   ];
 
   return (

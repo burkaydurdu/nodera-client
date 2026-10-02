@@ -20,6 +20,22 @@ const AUTH_PREFIX = "/v1/auth/";
 const SESSION_BOUND_AUTH_PATHS = ["/v1/auth/logout", "/v1/auth/logout-all"];
 /** Public endpoints outside /v1/auth; the gateway marks them `public: true`. */
 const PUBLIC_PATHS = ["/v1/invitations/lookup"];
+/** Public endpoints with a path parameter: the payment confirmation and invoice PDF email links. */
+const PUBLIC_PATH_PATTERNS = [
+  /^\/v1\/billing\/payments\/[^/]+\/confirm$/,
+  /^\/v1\/billing\/payments\/[^/]+\/3ds\/start$/,
+  /^\/v1\/billing\/invoices\/[^/]+\/pdf$/,
+];
+
+declare module "axios" {
+  export interface AxiosRequestConfig {
+    /**
+     * Send the body's keys as given. A payment provider's callback parameters are echoed back
+     * verbatim and must not be decamelized on the way out.
+     */
+    preserveKeys?: boolean;
+  }
+}
 
 const pathOf = (url: string) => url.split("?")[0];
 
@@ -31,6 +47,7 @@ const isPublicPath = (url: string | undefined): boolean => {
   if (!url) return false;
   const path = pathOf(url);
   if (PUBLIC_PATHS.includes(path)) return true;
+  if (PUBLIC_PATH_PATTERNS.some((pattern) => pattern.test(path))) return true;
   return path.startsWith(AUTH_PREFIX) && !SESSION_BOUND_AUTH_PATHS.includes(path);
 };
 
@@ -60,7 +77,7 @@ APIClient.interceptors.request.use(
       config.headers["Authorization"] = `Bearer ${token}`;
     }
 
-    if (config.data && !(config.data instanceof FormData)) {
+    if (config.data && !(config.data instanceof FormData) && !config.preserveKeys) {
       config.data = decamelizeKeys(config.data);
     }
 
@@ -126,8 +143,16 @@ APIClient.interceptors.response.use(
     return response;
   },
   async (error: AxiosError) => {
-    if (error.response?.data && typeof error.response.data === "object") {
-      error.response.data = camelizeKeys(error.response.data as object);
+    const data = error.response?.data;
+    if (typeof Blob !== "undefined" && data instanceof Blob) {
+      // A failed blob download (an invoice PDF) still carries the JSON envelope, as a Blob.
+      try {
+        error.response!.data = camelizeKeys(JSON.parse(await data.text()));
+      } catch {
+        // Not JSON: the envelope is unreadable and the generic message stands.
+      }
+    } else if (data && typeof data === "object") {
+      error.response!.data = camelizeKeys(data as object);
     }
 
     const status = error.response?.status;

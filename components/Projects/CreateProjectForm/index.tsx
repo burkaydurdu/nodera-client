@@ -20,7 +20,7 @@ export default function CreateProjectForm({
 }: CreateProjectFormProps) {
   const t = useTranslations("dashboard.projectForm");
   const tv = useTranslations("validation");
-  const { getErrorMessage } = useErrorMessage();
+  const { getErrorMessage, getFieldErrorMessage } = useErrorMessage();
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -51,7 +51,7 @@ export default function CreateProjectForm({
         setNameError(message);
       } else {
         const fieldError = GetValidationErrors(error).find((fe) => fe.field === "name");
-        if (fieldError) setNameError(fieldError.message);
+        if (fieldError) setNameError(getFieldErrorMessage(fieldError));
         setFormError(message);
       }
     } finally {

@@ -13,3 +13,26 @@ export function formatDate(value: string | null | undefined, locale: string): st
   if (Number.isNaN(date.getTime())) return "";
   return new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(date);
 }
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+/**
+ * A billing date as the service means it: Periods are UTC calendar months, so a date is
+ * formatted in UTC and never shifts a day with the viewer's time zone.
+ */
+export function formatUtcDate(value: string | null | undefined, locale: string): string {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeZone: "UTC" }).format(
+    date
+  );
+}
+
+/** A Period's end is exclusive (the first instant of the next month); the last day is one before. */
+export function formatPeriodEnd(value: string | null | undefined, locale: string): string {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  return formatUtcDate(new Date(date.getTime() - DAY_MS).toISOString(), locale);
+}
