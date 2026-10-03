@@ -358,7 +358,9 @@
       "description": "{team} ekibinin üyeleri, davetleri, SSH anahtarları ve faturalaması.",
       "retry": "Tekrar dene",
       "noTeamTitle": "Ekip bulunamadı",
-      "noTeamDescription": "Hesabınıza bağlı bir ekip yok. Sorun devam ederse destek ekibiyle iletişime geçin."
+      "noTeamDescription": "Hesabınıza bağlı bir ekip yok. Sorun devam ederse destek ekibiyle iletişime geçin.",
+      "teamId": "Ekip ID",
+      "copyTeamId": "Ekip ID'sini kopyala"
     }
   },
   "catalog": {
@@ -546,6 +548,13 @@
       "notFoundDescription": "Silinmiş olabilir veya başka bir ekibe ait olabilir.",
       "backToProjects": "Projelere dön",
       "retry": "Tekrar dene"
+    },
+    "failureCodes": {
+      "rejected": "Sipariş reddedildi.",
+      "unavailable": "Sunucu şu anda sipariş edilemedi.",
+      "timed_out": "Sunucu zamanında teslim edilmedi.",
+      "server_gone": "Sunucu artık mevcut değil.",
+      "provider_failed": "Sunucu çalışmayı durdurdu."
     }
   },
   "sshKeys": {
@@ -963,5 +972,70 @@
     "teamNotFoundTitle": "Ekip bulunamadı",
     "teamNotFound": "Bu bağlantı üyesi olmadığınız bir ekibe ait veya ekip artık mevcut değil.",
     "openCurrentTeam": "Mevcut ekibinizin faturalamasını aç"
+  },
+  "notifications": {
+    "label": "Bildirimler",
+    "title": "Bildirimler",
+    "description": "Tüm ekiplerinizde olanlar, en yenisi en üstte.",
+    "markAllRead": "Tümünü okundu işaretle",
+    "seeAll": "Tüm bildirimleri gör",
+    "empty": "Henüz bildirim yok.",
+    "emptyTitle": "Henüz bildirim yok",
+    "emptyDescription": "Droplet güncellemeleri, faturalar ve ödemeler ile ekiplerinizdeki değişiklikler burada görünür.",
+    "loadMore": "Daha fazla yükle",
+    "retry": "Tekrar dene",
+    "unread": "Okunmadı",
+    "types": {
+      "droplet_active": {
+        "title": "{hostname} hazır",
+        "description": "IP {ipv4}"
+      },
+      "droplet_failed": {
+        "title": "{hostname} oluşturulamadı"
+      },
+      "invoice_issued": {
+        "title": "{number} numaralı fatura hazır",
+        "description": "{period} dönemi için ödenecek tutar: {total}."
+      },
+      "payment_succeeded": {
+        "title": "{number} numaralı faturanın ödemesi alındı",
+        "description": "{amount} tahsil edildi."
+      },
+      "payment_failed": {
+        "title": "{number} numaralı faturanın ödemesi alınamadı",
+        "description": "{amount} tahsil edilemedi. {date} tarihinde yeniden denenecek.",
+        "descriptionNoRetry": "{amount} tahsil edilemedi. Kapatmak için faturayı ödeyin."
+      },
+      "payment_confirmation_required": {
+        "title": "{number} numaralı faturanın ödemesini onaylayın",
+        "description": "Bankanız {amount} tutarındaki tahsilatı onaylamanızı istiyor."
+      },
+      "team_suspended": {
+        "title": "Ekip askıya alındı",
+        "description": "{number} numaralı fatura ödenmedi. Fatura ödenene kadar ekibin Droplet'leri kapalı kalır."
+      },
+      "droplets_deletion_warning": {
+        "title": "Ekibin Droplet'leri silinecek",
+        "description": "{number} numaralı fatura hâlâ ödenmedi. Ödenmezse Droplet'ler {date} tarihinde silinir."
+      },
+      "card_expiring": {
+        "title": "{brand} •••• {last4} kartının süresi yakında doluyor",
+        "description": "Kartın son kullanma tarihi {expiry}. Faturaların tahsil edilebilmesi için yeni bir kart ekleyin."
+      },
+      "team_invitation": {
+        "title": "{name} sizi {team} ekibine {role} olarak davet etti",
+        "description": "Davetin son geçerlilik tarihi: {date}."
+      },
+      "team_role_changed": {
+        "title": "{team} ekibindeki rolünüz artık {role}"
+      },
+      "team_member_removed": {
+        "title": "{team} ekibinden çıkarıldınız",
+        "description": "Ekibin projelerine ve Droplet'lerine artık erişiminiz yok."
+      },
+      "unknown": {
+        "title": "Yeni bir bildiriminiz var"
+      }
+    }
   }
 }

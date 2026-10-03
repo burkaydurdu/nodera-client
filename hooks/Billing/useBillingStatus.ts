@@ -2,13 +2,10 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { GetBillingStatus } from "@/api/billing";
-import {
-  BILLING_STATUS_CHANGED_EVENT,
-  BILLING_STATUS_POLL_INTERVAL_MS,
-  type BillingStatus,
-} from "@/core/billing";
+import { BILLING_STATUS_CHANGED_EVENT, type BillingStatus } from "@/core/billing";
 import { useCan } from "@/hooks/Authz/useCan";
-import { usePolling } from "@/hooks/Polling/usePolling";
+import { useRealtimeMessage } from "@/hooks/Realtime/useRealtimeMessage";
+import { useResync } from "@/hooks/Realtime/useResync";
 
 export interface BillingStatusState {
   /** The Team's Billing status; null before the first read or without a selected Team. */
@@ -18,10 +15,10 @@ export interface BillingStatusState {
 }
 
 /**
- * The Team's Billing status, polled every minute while a dashboard page is open and refreshed
- * at once when a card or a payment changed here or the tab comes back into view. Any member
- * may read it (`team.read`): a developer blocked by a missing card or a suspension must learn
- * why and whom to ask.
+ * The Team's Billing status, read when the Team is selected and again whenever it may have
+ * moved: the service pushes a change, a card or a payment changed in this tab, or the realtime
+ * layer resyncs (a reconnect, the tab back in view). Any member may read it (`team.read`): a
+ * developer blocked by a missing card or a suspension must learn why and whom to ask.
  */
 export const useBillingStatus = (teamId: string | null): BillingStatusState => {
   const canRead = useCan("team.read");
@@ -43,6 +40,12 @@ export const useBillingStatus = (teamId: string | null): BillingStatusState => {
     setStatus(response.data ?? null);
   }, [teamId, canRead]);
 
+  const reload = useCallback(() => {
+    load().catch(() => {
+      // The banner is a convenience; a failed read keeps the last answer until the next nudge.
+    });
+  }, [load]);
+
   useEffect(() => {
     setStatus(null);
     if (!enabled) return;
@@ -50,7 +53,7 @@ export const useBillingStatus = (teamId: string | null): BillingStatusState => {
     setIsLoading(true);
     load()
       .catch(() => {
-        // The banner is a convenience; a failed read keeps it hidden until the next poll.
+        // A failed first read keeps the banner hidden until the next nudge.
       })
       .finally(() => {
         if (!cancelled) setIsLoading(false);
@@ -60,23 +63,19 @@ export const useBillingStatus = (teamId: string | null): BillingStatusState => {
     };
   }, [load, enabled]);
 
-  const polling = usePolling(load, BILLING_STATUS_POLL_INTERVAL_MS, enabled);
-  const { retry } = polling;
-
-  // `retry` also clears a stalled poller, so a change here or a returning tab revives it.
   useEffect(() => {
     if (!enabled) return;
-    const onChanged = () => retry();
-    const onVisibility = () => {
-      if (document.visibilityState === "visible") retry();
-    };
-    window.addEventListener(BILLING_STATUS_CHANGED_EVENT, onChanged);
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => {
-      window.removeEventListener(BILLING_STATUS_CHANGED_EVENT, onChanged);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, [retry, enabled]);
+    window.addEventListener(BILLING_STATUS_CHANGED_EVENT, reload);
+    return () => window.removeEventListener(BILLING_STATUS_CHANGED_EVENT, reload);
+  }, [reload, enabled]);
 
-  return { status, isLoading, reload: retry };
+  useRealtimeMessage("billing.status_changed", (change) => {
+    if (enabled && change.teamId === teamId) reload();
+  });
+
+  useResync(() => {
+    if (enabled) reload();
+  });
+
+  return { status, isLoading, reload };
 };

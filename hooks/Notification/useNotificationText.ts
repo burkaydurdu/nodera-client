@@ -1,0 +1,47 @@
+"use client";
+
+import { useCallback, useMemo } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { isRole } from "@/core/authz";
+import {
+  type Notification,
+  type NotificationText,
+  type NotificationWording,
+  notificationKind,
+} from "@/core/notification";
+import { useDropletFailure } from "@/hooks/Droplet/useDropletFailure";
+import { formatDate, formatDateTime, formatPeriodEnd, formatUtcDate } from "@/utils/date";
+import { formatMoney } from "@/utils/price";
+
+/** Resolves a Notification's text in the user's language; an unknown type gets the generic one. */
+export const useNotificationText = () => {
+  const t = useTranslations("notifications.types");
+  const tRoles = useTranslations("teams.roles");
+  const tInvoices = useTranslations("billing.invoices");
+  const locale = useLocale();
+  const { describeDropletFailure } = useDropletFailure();
+
+  const wording = useMemo<NotificationWording>(
+    () => ({
+      t: (key, values) => t(key, values),
+      role: (role) => (isRole(role) ? tRoles(role) : role),
+      dropletFailure: describeDropletFailure,
+      date: (value) => formatDate(value, locale),
+      dateTime: (value) => formatDateTime(value, locale),
+      // The same days the invoice shows: a Period is UTC months with an exclusive end.
+      period: (start, end) =>
+        tInvoices("period", {
+          start: formatUtcDate(start, locale),
+          end: formatPeriodEnd(end, locale),
+        }),
+      money: formatMoney,
+    }),
+    [t, tRoles, tInvoices, locale, describeDropletFailure]
+  );
+
+  return useCallback(
+    (notification: Notification): NotificationText =>
+      notificationKind(notification).text(notification, wording),
+    [wording]
+  );
+};

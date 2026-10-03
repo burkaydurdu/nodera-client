@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import type { Droplet } from "@/core/droplet";
+import { useDropletFailure } from "@/hooks/Droplet/useDropletFailure";
 import { formatDateTime } from "@/utils/date";
 import { formatUsd } from "@/utils/price";
 import Card from "@/components/Card";
@@ -31,6 +32,7 @@ export default function DropletOverview({ droplet }: DropletOverviewProps) {
   const t = useTranslations("droplets.detail");
   const tc = useTranslations("catalog");
   const locale = useLocale();
+  const { describeDropletFailure } = useDropletFailure();
 
   const rows: Row[] = [
     { label: t("status"), value: <DropletStatusBadge status={droplet.status} /> },
@@ -79,7 +81,12 @@ export default function DropletOverview({ droplet }: DropletOverviewProps) {
           <NoderaAlert
             variant="error"
             message={t("failedTitle")}
-            description={droplet.failureReason || t("failedNoReason")}
+            description={
+              // The service's sentence is English; it stands in only where no code was kept.
+              droplet.failureCode
+                ? describeDropletFailure(droplet.failureCode)
+                : droplet.failureReason || t("failedNoReason")
+            }
           />
         )}
         <dl className="grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">

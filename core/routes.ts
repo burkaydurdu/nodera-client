@@ -16,5 +16,6 @@ export const OPEN_PATHS = ["/invitations/accept", "/billing/confirm", "/billing/
 
 export const LOGIN_PATH = "/login";
 export const DASHBOARD_PATH = "/dashboard";
+export const TEAM_PATH = "/dashboard/team";
 
 export const isOpenPath = (pathname: string): boolean => OPEN_PATHS.includes(pathname);

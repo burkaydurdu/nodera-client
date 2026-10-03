@@ -6,7 +6,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { useTranslations } from "next-intl";
 import { ListDroplets } from "@/api/droplets";
 import {
-  DROPLET_POLL_INTERVAL_MS,
+  DROPLET_FALLBACK_POLL_INTERVAL_MS,
   type Droplet,
   PROJECT_ACCESS_RETRY_INTERVAL_MS,
   PROJECT_ACCESS_RETRY_MS,
@@ -19,6 +19,8 @@ import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
 import { usePolling } from "@/hooks/Polling/usePolling";
 import { useProjectInTeam } from "@/hooks/Project/useProjectInTeam";
+import { useRealtimeMessage } from "@/hooks/Realtime/useRealtimeMessage";
+import { useResync } from "@/hooks/Realtime/useResync";
 import { IsErrorCode } from "@/utils/error";
 import { retryUntil } from "@/utils/retry";
 import Card from "@/components/Card";
@@ -103,9 +105,14 @@ export default function Page() {
 
   const polling = usePolling(
     () => load(false),
-    DROPLET_POLL_INTERVAL_MS,
+    DROPLET_FALLBACK_POLL_INTERVAL_MS,
     droplets.some((droplet) => isTransitional(droplet.status))
   );
+
+  useRealtimeMessage("droplet.status_changed", (change) => {
+    if (change.projectId === projectId) polling.refresh();
+  });
+  useResync(polling.refresh);
 
   const createButton = canCreate ? (
     <NoderaButton

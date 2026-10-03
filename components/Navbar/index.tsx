@@ -10,6 +10,7 @@ import { useNavigate } from "@/hooks/Navigation/useNavigate";
 import PendingInvitationsMenu from "@/components/Invitations/PendingInvitationsMenu";
 import LanguageSwitch from "@/components/LanguageSwitch";
 import NoderaLogo from "@/components/NoderaLogo";
+import NotificationBell from "@/components/Notifications/NotificationBell";
 import TeamSwitcher from "@/components/Teams/TeamSwitcher";
 import type { NavbarProps } from "./type";
 
@@ -72,6 +73,7 @@ export default function Navbar({ onToggleMenu }: NavbarProps) {
       <div className="flex items-center gap-4">
         <LanguageSwitch />
         {currentUser && <PendingInvitationsMenu />}
+        {currentUser && <NotificationBell />}
         {currentUser && (
           <Dropdown menu={{ items }} trigger={["click"]} placement="bottomRight">
             <button

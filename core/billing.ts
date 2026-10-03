@@ -244,10 +244,10 @@ export const INVOICE_PDF_EXPIRES_PARAM = "expires";
 export const INVOICE_PDF_TOKEN_PARAM = "token";
 export const INVOICE_PDF_FALLBACK_FILENAME = "invoice.pdf";
 
-/** Poll interval of the Billing status behind the dashboard banner. */
-export const BILLING_STATUS_POLL_INTERVAL_MS = 60_000;
-
-/** Fired after a card or payment changed so the banner refreshes before the next poll. */
+/**
+ * Fired after a card or payment changed in this tab, so the banner refreshes at once instead of
+ * waiting for the service's push.
+ */
 export const BILLING_STATUS_CHANGED_EVENT = "nodera:billing-status-changed";
 
 export function notifyBillingStatusChanged(): void {

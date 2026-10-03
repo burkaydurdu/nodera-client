@@ -12,6 +12,7 @@ import Loading from "@/components/Loading";
 import MembersPanel from "@/components/Members/MembersPanel";
 import NoderaAlert from "@/components/NoderaAlert";
 import NoderaButton from "@/components/NoderaButton";
+import NoderaCopyButton from "@/components/NoderaCopyButton";
 import PageHeader from "@/components/PageHeader";
 import TeamTabs from "@/components/Teams/TeamTabs";
 import type { TeamTabKey } from "@/components/Teams/TeamTabs/type";
@@ -45,10 +46,20 @@ function TeamSettingsContent() {
     navigate(key === "members" ? "/dashboard/team" : `/dashboard/team?${TAB_PARAM}=${key}`);
   };
 
+  // The id is what support and the dev tooling (`make sample-notification`) ask for.
   const header = (
     <PageHeader
       title={t("title")}
       description={currentTeam ? t("description", { team: currentTeam.name }) : undefined}
+      extra={
+        currentTeam && (
+          <span className="flex items-center gap-1 text-sm text-text-muted">
+            {t("teamId")}
+            <span className="font-mono text-text">{currentTeam.id}</span>
+            <NoderaCopyButton value={currentTeam.id} label={t("copyTeamId")} />
+          </span>
+        )
+      }
     />
   );
 

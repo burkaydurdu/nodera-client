@@ -3,6 +3,21 @@ export type DropletStatus =
 
 export type DropletActionType = "power_on" | "power_off" | "reboot";
 
+/** Why a Droplet failed, as a code the web app words in the user's language. */
+export const DROPLET_FAILURE_CODES = [
+  "rejected",
+  "unavailable",
+  "timed_out",
+  "server_gone",
+  "provider_failed",
+] as const;
+export type DropletFailureCode = (typeof DROPLET_FAILURE_CODES)[number];
+
+export const isDropletFailureCode = (
+  value: string | null | undefined
+): value is DropletFailureCode =>
+  !!value && (DROPLET_FAILURE_CODES as readonly string[]).includes(value);
+
 export interface DropletSSHKey {
   name: string;
   fingerprint: string;
@@ -29,6 +44,12 @@ export interface Droplet {
   hourlyPrice: string;
   monthlyPrice: string;
   sshKeys: DropletSSHKey[];
+  /**
+   * Set once failed. The service may add a code before the web app learns it; one this build
+   * does not know reads as `unavailable`.
+   */
+  failureCode: DropletFailureCode | null;
+  /** The service's English sentence: shown only for a failure it never coded. */
   failureReason: string | null;
   createdAt: string;
   activeAt: string | null;
@@ -54,7 +75,7 @@ export interface DropletActionPayload {
   type: DropletActionType;
 }
 
-/** Statuses the poller may still move; the UI keeps refreshing while any Droplet is in one. */
+/** Statuses the poller may still move; a fallback poll runs while any Droplet is in one. */
 export const TRANSITIONAL_STATUSES: readonly DropletStatus[] = ["provisioning", "deleting"];
 
 export const isTransitional = (status: DropletStatus): boolean =>
@@ -83,8 +104,11 @@ export function validateHostname(value: string): HostnameIssue | null {
   return HOSTNAME_PATTERN.test(value) ? null : "charset";
 }
 
-/** Poll interval for lists and details while a Droplet is transitional. */
-export const DROPLET_POLL_INTERVAL_MS = 10_000;
+/**
+ * Poll interval for lists and details while a Droplet is transitional. A status change is
+ * pushed over the realtime socket; this only covers a push that never arrived.
+ */
+export const DROPLET_FALLBACK_POLL_INTERVAL_MS = 60_000;
 
 /** How long the web app keeps retrying "project not found" right after a Project was created (ADR-0004). */
 export const PROJECT_ACCESS_RETRY_MS = 5_000;

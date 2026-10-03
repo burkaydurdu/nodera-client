@@ -6,7 +6,7 @@ import { App } from "antd";
 import { useTranslations } from "next-intl";
 import { DeleteDroplet, DropletAction, GetDroplet } from "@/api/droplets";
 import {
-  DROPLET_POLL_INTERVAL_MS,
+  DROPLET_FALLBACK_POLL_INTERVAL_MS,
   type Droplet,
   type DropletActionType,
   isTransitional,
@@ -15,6 +15,8 @@ import { useCan } from "@/hooks/Authz/useCan";
 import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
 import { usePolling } from "@/hooks/Polling/usePolling";
+import { useRealtimeMessage } from "@/hooks/Realtime/useRealtimeMessage";
+import { useResync } from "@/hooks/Realtime/useResync";
 import { GetStatus } from "@/utils/error";
 import DropletActions from "@/components/Droplets/DropletActions";
 import DropletOverview from "@/components/Droplets/DropletOverview";
@@ -28,7 +30,10 @@ import NoderaAlert from "@/components/NoderaAlert";
 import NoderaButton from "@/components/NoderaButton";
 import PageHeader from "@/components/PageHeader";
 
-/** A power action's outcome arrives through the poller; keep refreshing this long after one. */
+/**
+ * A power action's outcome is pushed once the status moves; the fallback poll still runs this
+ * long after one, as it does while a Droplet is transitional.
+ */
 const ACTION_FOLLOW_UP_MS = 2 * 60_000;
 
 export default function Page() {
@@ -86,9 +91,14 @@ export default function Page() {
 
   const polling = usePolling(
     () => load(false),
-    DROPLET_POLL_INTERVAL_MS,
+    DROPLET_FALLBACK_POLL_INTERVAL_MS,
     !!droplet && (isTransitional(droplet.status) || followUp > 0)
   );
+
+  useRealtimeMessage("droplet.status_changed", (change) => {
+    if (change.dropletId === dropletId) polling.refresh();
+  });
+  useResync(polling.refresh);
 
   const runAction = async (type: DropletActionType): Promise<boolean> => {
     setBusy(true);

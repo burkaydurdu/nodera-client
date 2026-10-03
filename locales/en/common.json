@@ -358,7 +358,9 @@
       "description": "Members, invitations, SSH keys and billing of {team}.",
       "retry": "Try again",
       "noTeamTitle": "No team found",
-      "noTeamDescription": "Your account has no team yet. Contact support if this keeps happening."
+      "noTeamDescription": "Your account has no team yet. Contact support if this keeps happening.",
+      "teamId": "Team ID",
+      "copyTeamId": "Copy the team ID"
     }
   },
   "catalog": {
@@ -546,6 +548,13 @@
       "notFoundDescription": "It may have been deleted, or it belongs to another team.",
       "backToProjects": "Back to projects",
       "retry": "Try again"
+    },
+    "failureCodes": {
+      "rejected": "The order was refused.",
+      "unavailable": "The server could not be ordered right now.",
+      "timed_out": "The server was not delivered in time.",
+      "server_gone": "The server no longer exists.",
+      "provider_failed": "The server stopped working."
     }
   },
   "sshKeys": {
@@ -963,5 +972,70 @@
     "teamNotFoundTitle": "Team not found",
     "teamNotFound": "This link belongs to a team you are not a member of, or the team no longer exists.",
     "openCurrentTeam": "Open billing of your current team"
+  },
+  "notifications": {
+    "label": "Notifications",
+    "title": "Notifications",
+    "description": "What happened in all your teams, newest first.",
+    "markAllRead": "Mark all as read",
+    "seeAll": "See all notifications",
+    "empty": "No notifications yet.",
+    "emptyTitle": "No notifications yet",
+    "emptyDescription": "Droplet updates, invoices and payments, and changes to your teams show up here.",
+    "loadMore": "Load more",
+    "retry": "Try again",
+    "unread": "Unread",
+    "types": {
+      "droplet_active": {
+        "title": "{hostname} is ready",
+        "description": "IP {ipv4}"
+      },
+      "droplet_failed": {
+        "title": "{hostname} could not be created"
+      },
+      "invoice_issued": {
+        "title": "Invoice {number} is ready",
+        "description": "{total} due for {period}."
+      },
+      "payment_succeeded": {
+        "title": "Payment received for invoice {number}",
+        "description": "{amount} was charged."
+      },
+      "payment_failed": {
+        "title": "Payment failed for invoice {number}",
+        "description": "{amount} could not be charged. It is retried on {date}.",
+        "descriptionNoRetry": "{amount} could not be charged. Pay the invoice to settle it."
+      },
+      "payment_confirmation_required": {
+        "title": "Confirm the payment for invoice {number}",
+        "description": "Your bank asks you to confirm the charge of {amount}."
+      },
+      "team_suspended": {
+        "title": "The team is suspended",
+        "description": "Invoice {number} is unpaid. The team's Droplets stay powered off until it is paid."
+      },
+      "droplets_deletion_warning": {
+        "title": "The team's Droplets will be deleted",
+        "description": "Invoice {number} is still unpaid. Unless it is paid, the Droplets are deleted on {date}."
+      },
+      "card_expiring": {
+        "title": "{brand} •••• {last4} expires soon",
+        "description": "The card expires {expiry}. Add a new card so invoices can still be charged."
+      },
+      "team_invitation": {
+        "title": "{name} invited you to {team} as {role}",
+        "description": "The invitation expires {date}."
+      },
+      "team_role_changed": {
+        "title": "Your role in {team} is now {role}"
+      },
+      "team_member_removed": {
+        "title": "You were removed from {team}",
+        "description": "You no longer have access to its projects and Droplets."
+      },
+      "unknown": {
+        "title": "You have a new notification"
+      }
+    }
   }
 }

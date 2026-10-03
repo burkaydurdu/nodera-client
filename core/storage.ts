@@ -23,16 +23,46 @@ export function getRefreshToken(): string | null {
   return localStorage.getItem(REFRESH_TOKEN_KEY);
 }
 
+export type AccessTokenListener = (token: string | null) => void;
+
+const accessTokenListeners = new Set<AccessTokenListener>();
+
+const notifyAccessToken = () => {
+  const token = getAccessToken();
+  accessTokenListeners.forEach((listener) => listener(token));
+};
+
+/**
+ * Tells a connection that outlives a request (the realtime socket) about every access token
+ * change: a sign-in, a refresh or a sign-out in this tab, or one written by another tab, since
+ * the tabs share this storage. Returns the unsubscribe function.
+ */
+export function subscribeAccessToken(listener: AccessTokenListener): () => void {
+  if (!hasWindow()) return () => {};
+  const onStorage = (event: StorageEvent) => {
+    // A null key is `localStorage.clear()` in another tab.
+    if (event.key === ACCESS_TOKEN_KEY || event.key === null) listener(getAccessToken());
+  };
+  accessTokenListeners.add(listener);
+  window.addEventListener("storage", onStorage);
+  return () => {
+    accessTokenListeners.delete(listener);
+    window.removeEventListener("storage", onStorage);
+  };
+}
+
 export function storeSession(session: Session): void {
   if (!hasWindow()) return;
   localStorage.setItem(ACCESS_TOKEN_KEY, session.accessToken);
   localStorage.setItem(REFRESH_TOKEN_KEY, session.refreshToken);
+  notifyAccessToken();
 }
 
 export function clearSession(): void {
   if (!hasWindow()) return;
   localStorage.removeItem(ACCESS_TOKEN_KEY);
   localStorage.removeItem(REFRESH_TOKEN_KEY);
+  notifyAccessToken();
 }
 
 export function getLastTeamId(): string | null {

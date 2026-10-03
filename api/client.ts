@@ -1,6 +1,11 @@
 "use client";
 
-import axios, { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import axios, {
+  AxiosError,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+  isAxiosError,
+} from "axios";
 import { camelizeKeys, decamelizeKeys } from "humps";
 import { GATEWAY_TARGET_SERVER_HEADER, targetServerFor } from "./proxy";
 import {
@@ -90,13 +95,9 @@ APIClient.interceptors.request.use(
   (error: AxiosError) => Promise.reject(error)
 );
 
-/**
- * One refresh at a time: concurrent 401s wait on the same promise and retry with the
- * rotated access token. A failed refresh clears the session and sends the user to /login.
- */
 let refreshPromise: Promise<Session> | null = null;
 
-async function refreshSession(): Promise<Session> {
+async function requestRefresh(): Promise<Session> {
   const refreshToken = getRefreshToken();
   if (!refreshToken) {
     throw new Error("no refresh token");
@@ -123,6 +124,21 @@ async function refreshSession(): Promise<Session> {
     window.dispatchEvent(new CustomEvent(SESSION_REFRESHED_EVENT));
   }
   return session;
+}
+
+/**
+ * One refresh at a time: concurrent 401s, and a realtime socket the server closed for its
+ * token, wait on the same promise and go on with the rotated access token; refresh tokens
+ * rotate, so a second refresh with the spent one would fail. A failed refresh clears the
+ * session and sends the user to /login.
+ */
+function refreshSession(): Promise<Session> {
+  if (!refreshPromise) {
+    refreshPromise = requestRefresh().finally(() => {
+      refreshPromise = null;
+    });
+  }
+  return refreshPromise;
 }
 
 function redirectToLogin(): void {
@@ -170,12 +186,7 @@ APIClient.interceptors.response.use(
     original._retry = true;
 
     try {
-      if (!refreshPromise) {
-        refreshPromise = refreshSession().finally(() => {
-          refreshPromise = null;
-        });
-      }
-      const session = await refreshPromise;
+      const session = await refreshSession();
       original.headers["Authorization"] = `Bearer ${session.accessToken}`;
       return APIClient(original);
     } catch (refreshError) {
@@ -184,5 +195,30 @@ APIClient.interceptors.response.use(
     }
   }
 );
+
+export type SessionRenewal = "renewed" | "retry" | "signed-out";
+
+/**
+ * The refresh for a connection the server closed as unauthorized (the realtime socket). Unlike
+ * a request, a socket reconnects on its own, so a gateway that is down or rate limiting is
+ * waited out instead of signing the user out; a refused refresh signs out as everywhere else.
+ */
+export async function renewSession(): Promise<SessionRenewal> {
+  if (!getRefreshToken()) {
+    redirectToLogin();
+    return "signed-out";
+  }
+  try {
+    await refreshSession();
+    return "renewed";
+  } catch (error) {
+    const status = isAxiosError(error) ? error.response?.status : undefined;
+    if (isAxiosError(error) && (status === undefined || status >= 500 || status === 429)) {
+      return "retry";
+    }
+    redirectToLogin();
+    return "signed-out";
+  }
+}
 
 export default APIClient;
