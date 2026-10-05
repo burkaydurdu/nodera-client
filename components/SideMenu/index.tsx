@@ -4,14 +4,18 @@ import Link from "next/link";
 import classNames from "classnames";
 import type { SideMenuProps } from "./type";
 
-export default function SideMenu({ items, path }: SideMenuProps) {
+export default function SideMenu({ items, path, title }: SideMenuProps) {
   return (
-    <nav className="flex flex-col gap-1">
+    <nav className="flex flex-col gap-1" aria-label={title}>
+      {title && (
+        <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-text-muted">
+          {title}
+        </p>
+      )}
       {items.map((item) => {
-        const active = item.exact
-          ? path === item.href
-          : path.startsWith(item.href) ||
-            (item.matchPrefixes ?? []).some((prefix) => path.startsWith(prefix));
+        const active =
+          (item.exact ? path === item.href : path.startsWith(item.href)) ||
+          (item.matchPrefixes ?? []).some((prefix) => path.startsWith(prefix));
         return (
           <Link
             key={item.key}

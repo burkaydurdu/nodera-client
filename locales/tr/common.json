@@ -8,7 +8,8 @@
     "loading": "Yükleniyor",
     "copy": "Kopyala",
     "copied": "Kopyalandı",
-    "copyFailed": "Kopyalanamadı"
+    "copyFailed": "Kopyalanamadı",
+    "secretCopied": "Kopyaladım"
   },
   "language": {
     "tr": "Türkçe",
@@ -24,11 +25,17 @@
   },
   "sidebar": {
     "projects": "Projeler",
-    "profile": "Profil",
     "droplets": "Droplet'ler",
     "catalog": "Katalog",
     "sshKeys": "SSH anahtarları",
-    "team": "Ekip"
+    "mail": {
+      "overview": "Genel bakış",
+      "domains": "Alan adları",
+      "logs": "Kayıtlar",
+      "suppressions": "Gönderim dışı",
+      "webhooks": "Webhook'lar",
+      "apiKeys": "API anahtarları"
+    }
   },
   "validation": {
     "emailRequired": "E-posta adresinizi girin.",
@@ -169,6 +176,35 @@
       "noTeam": "Hesabınıza bağlı bir ekip yok.",
       "retry": "Tekrar dene",
       "descriptionTeam": "{team} ekibinin içinde yeni bir proje oluşturun."
+    },
+    "projectSelector": {
+      "label": "Proje",
+      "empty": "Henüz proje yok",
+      "settings": "Proje ayarları",
+      "newProject": "Yeni proje",
+      "created": "“{name}” projesi oluşturuldu.",
+      "loading": "Yükleniyor…",
+      "none": "Proje yok"
+    },
+    "projectSettings": {
+      "title": "Proje ayarları",
+      "description": "{project} projesinin ayrıntıları ve API anahtarları.",
+      "notFound": "Proje bulunamadı.",
+      "retry": "Tekrar dene",
+      "tabs": {
+        "general": "Genel",
+        "apiKeys": "API anahtarları"
+      },
+      "details": {
+        "title": "Ayrıntılar",
+        "description": "Bu projeyi tanımlayan bilgiler.",
+        "name": "Ad",
+        "created": "Oluşturulma",
+        "descriptionLabel": "Açıklama",
+        "noDescription": "Açıklama yok.",
+        "projectId": "Proje ID",
+        "copyProjectId": "Proje ID'sini kopyala"
+      }
     }
   },
   "profile": {
@@ -261,6 +297,7 @@
     "4-10003": "Yeni bir kod istemeden önce lütfen bekleyin.",
     "5-10001": "Ekip bulunamadı.",
     "5-10003": "Ekip bulunamadı.",
+    "6-10001": "Proje bulunamadı.",
     "6-10002": "Ekibinizde bu adda bir proje zaten var.",
     "100-10004": "Çok fazla istek gönderildi. Lütfen yavaşlayın.",
     "7-10001": "SSH anahtarı bulunamadı.",
@@ -319,14 +356,50 @@
     "33-10006": "Fatura PDF'i henüz hazır değil. Kısa süre sonra tekrar deneyin.",
     "33-10007": "Bu fatura için zaten devam eden bir ödeme var. Tamamlanmasını bekleyin veya gönderdiğimiz e-postadan onaylayın.",
     "34-10007": "Ödeme bulunamadı.",
-    "34-10008": "Ödeme hizmeti geçici olarak kullanılamıyor. Birkaç dakika sonra tekrar deneyin."
+    "34-10008": "Ödeme hizmeti geçici olarak kullanılamıyor. Birkaç dakika sonra tekrar deneyin.",
+    "13-10001": "API anahtarı bulunamadı. Daha önce iptal edilmiş olabilir.",
+    "13-10002": "Bir API anahtarı bu izni taşıyamaz.",
+    "13-10003": "Rolünüz, bu anahtarın istediği bir izne sahip değil.",
+    "13-10004": "Bir projede en fazla 20 etkin API anahtarı olabilir. Önce birini iptal edin.",
+    "13-10005": "API anahtarı oluşturulamadı. Lütfen tekrar deneyin.",
+    "13-10006": "API anahtarı iptal edilemedi. Lütfen tekrar deneyin.",
+    "50-10001": "Mail bu projeyi henüz tanımıyor. Birkaç saniye sonra tekrar deneyin.",
+    "50-10004": "Bu ekipteki rolünüz buna izin vermiyor.",
+    "51-10003": "Paket seçmek veya değiştirmek için ekibin bir kartı olmalı. Ekip → Faturalama altından ekleyin.",
+    "51-10004": "Ödenmemiş bir fatura nedeniyle ekip askıya alındı. Paket seçmek veya değiştirmek için faturayı ödeyin.",
+    "52-10001": "Gönderim alan adı bulunamadı.",
+    "52-10002": "Bu, e-posta gönderebilecek bir alan adı değil. example.com gibi bir alan adı girin.",
+    "52-10003": "Bu alan adı bu projede zaten var.",
+    "52-10004": "Bir projede en fazla 10 gönderim alan adı olabilir.",
+    "52-10005": "Alan adı bir dakikadan kısa süre önce denetlendi.",
+    "52-10006": "Gönderim alan adı kaydedilemedi. Lütfen tekrar deneyin.",
+    "52-10007": "Gönderim alan adı oluşturulamadı. Lütfen tekrar deneyin.",
+    "53-10001": "Bu paket sunulmuyor.",
+    "53-10004": "Paket kaydedilemedi. Lütfen tekrar deneyin.",
+    "54-10003": "Projenin günlük limiti kaydedilemedi. Lütfen tekrar deneyin.",
+    "54-10004": "Projenin günlük limiti okunamadı. Lütfen tekrar deneyin.",
+    "55-10001": "İleti bulunamadı. Kayıtlar 30 gün saklanır.",
+    "55-10010": "Liste buradan devam ettirilemedi. Yeniden arayın.",
+    "56-10001": "Bu adres artık gönderim dışı değil.",
+    "56-10002": "Alıcı şikâyet ettiği için bu adresi yalnızca Nodera kaldırabilir.",
+    "56-10003": "Adres kaldırılamadı. Lütfen tekrar deneyin.",
+    "56-10004": "Liste buradan devam ettirilemedi. Yeniden arayın.",
+    "57-10001": "Webhook bulunamadı.",
+    "57-10002": "Bir projede en fazla 3 webhook olabilir.",
+    "57-10003": "Webhook'un herkese açık bir HTTPS URL'si olmalı.",
+    "57-10004": "Seçilen olaylardan biri tanınmıyor.",
+    "57-10005": "Webhook kaydedilemedi. Lütfen tekrar deneyin.",
+    "57-10006": "Bu URL özel bir adrese çözümleniyor; oraya olay gönderilemez.",
+    "57-10007": "Liste buradan devam ettirilemedi. Teslimatları yeniden açın."
   },
   "teams": {
     "switcher": {
       "label": "Ekip",
       "newTeam": "Yeni ekip",
       "loading": "Yükleniyor…",
-      "noTeam": "Ekip yok"
+      "noTeam": "Ekip yok",
+      "settings": "Ekip ayarları",
+      "billing": "Faturalama"
     },
     "create": {
       "title": "Ekip oluştur",
@@ -343,9 +416,9 @@
       "finance": "Finans"
     },
     "roleDescriptions": {
-      "owner": "Ekibi yönetir: üyeler, davetler, projeler, Droplet'ler, SSH anahtarları ve faturalama.",
-      "developer": "Proje, Droplet ve SSH anahtarı oluşturur; faturalamaya erişemez.",
-      "finance": "Droplet'leri ve fiyatlarını görür, fatura ve ödeme yöntemlerini yönetir; Droplet oluşturamaz veya güç işlemi yapamaz."
+      "owner": "Ekibi yönetir: üyeler, davetler, projeler, Droplet'ler, Mail, API anahtarları, SSH anahtarları ve faturalama.",
+      "developer": "Proje, Droplet, SSH anahtarı ve API anahtarı oluşturur, Mail'i yönetir; faturalamaya erişemez.",
+      "finance": "Droplet'leri, Mail'i ve fiyatlarını görür, fatura ve ödeme yöntemlerini yönetir; Droplet oluşturamaz, güç işlemi yapamaz, Mail'i değiştiremez."
     },
     "tabs": {
       "members": "Üyeler",
@@ -826,14 +899,6 @@
         "notFound": "Fatura bulunamadı.",
         "linesTitle": "Satırlar",
         "noLines": "Satır yok.",
-        "columns": {
-          "droplet": "Droplet",
-          "plan": "Plan",
-          "hours": "Saat",
-          "hourlyPrice": "Saatlik fiyat",
-          "amount": "Tutar"
-        },
-        "hoursValue": "{hours} sa",
         "subtotal": "Ara toplam",
         "credit": "Kullanılan bakiye",
         "total": "Ödenecek toplam",
@@ -874,16 +939,8 @@
     },
     "usage": {
       "title": "Bu dönemin kullanımı",
-      "description": "{start} – {end}, her Droplet için sabitlenmiş fiyatıyla bir satır.",
+      "description": "{start} – {end}: her Droplet için sabitlenmiş fiyatıyla bir satır, her projenin Mail paketi için bir satır.",
       "unavailable": "Kullanım yüklenemedi.",
-      "columns": {
-        "droplet": "Droplet",
-        "plan": "Plan",
-        "hours": "Saat",
-        "hourlyPrice": "Saatlik fiyat",
-        "amount": "Tutar"
-      },
-      "hoursValue": "{hours} sa",
       "empty": "Bu dönemde henüz kullanım yok.",
       "subtotal": "Ara toplam",
       "estimatedTax": "Tahmini vergi",
@@ -891,20 +948,30 @@
       "rules": "Saatler, Droplet etkinleştiği andan silme isteğinize kadar sayılır; bir sonraki tam saate yuvarlanır ve dönem başına Droplet başına en fazla 672 saattir. Kapalı Droplet'ler sayılmaya devam eder.",
       "thresholdNote": "Bu dönemdeki kullanım {amount} tutarını aştığında fatura erken kesilir; aksi halde ay sonunda kesilir.",
       "thresholdNew": "Ekibin ilk üç ayında daha düşük eşik uygulanır.",
-      "retry": "Tekrar dene"
+      "retry": "Tekrar dene",
+      "mailRules": "Bir projenin Mail satırı, bu ay sahip olduğu en büyük paketin fiyatıdır; ayın daha önceki bir faturasında alınan tutar düşülür."
     },
     "banner": {
-      "noPaymentMethodTitle": "Droplet oluşturmak için bir kart ekleyin",
-      "noPaymentMethod": "Ekibin henüz ödeme yöntemi yok. Bir kart eklenene kadar Droplet oluşturma engellidir.",
-      "noPaymentMethodAsk": "Ekibin henüz ödeme yöntemi yok. Kart eklemesi için bir sahip veya finans üyesinden yardım isteyin.",
+      "droplets": {
+        "noPaymentMethodTitle": "Droplet oluşturmak için bir kart ekleyin",
+        "noPaymentMethod": "Ekibin henüz ödeme yöntemi yok. Bir kart eklenene kadar Droplet oluşturma engellidir.",
+        "noPaymentMethodAsk": "Ekibin henüz ödeme yöntemi yok. Kart eklemesi için bir sahip veya finans üyesinden yardım isteyin.",
+        "suspended": "Ödenmemiş bir fatura var: Droplet'leriniz kapatıldı ve oluşturma engellendi. Yeniden açmak için faturayı ödeyin.",
+        "suspendedDeletion": "Ödenmezse Droplet'ler {date} tarihinde silinir."
+      },
+      "mail": {
+        "noPaymentMethodTitle": "Mail'i kullanmak için bir kart ekleyin",
+        "noPaymentMethod": "Ekibin henüz ödeme yöntemi yok. Bir kart eklendiğinde Mail paketi seçilebilir.",
+        "noPaymentMethodAsk": "Ekibin henüz ödeme yöntemi yok, bu yüzden Mail paketi seçilemiyor. Kart eklemesi için bir sahip veya finans üyesinden yardım isteyin.",
+        "suspended": "Ödenmemiş bir fatura var: fatura ödenene kadar Mail gönderimi durdu ve paket seçilemez.",
+        "suspendedDeletion": "Ödenmezse ekibin Mail paketleri {date} tarihinde sona erer."
+      },
       "addCard": "Kart ekle",
       "paymentFailedTitle": "Ödeme başarısız",
       "paymentFailed": "Açık faturanın tahsilatı başarısız oldu. {date} tarihinde yeniden denenecek; daha erken kapatmak için şimdi ödeyin.",
       "openInvoiceTitle": "Ödeme bekleyen bir fatura var",
       "openInvoice": "Açık fatura henüz ödenmedi.",
       "suspendedTitle": "Ekip askıya alındı",
-      "suspended": "Ödenmemiş bir fatura var: Droplet'leriniz kapatıldı ve oluşturma engellendi. Yeniden açmak için faturayı ödeyin.",
-      "suspendedDeletion": "Ödenmezse Droplet'ler {date} tarihinde silinir.",
       "payNow": "Şimdi öde",
       "paymentFailedAsk": "Açık faturanın tahsilatı başarısız oldu. {date} tarihinde yeniden denenecek; daha erken ödemesi için bir sahip veya finans üyesinden yardım isteyin.",
       "askToPay": "Ödemesi için ekibin bir sahibinden veya finans üyesinden yardım isteyin."
@@ -971,7 +1038,19 @@
     },
     "teamNotFoundTitle": "Ekip bulunamadı",
     "teamNotFound": "Bu bağlantı üyesi olmadığınız bir ekibe ait veya ekip artık mevcut değil.",
-    "openCurrentTeam": "Mevcut ekibinizin faturalamasını aç"
+    "openCurrentTeam": "Mevcut ekibinizin faturalamasını aç",
+    "lines": {
+      "mail": "Mail · {project} · {package}",
+      "columns": {
+        "item": "Kalem",
+        "droplet": "Droplet",
+        "plan": "Plan",
+        "hours": "Saat",
+        "hourlyPrice": "Saatlik fiyat",
+        "amount": "Tutar"
+      },
+      "hoursValue": "{hours} sa"
+    }
   },
   "notifications": {
     "label": "Bildirimler",
@@ -981,7 +1060,7 @@
     "seeAll": "Tüm bildirimleri gör",
     "empty": "Henüz bildirim yok.",
     "emptyTitle": "Henüz bildirim yok",
-    "emptyDescription": "Droplet güncellemeleri, faturalar ve ödemeler ile ekiplerinizdeki değişiklikler burada görünür.",
+    "emptyDescription": "Droplet ve Mail güncellemeleri, faturalar ve ödemeler ile ekiplerinizdeki değişiklikler burada görünür.",
     "loadMore": "Daha fazla yükle",
     "retry": "Tekrar dene",
     "unread": "Okunmadı",
@@ -1035,6 +1114,576 @@
       },
       "unknown": {
         "title": "Yeni bir bildiriminiz var"
+      },
+      "mail_domain_verified": {
+        "title": "{domain} doğrulandı",
+        "description": "{project} projesinde artık bu alan adından e-posta gönderilebilir."
+      },
+      "mail_domain_unverified": {
+        "title": "{domain} artık doğrulanmış değil",
+        "description": "{project} projesindeki DNS kayıtları yanıt vermiyor; kayıtlar geri gelene kadar bu alan adından gönderim durdu."
+      },
+      "mail_package_near_limit": {
+        "title": "{project} projesinde Mail hakkı bitmek üzere",
+        "description": "{month} döneminde {package} paketinin {allowance} e-postasından {used} tanesi kullanıldı."
+      },
+      "mail_package_exhausted": {
+        "title": "{project} projesinde Mail hakkı tükendi",
+        "description": "{package} paketinin {allowance} e-postasının tamamı {month} için kullanıldı. Paketi yükseltene ya da ay bitene kadar gönderim durdu."
+      },
+      "mail_rates_warning": {
+        "title": "{project} projesinde geri dönme veya şikâyet oranı yüksek",
+        "description": "Son {days} günde geri dönme oranı {bounce}, şikâyet oranı {complaint}. Gönderim duraklatılmadan önce listenizi temizleyin."
+      },
+      "mail_paused": {
+        "title": "{project} projesinde Mail gönderimi duraklatıldı",
+        "description": "Geri dönme veya şikâyet oranı sınırı aştı. Yeniden başlatmak için destek ekibiyle iletişime geçin.",
+        "reasons": {
+          "bounce": "Geri dönme oranı {rate} seviyesine ulaştı. Listenizi temizleyip yeniden başlatmak için destek ekibiyle iletişime geçin.",
+          "complaint": "Şikâyet oranı {rate} seviyesine ulaştı. Listenizi temizleyip yeniden başlatmak için destek ekibiyle iletişime geçin."
+        }
+      }
+    }
+  },
+  "apps": {
+    "label": "Uygulamalar",
+    "droplets": {
+      "name": "Droplet'ler",
+      "description": "Saatlik ücretlendirilen fiziksel sunucular"
+    },
+    "mail": {
+      "name": "Mail",
+      "description": "Kendi alan adlarınızdan e-posta gönderimi"
+    }
+  },
+  "apiKeys": {
+    "title": "API anahtarları",
+    "description": "{project} projesinin anahtarları. Yazılımınız HTTP API'si veya SMTP üzerinden e-posta göndermek için bunlardan birini kullanır.",
+    "create": "Anahtar oluştur",
+    "retry": "Tekrar dene",
+    "notFound": "Bu proje mevcut ekibinizde değil.",
+    "empty": "API anahtarı yok.",
+    "emptyTitle": "İlk API anahtarınızı oluşturun",
+    "emptyDescription": "API anahtarı, yazılımınızın bu projeden HTTP API'si üzerinden veya SMTP parolası olarak e-posta göndermesini sağlar. Gizli değeri yalnızca bir kez gösterilir.",
+    "limitReached": "Bir projede en fazla {max} etkin anahtar olabilir. Yenisini oluşturmak için birini iptal edin.",
+    "usageHint": "Yazılımınız HTTP isteğinde Authorization: Bearer başlığının ardından anahtarı gönderir; SMTP'de kullanıcı adı apikey, parola ise anahtarın kendisidir. İptal edilen bir anahtar bir sonraki istekte reddedilir.",
+    "revoke": "İptal et",
+    "revokeTitle": "“{name}” iptal edilsin mi?",
+    "revokeConfirm": "Bu anahtarı kullanan yazılım bir sonraki isteğinden itibaren reddedilir. Bu işlem geri alınamaz; yerine yeni bir anahtar oluşturun.",
+    "revoked": "“{name}” anahtarı iptal edildi.",
+    "cancel": "Vazgeç",
+    "you": "(siz)",
+    "formerMember": "Eski üye",
+    "copyPrefix": "Anahtar önekini kopyala",
+    "neverUsed": "Hiç kullanılmadı",
+    "columns": {
+      "name": "Ad",
+      "key": "Anahtar",
+      "permissions": "İzinler",
+      "createdBy": "Oluşturan",
+      "created": "Oluşturulma",
+      "lastUsed": "Son kullanım"
+    },
+    "permissions": {
+      "mail": {
+        "send": {
+          "label": "E-posta gönderme",
+          "description": "Bu projeden HTTP API'si ve SMTP üzerinden e-posta gönderir."
+        }
+      }
+    },
+    "secret": {
+      "title": "Yeni anahtarınızı kopyalayın: “{name}”",
+      "description": "Yazılımınızın gizli değerleri okuduğu yerde, örneğin bir ortam değişkeninde saklayın. Bu projeden gönderim izni taşır.",
+      "warning": "Anahtar yalnızca bu kez gösterilir. Nodera yalnızca özetini saklar, bu yüzden bir daha göremezsiniz; kaybederseniz iptal edip yenisini oluşturun."
+    },
+    "form": {
+      "modalTitle": "API anahtarı oluştur",
+      "name": "Ad",
+      "namePlaceholder": "örn. Üretim arka ucu",
+      "nameHint": "Anahtarları ayırt etmenize yarar; yazılımınız bu adı görmez.",
+      "nameRequired": "Anahtar için bir ad girin.",
+      "nameTooLong": "Ad en fazla {max} karakter olabilir.",
+      "permissions": "İzinler",
+      "permissionsRequired": "En az bir izin seçin.",
+      "permissionNotHeld": "Rolünüz bu izne sahip değil, bu yüzden anahtar da bu izni taşıyamaz.",
+      "cancel": "Vazgeç",
+      "submit": "Anahtar oluştur"
+    }
+  },
+  "mail": {
+    "access": {
+      "title": "Mail",
+      "deniedTitle": "Rolünüz Mail'i göremez",
+      "denied": "{team} ekibindeki {role} rolünüz Mail'e erişemez. İhtiyacınız varsa ekibin bir sahibine başvurun.",
+      "deniedGeneric": "Bu ekipteki rolünüz Mail'i kapsamıyor. İhtiyacınız varsa ekibin bir sahibine başvurun."
+    },
+    "gate": {
+      "title": "Mail",
+      "retry": "Tekrar dene"
+    },
+    "landing": {
+      "title": "Mail",
+      "description": "Kendi alan adlarınızdan e-posta gönderin; kayıtlar, webhook'lar ve aylık paketle.",
+      "teamNotFoundTitle": "Ekip bulunamadı",
+      "teamNotFound": "Bu bağlantı üyesi olmadığınız bir ekibe ait ya da ekip artık yok.",
+      "openCurrent": "Mevcut projenizin Mail sayfasını aç",
+      "noTeam": "Hesabınıza bağlı bir ekip yok.",
+      "retry": "Tekrar dene",
+      "projectNotFoundTitle": "Proje bulunamadı",
+      "projectNotFound": "Bu bağlantı {team} ekibinde olmayan bir projeye ait ya da proje artık yok.",
+      "noProjectTitle": "Mail bir projenin içinde yer alır",
+      "noProject": "Paket seçmek, gönderim alan adı eklemek ve API anahtarı oluşturmak için bir proje oluşturun.",
+      "noProjectReadOnly": "Bu ekipte henüz proje yok ve rolünüz proje oluşturamaz. Bir sahip veya geliştiriciden yardım isteyin.",
+      "createProject": "Proje oluştur"
+    },
+    "overview": {
+      "title": "Mail genel bakış",
+      "description": "{project} projesinin paketi, kullanımı, limitleri ve gönderim durumu.",
+      "accessPendingTitle": "Mail bu proje için hazırlanıyor",
+      "accessPending": "Bu proje az önce oluşturuldu ve Mail onu henüz tanımıyor. Birkaç saniye sonra tekrar deneyin.",
+      "unavailable": "Genel bakış yüklenemedi.",
+      "retry": "Tekrar dene"
+    },
+    "package": {
+      "title": "Paket",
+      "noneTitle": "Henüz paket yok",
+      "none": "Bu projede Mail kapalı. Gönderime başlamak için aşağıdan bir paket seçin.",
+      "emailsPerMonth": "Ayda {count} e-posta",
+      "pricePerMonth": "Aylık {price}",
+      "taxNote": "USD, vergiler hariç",
+      "since": "{date} tarihinden beri",
+      "cancellationTitle": "Mail {date} tarihinde duruyor",
+      "cancellation": "{package} bu ayın sonuna kadar sürer; ardından gönderim durur.",
+      "changeTitle": "{date} tarihinde {package} paketine geçiliyor",
+      "change": "O tarihten itibaren aylık hak {count} e-posta olur.",
+      "undo": "Geri al"
+    },
+    "packages": {
+      "chooseTitle": "Paket seçin",
+      "changeTitle": "Paketi değiştir",
+      "description": "Aylık e-posta hakları. Kabul edilen bir iletinin her alıcısı bir kez sayılır.",
+      "current": "Mevcut",
+      "currentUntil": "{date} tarihine kadar",
+      "from": "{date} tarihinden itibaren",
+      "actions": {
+        "choose": "Seç",
+        "upgrade": "Yükselt",
+        "downgrade": "Düşür",
+        "keep": "Bunda kal"
+      },
+      "emailsPerMonth": "Ayda {count} e-posta",
+      "pricePerMonth": "{price} / ay",
+      "rules": "Fiyatlar aylık USD cinsindendir, vergiler hariçtir. Yükseltme hemen geçerli olur ve gönderilenler sayılmaya devam eder; bir ayın ücreti, o ay sahip olunan en büyük paketin fiyatıdır.",
+      "downgradeRule": "Düşürme veya iptal {date} tarihinde başlar.",
+      "cancelMail": "Mail'i iptal et",
+      "readOnly": "Rolünüz paketleri görebilir ama değiştiremez.",
+      "blocked": {
+        "no_payment_method": "Paket seçmek veya değiştirmek için bir kart gerekli.",
+        "suspended": "Ödenmemiş bir fatura nedeniyle ekip askıya alındı; fatura ödenene kadar paket seçilemez veya değiştirilemez."
+      },
+      "addCard": "Kart ekle",
+      "payInvoice": "Faturayı öde",
+      "back": "Geri",
+      "confirm": {
+        "choose": {
+          "title": "Mail {package} paketiyle açılsın mı?",
+          "description": "Aylık {price} karşılığında ayda {count} e-posta; ücret ekibin aylık faturasına eklenir. Bir gönderim alan adı doğrulandığında gönderime başlayabilirsiniz.",
+          "ok": "Paketi seç"
+        },
+        "upgrade": {
+          "title": "Şimdi {package} paketine yükseltilsin mi?",
+          "description": "Hemen geçerli olur: bu ayın hakkı {count} e-posta olur ve şimdiye kadar gönderilenler sayılmaya devam eder. Bu ay, sahip olunan en büyük paket olarak {price} üzerinden ücretlendirilir.",
+          "ok": "Şimdi yükselt"
+        },
+        "downgrade": {
+          "title": "{date} tarihinde {package} paketine geçilsin mi?",
+          "description": "Mevcut paketiniz ay sonuna kadar sürer. {date} tarihinden itibaren hak, aylık {price} karşılığında {count} e-posta olur. O tarihe kadar geri alabilirsiniz.",
+          "ok": "Değişikliği planla"
+        },
+        "cancel": {
+          "title": "Mail iptal edilsin mi?",
+          "description": "{package} ay sonuna kadar sürer; gönderim {date} tarihinde durur. O tarihe kadar geri alabilirsiniz.",
+          "ok": "Mail'i iptal et"
+        }
+      },
+      "done": {
+        "choose": "Mail {package} paketiyle açıldı.",
+        "upgrade": "{package} paketine yükseltildi.",
+        "downgrade": "{package} paketi {date} tarihinde başlıyor.",
+        "keep": "{package} paketinde kalıyorsunuz.",
+        "cancel": "Mail {date} tarihinde duracak."
+      }
+    },
+    "usage": {
+      "title": "Kullanım",
+      "description": "Bu ayın hakkı ve bugünün günlük limiti.",
+      "periodLabel": "Bu ay",
+      "usedOf": "{used} / {total}",
+      "renews": "{date} tarihinde yenilenir.",
+      "noPeriod": "Paket seçilene kadar hiçbir şey sayılmaz.",
+      "dailyLabel": "Bugün",
+      "resets": "{date} itibarıyla sıfırlanır.",
+      "dailyRule": "Günlük limit sorunsuz gönderim günlerinden sonra artar; hiçbir zaman paketin kalan hakkını aşmaz."
+    },
+    "rates": {
+      "title": "Son {days} gün",
+      "description": "Geri dönme ve şikâyet oranları, gönderimde uyarı mı yoksa duraklatma mı olacağını belirler.",
+      "sent": "Gönderilen ileti",
+      "bounce": "Geri dönme oranı",
+      "complaint": "Şikâyet oranı",
+      "limits": "{warning} üzerinde uyarı, {pause} seviyesinde duraklatma.",
+      "minimum": "Oranlar, bu süre içinde en az {count} ileti gönderildiğinde değerlendirilir."
+    },
+    "sendingState": {
+      "active": {
+        "title": "Gönderim açık",
+        "description": "Yazılımınız doğrulanmış alan adlarından, bugünün günlük limiti ve bu ayın hakkı içinde gönderim yapabilir."
+      },
+      "no_package": {
+        "title": "Mail kapalı",
+        "description": "Bu projeden gönderime başlamak için bir paket seçin."
+      },
+      "exhausted": {
+        "title": "Bu ayın e-postaları tükendi",
+        "description": "Paketi yükseltene ya da hak {renews} tarihinde yenilenene kadar gönderim durdu."
+      },
+      "daily_limit": {
+        "title": "Bugünün günlük limitine ulaşıldı",
+        "description": "Gönderim {resets} itibarıyla yeniden başlar. Limit, sorunsuz gönderim günlerinden sonra artar."
+      },
+      "suspended": {
+        "title": "Gönderim durduruldu",
+        "description": "Ekibin ödenmemiş bir faturası var. Fatura ödenir ödenmez gönderim yeniden başlar."
+      }
+    },
+    "pause": {
+      "title": "Gönderim {date} tarihinde duraklatıldı",
+      "bounce": "Son {days} gündeki geri dönme oranı {rate} seviyesine ulaştı; gönderim {limit} seviyesinde duraklatılır.",
+      "complaint": "Son {days} gündeki şikâyet oranı {rate} seviyesine ulaştı; gönderim {limit} seviyesinde duraklatılır.",
+      "lift": "Duraklatmayı yalnızca Nodera kaldırabilir. Alıcı listenizi temizleyip destek ekibiyle iletişime geçin."
+    },
+    "smtp": {
+      "title": "SMTP ayarları",
+      "description": "WordPress, Laravel veya Django gibi hazır uygulamalar için.",
+      "host": "Sunucu",
+      "hostUnknown": "Yapılandırılmamış",
+      "ports": "Portlar",
+      "security": {
+        "starttls": "STARTTLS",
+        "tls": "TLS"
+      },
+      "username": "Kullanıcı adı",
+      "password": "Parola",
+      "passwordValue": "Bu projenin bir API anahtarı.",
+      "manageKeys": "API anahtarlarını yönet",
+      "askForKey": "Bir sahip veya geliştiriciden isteyin.",
+      "tls": "Kimlik bilgileri yalnızca şifreli bağlantı üzerinden kabul edilir: 587 ve 2525 portlarında STARTTLS, 465 portunda baştan TLS."
+    },
+    "api": {
+      "title": "HTTP API",
+      "description": "Kendi yazılımınızdan bu projenin bir API anahtarıyla gönderin.",
+      "notConfigured": "API adresi bu sürüm için yapılandırılmamış.",
+      "keyHint": "Komut anahtarı {variable} değişkeninden okur: önce export {variable}=… ile ayarlayın ya da anahtarı onun yerine yapıştırın.",
+      "manageKeys": "API anahtarlarını yönet",
+      "askForKey": "Bir sahip veya geliştiriciden bir anahtar isteyin.",
+      "needsDomain": "Bu projenin henüz doğrulanmış bir gönderim alan adı yok; gönderen (From) adresi böyle bir alan adında olana kadar komut reddedilir.",
+      "addDomain": "Alan adı ekle",
+      "watch": "Test iletisini izle",
+      "stopWatching": "İzlemeyi durdur",
+      "example": {
+        "subject": "Nodera'dan merhaba",
+        "text": "Çalışıyor: bu ileti Nodera Mail API'si üzerinden gönderildi.",
+        "copy": "Komutu kopyala"
+      }
+    },
+    "testMessage": {
+      "title": "Test iletisi gönderin",
+      "description": "Bu komutu bir terminalde çalıştırın. Nodera iletiyi kabul ettiği anda burada görünür.",
+      "needsDomain": "Bu projenin henüz doğrulanmış bir gönderim alan adı yok; gönderen (From) adresi böyle bir alan adında olana kadar komut reddedilir.",
+      "addDomain": "Alan adı ekle",
+      "waiting": "İleti bekleniyor…",
+      "waitingHint": "Bu projenin kabul ettiği bir sonraki ileti burada görünür, ardından her alıcıya ne olduğu.",
+      "received": "İleti alındı",
+      "noSubject": "(konu yok)",
+      "from": "Gönderen: {from}",
+      "openInLogs": "Kayıtlarda aç",
+      "watchAgain": "Bir sonrakini izle",
+      "expired": "{minutes} dakika içinde ileti gelmedi.",
+      "expiredHint": "Komut bir hatayla yanıt verdiyse, hata mesajı nedenini söyler; örneğin doğrulanmış bir gönderim alan adı dışındaki bir gönderen adresi.",
+      "keepWaiting": "Beklemeye devam et",
+      "stalled": "Yeni iletiler kontrol edilemedi.",
+      "retry": "Tekrar dene"
+    },
+    "domains": {
+      "title": "Gönderim alan adları",
+      "description": "{project} projesinin gönderim yaptığı alan adları. Her biri üç DNS kaydıyla doğrulanır.",
+      "breadcrumbMail": "Mail",
+      "add": "Alan adı ekle",
+      "retry": "Tekrar dene",
+      "limitReached": "Bir projede en fazla {max} gönderim alan adı olabilir.",
+      "emptyTitle": "İlk gönderim alan adınızı ekleyin",
+      "emptyDescription": "E-posta yalnızca doğrulanmış bir alan adından çıkar. Alan adınızı ekleyin; Nodera oluşturmanız gereken üç DNS kaydını gösterir.",
+      "emptyReadOnly": "Henüz gönderim alan adı yok. Sahipler ve geliştiriciler ekleyebilir.",
+      "dmarcMissingShort": "DMARC kaydı bulunamadı",
+      "notCheckedYet": "Henüz denetlenmedi",
+      "columns": {
+        "domain": "Alan adı",
+        "status": "Durum",
+        "lastChecked": "Son denetim",
+        "added": "Eklenme"
+      },
+      "status": {
+        "pending": "Bekliyor",
+        "verified": "Doğrulandı",
+        "unverified": "Doğrulanmadı"
+      },
+      "form": {
+        "modalTitle": "Gönderim alan adı ekle",
+        "description": "Adreslerinizin kullandığı alan adını girin; örneğin example.com veya mail.example.com. Ardından DNS sağlayıcınızda üç CNAME kaydı eklersiniz.",
+        "name": "Alan adı",
+        "namePlaceholder": "example.com",
+        "nameHint": "http:// veya bir adres olmadan; alt alan adı da kullanılabilir.",
+        "nameRequired": "Bir alan adı girin.",
+        "nameTooLong": "Alan adı en fazla {max} karakter olabilir.",
+        "nameFormat": "example.com gibi, http:// veya bir adres içermeyen bir alan adı girin.",
+        "duplicate": "Bu alan adı bu projede zaten var.",
+        "cancel": "Vazgeç",
+        "submit": "Alan adı ekle",
+        "created": "{name} eklendi. Sırada DNS kayıtları var."
+      },
+      "detail": {
+        "title": "Gönderim alan adı",
+        "description": "Aşağıdaki kayıtları DNS sağlayıcınızda ekleyin; kayıtlar yanıt verir vermez Nodera alan adını doğrular.",
+        "added": "Eklenme",
+        "lastChecked": "Son denetim",
+        "verifiedAt": "Doğrulanma",
+        "notYet": "Henüz değil",
+        "explanation": {
+          "pending": "DNS kayıtları bekleniyor. Nodera ilk 72 saat boyunca 10 dakikada bir, sonra günde bir denetler; üçü de yanıt verdiği anda {domain} doğrulanır.",
+          "verified": "Üç kayıt da yanıt veriyor. {domain} altındaki her adresten e-posta gönderilebilir.",
+          "unverified": "Bir kayıt artık beklendiği gibi yanıt vermiyor, bu yüzden {domain} üzerinden gönderim durdu. Aşağıda işaretli kaydı düzeltin; üçü de yanıt verince alan adı yeniden doğrulanır."
+        },
+        "verified": "Alan adı doğrulandı.",
+        "stillMissing": "Denetlendi: bir kayıt hâlâ eksik veya başka bir yeri gösteriyor.",
+        "deleteTitle": "{name} silinsin mi?",
+        "deleteConfirm": "Bu andan itibaren bu alan adından hiçbir şey gönderilmez. İletileri, süreleri dolana kadar kayıtlarda kalır.",
+        "delete": "Sil",
+        "cancel": "Vazgeç",
+        "deleted": "{name} silindi.",
+        "notFoundTitle": "Gönderim alan adı bulunamadı",
+        "notFoundDescription": "Silinmiş ya da başka bir projeye ait olabilir.",
+        "backToDomains": "Alan adlarına dön",
+        "verifyNow": "Şimdi doğrula",
+        "recordsTitle": "DNS kayıtları",
+        "recordsDescription": "Bu üç CNAME kaydını DNS sağlayıcınızda oluşturun. Kayıtlar bu projeye özeldir.",
+        "recordsHint": "Bazı DNS sağlayıcıları kayıt adının sonuna {domain} kısmını kendisi ekler; orada yalnızca .{domain} öncesindeki kısmı girin."
+      },
+      "records": {
+        "notChecked": "Henüz denetlenmedi",
+        "valid": "Bulundu",
+        "invalid": "Eksik veya hatalı",
+        "columns": {
+          "purpose": "Amaç",
+          "type": "Tür",
+          "host": "Ad",
+          "value": "Hedef",
+          "state": "Durum"
+        },
+        "purpose": {
+          "returnPath": "Dönüş yolu",
+          "dkim": "DKIM"
+        },
+        "copyHost": "Adı kopyala",
+        "copyValue": "Hedefi kopyala",
+        "checkedAt": "{date} tarihinde denetlendi"
+      },
+      "dmarc": {
+        "title": "DMARC kaydı bulunamadı",
+        "description": "Gmail ve Yahoo gibi büyük e-posta sağlayıcıları, DMARC kaydı olmayan alan adlarından gelen e-postaları reddedebilir veya istenmeyen klasörüne atabilir. Gönderim engellenmez; şuna benzer bir TXT kaydı ekleyin:",
+        "host": "Ad",
+        "value": "Değer"
+      }
+    },
+    "events": {
+      "accepted": "Kabul edildi",
+      "delivered": "Teslim edildi",
+      "deferred": "Ertelendi",
+      "bounced": "Geri döndü",
+      "suppressed": "Gönderilmedi",
+      "complained": "Şikâyet edildi"
+    },
+    "eventDescriptions": {
+      "accepted": "Nodera iletiyi bu alıcı için teslim aldı.",
+      "delivered": "Alıcı sunucu iletiyi kabul etti.",
+      "deferred": "Alıcı sunucu daha sonra denenmesini istedi; Nodera yeniden dener.",
+      "bounced": "Alıcı sunucu iletiyi reddetti.",
+      "suppressed": "Gönderilmedi: adres projenin gönderim dışı listesinde.",
+      "complained": "Alıcı iletiyi istenmeyen e-posta olarak işaretledi."
+    },
+    "logs": {
+      "title": "Kayıtlar",
+      "description": "{project} projesinin son {days} gündeki iletileri, en yenisi en üstte.",
+      "breadcrumbMail": "Mail",
+      "retry": "Tekrar dene",
+      "loadMore": "Daha fazla yükle",
+      "empty": "İleti yok.",
+      "emptyFiltered": "Bu filtrelere uyan ileti yok.",
+      "emptyHint": "Yazılımınızın gönderdiği iletiler birkaç saniye içinde burada görünür.",
+      "noSubject": "(konu yok)",
+      "moreRecipients": "+{count}",
+      "columns": {
+        "sent": "Gönderim",
+        "subject": "Konu",
+        "recipients": "Alıcılar",
+        "status": "Durum",
+        "tags": "Etiketler",
+        "source": "Kanal"
+      },
+      "filters": {
+        "anyStatus": "Tüm durumlar",
+        "status": "Alıcı durumu",
+        "recipient": "Alıcı",
+        "recipientPlaceholder": "ad@ornek.com",
+        "from": "Gönderen",
+        "fromPlaceholder": "no-reply@alanadiniz.com",
+        "tag": "Etiket",
+        "tagPlaceholder": "örn. parola-sifirlama",
+        "dates": "Tarihler",
+        "datesHint": "Son {days} gün içinde.",
+        "search": "Ara",
+        "reset": "Temizle"
+      },
+      "detail": {
+        "title": "İleti",
+        "notFound": "İleti bulunamadı. Kayıtlar 30 gün saklanır.",
+        "retry": "Tekrar dene",
+        "from": "Gönderen",
+        "sent": "Gönderim",
+        "source": "Kanal",
+        "size": "Boyut",
+        "messageIdHeader": "Message-ID",
+        "tags": "Etiketler",
+        "recipientsTitle": "Alıcılar",
+        "recipientsDescription": "Her alıcıya ne olduğu ve alıcı sunucunun yanıtı.",
+        "retention": "Nodera, teslim edildikten sonra ileti içeriğini saklamaz; kayıtlar 30 gün sonra silinir.",
+        "noEvents": "Henüz olay yok.",
+        "sources": {
+          "api": "HTTP API",
+          "smtp": "SMTP"
+        },
+        "kinds": {
+          "to": "Kime",
+          "cc": "Bilgi",
+          "bcc": "Gizli"
+        }
+      }
+    },
+    "suppressions": {
+      "title": "Gönderim dışı adresler",
+      "description": "{project} projesinin kalıcı geri dönme veya şikâyet sonrasında artık e-posta göndermediği adresler.",
+      "breadcrumbMail": "Mail",
+      "search": "Gönderim dışı adreslerde ara",
+      "searchPlaceholder": "Adrese göre ara",
+      "retry": "Tekrar dene",
+      "loadMore": "Daha fazla yükle",
+      "empty": "Gönderim dışı adres yok.",
+      "columns": {
+        "address": "Adres",
+        "reason": "Neden",
+        "message": "İleti",
+        "added": "Eklenme"
+      },
+      "reasons": {
+        "bounce": "Geri döndü",
+        "complaint": "Şikâyet"
+      },
+      "viewMessage": "Kayıtlarda gör",
+      "remove": "Kaldır",
+      "removeTitle": "{address} kaldırılsın mı?",
+      "removeConfirm": "Bu adrese yeniden e-posta gönderilir. Yalnızca adres yeniden çalışır hale geldiğinde kaldırın.",
+      "removed": "{address} yeniden e-posta alabilir.",
+      "cancel": "Vazgeç",
+      "complaintLocked": "Alıcı şikâyet ettiği için bu adresi yalnızca Nodera kaldırabilir. Bir yanlışlık olduysa destek ekibiyle iletişime geçin.",
+      "complaintLockedShort": "Yalnızca Nodera kaldırabilir",
+      "rules": "Kalıcı olarak geri dönen ya da alıcısı şikâyet eden bir adres buraya eklenir ve o andan itibaren atlanır. Bu adrese yapılan bir gönderimin yanıtında adres, gönderilmeyenler arasında listelenir."
+    },
+    "webhooks": {
+      "title": "Webhook'lar",
+      "description": "{project} projesinin ileti olaylarını imzalı olarak alan, sunucularınızdaki adresler. Proje başına en fazla {max}.",
+      "breadcrumbMail": "Mail",
+      "add": "Webhook ekle",
+      "retry": "Tekrar dene",
+      "limitReached": "Bir projede en fazla {max} webhook olabilir.",
+      "emptyTitle": "İlk webhook'unuzu ekleyin",
+      "emptyDescription": "Nodera ileti olaylarını (teslim edildi, geri döndü, şikâyet edildi…) imzalı paketler halinde sunucunuza gönderir.",
+      "emptyReadOnly": "Henüz webhook yok. Sahipler ve geliştiriciler ekleyebilir.",
+      "columns": {
+        "url": "URL",
+        "events": "Olaylar",
+        "active": "Etkin",
+        "created": "Oluşturulma"
+      },
+      "allEvents": "Tüm olaylar",
+      "enable": "Etkinleştir",
+      "disable": "Devre dışı bırak",
+      "activeOn": "Açık",
+      "activeOff": "Kapalı",
+      "viewDeliveries": "Teslimatlar",
+      "deliveries": {
+        "title": "Teslimatlar",
+        "columns": {
+          "created": "Oluşturulma",
+          "status": "Durum",
+          "events": "Olay",
+          "attempts": "Deneme",
+          "lastAttempt": "Son deneme"
+        },
+        "statusCode": "HTTP {code}",
+        "nextAttempt": "Sonraki deneme: {date}",
+        "retry": "Tekrar dene",
+        "empty": "Son 30 günde teslimat yok.",
+        "loadMore": "Daha fazla yükle",
+        "rules": "Başarısız bir teslimat 1, 2, 5, 10 ve 30 dakika, ardından 1, 2, 4 ve 8 saat sonra yeniden denenir; ilk denemesinden 24 saat sonra bırakılır."
+      },
+      "edit": "Düzenle",
+      "delete": "Sil",
+      "deleteTitle": "Bu webhook silinsin mi?",
+      "deleteConfirm": "Olaylar artık {url} adresine gönderilmez. Yeniden denenmeyi bekleyen teslimatlar bırakılır.",
+      "deleted": "Webhook silindi.",
+      "cancel": "Vazgeç",
+      "updated": "Webhook kaydedildi.",
+      "enabled": "Webhook etkinleştirildi.",
+      "disabled": "Webhook devre dışı bırakıldı.",
+      "signatureHint": "Her teslimat, Nodera-Signature başlığında imzalanmış bir JSON dizisidir: bir zaman damgası ile zaman damgası ve gövdenin, webhook'un gizli anahtarıyla alınmış HMAC-SHA256 özeti. Başarısız bir teslimat 24 saat boyunca yeniden denenir.",
+      "secret": {
+        "title": "İmzalama anahtarını kopyalayın",
+        "description": "Sunucunuz her teslimatın Nodera-Signature başlığını bununla doğrular.",
+        "warning": "Anahtar yalnızca bu kez gösterilir; bir daha göremezsiniz. Kaybederseniz webhook'u silip yeniden ekleyin."
+      },
+      "deliveryStatus": {
+        "pending": "Bekliyor",
+        "succeeded": "Teslim edildi",
+        "failed": "Başarısız"
+      },
+      "form": {
+        "createTitle": "Webhook ekle",
+        "editTitle": "Webhook'u düzenle",
+        "url": "URL",
+        "urlPlaceholder": "https://ornek.com/nodera/olaylar",
+        "urlHint": "Sunucunuzun herkese açık bir HTTPS adresi.",
+        "urlRequired": "URL'yi girin.",
+        "urlTooLong": "URL en fazla {max} karakter olabilir.",
+        "urlInvalid": "https:// ile başlayan tam bir URL girin.",
+        "events": "Olaylar",
+        "eventsRequired": "En az bir olay seçin.",
+        "selectAll": "Tümünü seç",
+        "selectNone": "Temizle",
+        "active": "Etkin",
+        "activeHint": "Devre dışı bir webhook ayarlarını korur ama hiçbir şey almaz.",
+        "cancel": "Vazgeç",
+        "save": "Kaydet",
+        "submit": "Webhook ekle"
       }
     }
   }

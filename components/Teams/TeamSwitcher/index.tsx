@@ -1,25 +1,43 @@
 "use client";
 
 import { useState } from "react";
-import { App, Dropdown } from "antd";
+import { App } from "antd";
 import type { MenuProps } from "antd";
-import { CheckOutlined, DownOutlined, PlusOutlined, TeamOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  CreditCardOutlined,
+  PlusOutlined,
+  SettingOutlined,
+  TeamOutlined,
+} from "@ant-design/icons";
 import classNames from "classnames";
 import { useTranslations } from "next-intl";
+import { BILLING_PATH } from "@/core/billing";
+import { TEAM_PATH } from "@/core/routes";
 import type { Team } from "@/core/team";
 import useTeam from "@/contexts/TeamContext/useTeam";
+import { useCan } from "@/hooks/Authz/useCan";
+import { useNavigate } from "@/hooks/Navigation/useNavigate";
+import NoderaMenuButton from "@/components/NoderaMenuButton";
 import CreateTeamModal from "@/components/Teams/CreateTeamModal";
 import RoleBadge from "@/components/Teams/RoleBadge";
 import type { TeamSwitcherProps } from "./type";
 
 const NEW_TEAM_KEY = "__new_team__";
+const SETTINGS_KEY = "__team_settings__";
+const BILLING_KEY = "__team_billing__";
 
-/** Current Team name as a dropdown trigger; lists every Team plus a "New team" action. */
+/**
+ * Current Team name as a dropdown trigger; lists every Team, the current Team's settings and
+ * Billing (reachable from either App), and a "New team" action.
+ */
 export default function TeamSwitcher({ className }: TeamSwitcherProps) {
   const t = useTranslations("teams.switcher");
   const tc = useTranslations("teams.create");
   const { message } = App.useApp();
   const { teams, currentTeam, isLoading, selectTeam, addTeam } = useTeam();
+  const { navigate } = useNavigate();
+  const canReadBilling = useCan("billing.read");
   const [modalOpen, setModalOpen] = useState(false);
 
   const items: MenuProps["items"] = [
@@ -41,12 +59,29 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
       })),
     },
     { type: "divider" },
+    ...(currentTeam
+      ? [
+          { key: SETTINGS_KEY, icon: <SettingOutlined />, label: t("settings") },
+          ...(canReadBilling
+            ? [{ key: BILLING_KEY, icon: <CreditCardOutlined />, label: t("billing") }]
+            : []),
+          { type: "divider" as const },
+        ]
+      : []),
     { key: NEW_TEAM_KEY, icon: <PlusOutlined />, label: t("newTeam") },
   ];
 
   const handleClick: MenuProps["onClick"] = ({ key }) => {
     if (key === NEW_TEAM_KEY) {
       setModalOpen(true);
+      return;
+    }
+    if (key === SETTINGS_KEY) {
+      navigate(TEAM_PATH);
+      return;
+    }
+    if (key === BILLING_KEY) {
+      navigate(BILLING_PATH);
       return;
     }
     selectTeam(String(key));
@@ -60,32 +95,18 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
 
   return (
     <>
-      <Dropdown
+      <NoderaMenuButton
+        icon={<TeamOutlined />}
+        label={currentTeam?.name ?? (isLoading ? t("loading") : t("noTeam"))}
+        ariaLabel={t("label")}
         menu={{
           items,
           onClick: handleClick,
           selectedKeys: currentTeam ? [currentTeam.id] : [],
         }}
-        trigger={["click"]}
-        placement="bottomLeft"
         disabled={isLoading}
-      >
-        <button
-          type="button"
-          aria-label={t("label")}
-          className={classNames(
-            "flex h-10 max-w-[240px] items-center gap-2 rounded-button border border-border bg-surface px-3 text-sm font-medium text-text hover:border-brand-300 hover:bg-surface-raised disabled:cursor-not-allowed disabled:opacity-60",
-            className
-          )}
-          disabled={isLoading}
-        >
-          <TeamOutlined className="text-text-muted" />
-          <span className="truncate">
-            {currentTeam?.name ?? (isLoading ? t("loading") : t("noTeam"))}
-          </span>
-          <DownOutlined className="text-xs text-text-muted" />
-        </button>
-      </Dropdown>
+        className={classNames("max-w-[240px]", className)}
+      />
       <CreateTeamModal
         open={modalOpen}
         onClose={() => setModalOpen(false)}

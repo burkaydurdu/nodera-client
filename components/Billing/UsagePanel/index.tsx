@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { GetUsage } from "@/api/billing";
-import { BILLING_CURRENCY, type Usage } from "@/core/billing";
+import { BILLING_CURRENCY, type Usage, isMailLine } from "@/core/billing";
 import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
 import { formatPeriodEnd, formatUtcDate } from "@/utils/date";
 import { formatMoney } from "@/utils/price";
@@ -14,7 +14,10 @@ import NoderaAlert from "@/components/NoderaAlert";
 import NoderaButton from "@/components/NoderaButton";
 import type { UsagePanelProps } from "./type";
 
-/** The Usage tab: this Period's hours per Droplet, the estimate and the Threshold rule. */
+/**
+ * The Usage tab: this Period's hours per Droplet and each Project's Mail Package, the estimate
+ * and the Threshold rule.
+ */
 export default function UsagePanel({ teamId }: UsagePanelProps) {
   const t = useTranslations("billing.usage");
   const locale = useLocale();
@@ -102,6 +105,9 @@ export default function UsagePanel({ teamId }: UsagePanelProps) {
             </div>
           ))}
           <p className="pt-1 text-right text-xs text-text-muted">{t("rules")}</p>
+          {usage.lines.some(isMailLine) && (
+            <p className="text-right text-xs text-text-muted">{t("mailRules")}</p>
+          )}
         </dl>
       </Card>
     </div>

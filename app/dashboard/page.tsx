@@ -1,14 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { useTranslations } from "next-intl";
-import { GetProjects } from "@/api/projects";
-import type { Project } from "@/core/project";
-import { getLastProjectId } from "@/core/storage";
+import { type Project, projectPath } from "@/core/project";
+import useProjects from "@/contexts/ProjectContext/useProjects";
 import useTeam from "@/contexts/TeamContext/useTeam";
 import { useCan } from "@/hooks/Authz/useCan";
-import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
 import EmptyBox from "@/components/EmptyBox";
 import Loading from "@/components/Loading";
@@ -21,7 +19,6 @@ import ProjectList from "@/components/Projects/ProjectList";
 
 export default function Page() {
   const t = useTranslations("dashboard.projects");
-  const { getErrorMessage } = useErrorMessage();
   const { navigate } = useNavigate();
   const canCreate = useCan("project.write");
   const {
@@ -29,72 +26,45 @@ export default function Page() {
     isLoading: teamsLoading,
     error: teamsError,
     reload: reloadTeams,
+    lastProjectId,
     rememberProject,
   } = useTeam();
-
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [activeProjectId, setActiveProjectId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    projects,
+    isLoading: projectsLoading,
+    error,
+    reload: reloadProjects,
+    addProject,
+  } = useProjects();
   const [modalOpen, setModalOpen] = useState(false);
 
   const teamId = currentTeam?.id ?? null;
 
-  const load = useCallback(async () => {
-    if (!teamId) {
-      setProjects([]);
-      setActiveProjectId(null);
-      setLoading(false);
-      return;
-    }
-    setLoading(true);
-    setError(null);
-    try {
-      const response = await GetProjects(teamId);
-      const list = response.data ?? [];
-      setProjects(list);
-
-      // The persisted value is read directly so that remembering the fallback Project below
-      // does not re-run this load.
-      const remembered = getLastProjectId();
-      const active = list.find((p) => p.id === remembered) ?? list[0] ?? null;
-      if (active) {
-        rememberProject(active.id);
-        setActiveProjectId(active.id);
-      } else {
-        setActiveProjectId(null);
-      }
-    } catch (err) {
-      setError(getErrorMessage(err));
-    } finally {
-      setLoading(false);
-    }
-  }, [teamId, getErrorMessage, rememberProject]);
-
+  // Read again on every visit, so a Project a teammate created shows without a reload; a
+  // failure here is the context's to show.
   useEffect(() => {
-    if (teamsLoading) return;
     setModalOpen(false);
-    load();
-  }, [load, teamsLoading]);
+    if (!teamId) return;
+    reloadProjects().catch(() => {});
+  }, [teamId]);
+
+  const retry = () => {
+    reloadProjects().catch(() => {});
+  };
 
   const openProject = (project: Project) => {
     rememberProject(project.id);
-    setActiveProjectId(project.id);
-    navigate(`/dashboard/projects/${project.id}`);
+    navigate(projectPath(project.id));
   };
 
   // A fresh Project goes straight to its (empty) Droplet list, which offers the first create.
   const handleCreated = (project: Project) => {
-    setProjects((list) => [project, ...list]);
+    addProject(project);
     setModalOpen(false);
-    openProject(project);
+    navigate(projectPath(project.id));
   };
 
-  const handleSelect = (project: Project) => {
-    openProject(project);
-  };
-
-  if (teamsLoading || (loading && currentTeam)) {
+  if (teamsLoading || (projectsLoading && currentTeam)) {
     return <Loading />;
   }
 
@@ -130,7 +100,7 @@ export default function Page() {
         />
         <div className="flex flex-col items-start gap-3">
           <NoderaAlert variant="error" message={error} className="w-full" />
-          <NoderaButton variant="outlined" onClick={load}>
+          <NoderaButton variant="outlined" onClick={retry}>
             {t("retry")}
           </NoderaButton>
         </div>
@@ -177,8 +147,8 @@ export default function Page() {
       />
       <ProjectList
         projects={projects}
-        activeProjectId={activeProjectId}
-        onSelect={handleSelect}
+        activeProjectId={lastProjectId}
+        onSelect={openProject}
       />
       <CreateProjectModal
         open={modalOpen}

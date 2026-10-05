@@ -14,17 +14,39 @@ export const PERMISSIONS = [
   "sshkey.write",
   "billing.read",
   "billing.write",
+  "mail.read",
+  "mail.write",
+  "mail.send",
+  "apikey.write",
 ] as const;
 export type Permission = (typeof PERMISSIONS)[number];
 
 const MATRIX: Record<Role, readonly Permission[]> = {
   owner: PERMISSIONS,
-  developer: ["team.read", "project.write", "droplet.read", "droplet.write", "sshkey.write"],
-  finance: ["team.read", "droplet.read", "billing.read", "billing.write"],
+  developer: [
+    "team.read",
+    "project.write",
+    "droplet.read",
+    "droplet.write",
+    "sshkey.write",
+    "mail.read",
+    "mail.write",
+    "mail.send",
+    "apikey.write",
+  ],
+  finance: ["team.read", "droplet.read", "billing.read", "billing.write", "mail.read"],
 };
+
+/** The Permissions an API key may carry (`authz.KeyPermissions`); never wider than its creator's. */
+export const KEY_PERMISSIONS = ["mail.send"] as const satisfies readonly Permission[];
+export type KeyPermission = (typeof KEY_PERMISSIONS)[number];
 
 export function isRole(value: string | null | undefined): value is Role {
   return !!value && (ROLES as readonly string[]).includes(value);
+}
+
+export function isKeyPermission(value: string | null | undefined): value is KeyPermission {
+  return !!value && (KEY_PERMISSIONS as readonly string[]).includes(value);
 }
 
 export function allows(role: Role | null | undefined, permission: Permission): boolean {

@@ -1,3 +1,4 @@
+import { type AppKey, isAppKey } from "./apps";
 import type { PendingCardVerification, PendingPaymentConfirmation } from "./billing";
 import type { PendingInvitation } from "./invitation";
 import type { Session, MfaChallenge } from "./session";
@@ -6,6 +7,7 @@ export const ACCESS_TOKEN_KEY = "nodera.access_token";
 export const REFRESH_TOKEN_KEY = "nodera.refresh_token";
 export const LAST_TEAM_ID_KEY = "nodera.last_team_id";
 export const LAST_PROJECT_ID_KEY = "nodera.last_project_id";
+export const LAST_APP_KEY = "nodera.last_app";
 export const MFA_CHALLENGE_KEY = "nodera.mfa_challenge";
 export const PENDING_INVITATION_KEY = "nodera.pending_invitation";
 export const CARD_VERIFICATION_KEY = "nodera.card_verification";
@@ -93,6 +95,23 @@ export function setLastProjectId(projectId: string): void {
 export function clearLastProjectId(): void {
   if (!hasWindow()) return;
   localStorage.removeItem(LAST_PROJECT_ID_KEY);
+}
+
+/** The App last opened; a value this build does not know reads as none. */
+export function getLastApp(): AppKey | null {
+  if (!hasWindow()) return null;
+  const value = localStorage.getItem(LAST_APP_KEY);
+  return isAppKey(value) ? value : null;
+}
+
+export function setLastApp(app: AppKey): void {
+  if (!hasWindow()) return;
+  localStorage.setItem(LAST_APP_KEY, app);
+}
+
+export function clearLastApp(): void {
+  if (!hasWindow()) return;
+  localStorage.removeItem(LAST_APP_KEY);
 }
 
 export function getMfaChallenge(): MfaChallenge | null {

@@ -1,7 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import type { Project } from "@/core/project";
+import { type Project, projectPath } from "@/core/project";
+import useProjects from "@/contexts/ProjectContext/useProjects";
 import useTeam from "@/contexts/TeamContext/useTeam";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
 import Card from "@/components/Card";
@@ -14,11 +15,12 @@ import CreateProjectForm from "@/components/Projects/CreateProjectForm";
 export default function Page() {
   const t = useTranslations("dashboard.newProject");
   const { navigate } = useNavigate();
-  const { currentTeam, isLoading, error, reload, rememberProject } = useTeam();
+  const { currentTeam, isLoading, error, reload } = useTeam();
+  const { addProject } = useProjects();
 
   const handleCreated = (project: Project) => {
-    rememberProject(project.id);
-    navigate(`/dashboard/projects/${project.id}`, { replace: true });
+    addProject(project);
+    navigate(projectPath(project.id), { replace: true });
   };
 
   return (

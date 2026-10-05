@@ -36,3 +36,16 @@ export function formatPeriodEnd(value: string | null | undefined, locale: string
   if (Number.isNaN(date.getTime())) return "";
   return formatUtcDate(new Date(date.getTime() - DAY_MS).toISOString(), locale);
 }
+
+/** A Mail Period sent as `YYYY-MM`, named as its month ("October 2026" / "Ekim 2026"). */
+export function formatMonth(period: string | null | undefined, locale: string): string {
+  if (!period) return "";
+  const match = /^(\d{4})-(\d{2})$/.exec(period);
+  if (!match) return period;
+  const date = new Date(Date.UTC(Number(match[1]), Number(match[2]) - 1, 1));
+  return new Intl.DateTimeFormat(locale, {
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+}

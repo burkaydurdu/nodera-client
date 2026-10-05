@@ -10,14 +10,17 @@ import { formatDateTime } from "@/utils/date";
 import NoderaAlert from "@/components/NoderaAlert";
 import NoderaButton from "@/components/NoderaButton";
 import type { NoderaAlertVariant } from "@/components/NoderaAlert/type";
+import type { BillingStatusBannerProps } from "./type";
 
 /**
  * Dashboard-wide notice of the Team's Billing status: no card yet, a failed charge being
  * retried, or a suspension. Every member sees it; only `billing.write` gets the action, the
- * others are told whom to ask.
+ * others are told whom to ask. What a missing card or a suspension stops is said for the App
+ * on screen: Droplets, or Mail's Packages and sending.
  */
-export default function BillingStatusBanner() {
+export default function BillingStatusBanner({ app }: BillingStatusBannerProps) {
   const t = useTranslations("billing.banner");
+  const tApp = useTranslations(`billing.banner.${app}`);
   const locale = useLocale();
   const { currentTeam } = useTeam();
   const canWrite = useCan("billing.write");
@@ -36,9 +39,9 @@ export default function BillingStatusBanner() {
     variant = "error";
     title = t("suspendedTitle");
     const deletion = status.deletionAt
-      ? ` ${t("suspendedDeletion", { date: formatDateTime(status.deletionAt, locale) })}`
+      ? ` ${tApp("suspendedDeletion", { date: formatDateTime(status.deletionAt, locale) })}`
       : "";
-    text = `${t("suspended")}${deletion}${canWrite ? "" : ` ${t("askToPay")}`}`;
+    text = `${tApp("suspended")}${deletion}${canWrite ? "" : ` ${t("askToPay")}`}`;
     action = canWrite
       ? {
           label: t("payNow"),
@@ -47,8 +50,8 @@ export default function BillingStatusBanner() {
       : null;
   } else if (status.status === "no_payment_method") {
     variant = "warning";
-    title = t("noPaymentMethodTitle");
-    text = canWrite ? t("noPaymentMethod") : t("noPaymentMethodAsk");
+    title = tApp("noPaymentMethodTitle");
+    text = tApp(canWrite ? "noPaymentMethod" : "noPaymentMethodAsk");
     action = canWrite
       ? { label: t("addCard"), path: billingPath("payment-methods", null, teamId) }
       : null;

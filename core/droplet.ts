@@ -1,3 +1,5 @@
+import { projectPath } from "./project";
+
 export type DropletStatus =
   "provisioning" | "active" | "off" | "failed" | "deleting" | "deleted";
 
@@ -110,6 +112,9 @@ export function validateHostname(value: string): HostnameIssue | null {
  */
 export const DROPLET_FALLBACK_POLL_INTERVAL_MS = 60_000;
 
-/** How long the web app keeps retrying "project not found" right after a Project was created (ADR-0004). */
-export const PROJECT_ACCESS_RETRY_MS = 5_000;
-export const PROJECT_ACCESS_RETRY_INTERVAL_MS = 1_000;
+/** A Droplet's own page lives under it; the Droplet names its Project itself. */
+export const DROPLETS_PATH = "/dashboard/droplets";
+
+/** A Project's Droplet pages under its own page, the create flow among them. */
+export const projectDropletsPath = (projectId: string): string =>
+  `${projectPath(projectId)}/droplets`;

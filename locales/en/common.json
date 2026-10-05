@@ -8,7 +8,8 @@
     "loading": "Loading",
     "copy": "Copy",
     "copied": "Copied",
-    "copyFailed": "Could not copy"
+    "copyFailed": "Could not copy",
+    "secretCopied": "I have copied it"
   },
   "language": {
     "tr": "Türkçe",
@@ -24,11 +25,17 @@
   },
   "sidebar": {
     "projects": "Projects",
-    "profile": "Profile",
     "droplets": "Droplets",
     "catalog": "Catalog",
     "sshKeys": "SSH keys",
-    "team": "Team"
+    "mail": {
+      "overview": "Overview",
+      "domains": "Domains",
+      "logs": "Logs",
+      "suppressions": "Suppressions",
+      "webhooks": "Webhooks",
+      "apiKeys": "API keys"
+    }
   },
   "validation": {
     "emailRequired": "Enter your email address.",
@@ -169,6 +176,35 @@
       "noTeam": "Your account has no team yet.",
       "retry": "Try again",
       "descriptionTeam": "Create a project inside {team}."
+    },
+    "projectSelector": {
+      "label": "Project",
+      "empty": "No projects yet",
+      "settings": "Project settings",
+      "newProject": "New project",
+      "created": "Project “{name}” created.",
+      "loading": "Loading…",
+      "none": "No project"
+    },
+    "projectSettings": {
+      "title": "Project settings",
+      "description": "Details and API keys of {project}.",
+      "notFound": "Project not found.",
+      "retry": "Try again",
+      "tabs": {
+        "general": "General",
+        "apiKeys": "API keys"
+      },
+      "details": {
+        "title": "Details",
+        "description": "What identifies this project.",
+        "name": "Name",
+        "created": "Created",
+        "descriptionLabel": "Description",
+        "noDescription": "No description.",
+        "projectId": "Project ID",
+        "copyProjectId": "Copy the project ID"
+      }
     }
   },
   "profile": {
@@ -261,6 +297,7 @@
     "4-10003": "Please wait before requesting a new code.",
     "5-10001": "Team not found.",
     "5-10003": "Team not found.",
+    "6-10001": "Project not found.",
     "6-10002": "A project with this name already exists in your team.",
     "100-10004": "Too many requests. Please slow down.",
     "7-10001": "SSH key not found.",
@@ -319,14 +356,50 @@
     "33-10006": "The invoice PDF is not available yet. Try again shortly.",
     "33-10007": "A payment for this invoice is already in progress. Wait for it to finish, or confirm it from the email we sent.",
     "34-10007": "Payment not found.",
-    "34-10008": "The payment service is temporarily unavailable. Try again in a few minutes."
+    "34-10008": "The payment service is temporarily unavailable. Try again in a few minutes.",
+    "13-10001": "API key not found. It may have been revoked already.",
+    "13-10002": "An API key cannot carry this permission.",
+    "13-10003": "Your role does not hold a permission this key asks for.",
+    "13-10004": "A project can have at most 20 active API keys. Revoke one first.",
+    "13-10005": "The API key could not be created. Please try again.",
+    "13-10006": "The API key could not be revoked. Please try again.",
+    "50-10001": "Mail does not know this project yet. Try again in a few seconds.",
+    "50-10004": "Your role in this team does not allow that.",
+    "51-10003": "The team needs a card before a Package can be chosen or changed. Add one under Team → Billing.",
+    "51-10004": "The team is suspended over an unpaid invoice. Pay it to choose or change a Package.",
+    "52-10001": "Sending domain not found.",
+    "52-10002": "This is not a domain that can send mail. Enter a domain like example.com.",
+    "52-10003": "This domain is already in this project.",
+    "52-10004": "A project can have at most 10 sending domains.",
+    "52-10005": "The domain was checked less than a minute ago.",
+    "52-10006": "The sending domain could not be saved. Please try again.",
+    "52-10007": "The sending domain could not be created. Please try again.",
+    "53-10001": "This Package is not offered.",
+    "53-10004": "The Package could not be saved. Please try again.",
+    "54-10003": "The project's Daily limit could not be saved. Please try again.",
+    "54-10004": "The project's Daily limit could not be read. Please try again.",
+    "55-10001": "Message not found. Logs are kept for 30 days.",
+    "55-10010": "The list could not continue from here. Search again.",
+    "56-10001": "This address is no longer suppressed.",
+    "56-10002": "The recipient complained, so only Nodera can remove this address.",
+    "56-10003": "The address could not be removed. Please try again.",
+    "56-10004": "The list could not continue from here. Search again.",
+    "57-10001": "Webhook not found.",
+    "57-10002": "A project can have at most 3 webhooks.",
+    "57-10003": "A webhook needs a public HTTPS URL.",
+    "57-10004": "One of the chosen events is not known.",
+    "57-10005": "The webhook could not be saved. Please try again.",
+    "57-10006": "This URL resolves to a private address, which cannot receive events.",
+    "57-10007": "The list could not continue from here. Open the deliveries again."
   },
   "teams": {
     "switcher": {
       "label": "Team",
       "newTeam": "New team",
       "loading": "Loading…",
-      "noTeam": "No team"
+      "noTeam": "No team",
+      "settings": "Team settings",
+      "billing": "Billing"
     },
     "create": {
       "title": "Create a team",
@@ -343,9 +416,9 @@
       "finance": "Finance"
     },
     "roleDescriptions": {
-      "owner": "Runs the team: members, invitations, projects, Droplets, SSH keys and billing.",
-      "developer": "Creates projects, Droplets and SSH keys; no access to billing.",
-      "finance": "Sees Droplets and their prices, handles invoices and payment methods; cannot create or power Droplets."
+      "owner": "Runs the team: members, invitations, projects, Droplets, Mail, API keys, SSH keys and billing.",
+      "developer": "Creates projects, Droplets, SSH keys and API keys, and manages Mail; no access to billing.",
+      "finance": "Sees Droplets, Mail and their prices, handles invoices and payment methods; cannot create or power Droplets or change Mail."
     },
     "tabs": {
       "members": "Members",
@@ -826,14 +899,6 @@
         "notFound": "Invoice not found.",
         "linesTitle": "Lines",
         "noLines": "No lines.",
-        "columns": {
-          "droplet": "Droplet",
-          "plan": "Plan",
-          "hours": "Hours",
-          "hourlyPrice": "Hourly price",
-          "amount": "Amount"
-        },
-        "hoursValue": "{hours} h",
         "subtotal": "Subtotal",
         "credit": "Credit applied",
         "total": "Total due",
@@ -874,16 +939,8 @@
     },
     "usage": {
       "title": "Usage this period",
-      "description": "{start} – {end}, one line per Droplet at its locked price.",
+      "description": "{start} – {end}: one line per Droplet at its locked price, and one per project's Mail Package.",
       "unavailable": "Usage could not be loaded.",
-      "columns": {
-        "droplet": "Droplet",
-        "plan": "Plan",
-        "hours": "Hours",
-        "hourlyPrice": "Hourly price",
-        "amount": "Amount"
-      },
-      "hoursValue": "{hours} h",
       "empty": "No usage in this period yet.",
       "subtotal": "Subtotal",
       "estimatedTax": "Estimated tax",
@@ -891,20 +948,30 @@
       "rules": "Hours count from the moment a Droplet becomes active until you ask for deletion, rounded up to the next hour, at most 672 per Droplet per period. Powered-off Droplets keep counting.",
       "thresholdNote": "An invoice is issued early when usage in this period passes {amount}; otherwise at the end of the month.",
       "thresholdNew": "The lower threshold applies during the team's first three months.",
-      "retry": "Try again"
+      "retry": "Try again",
+      "mailRules": "A project's Mail line is the price of the largest Package it held this month, less what an earlier invoice of the month already charged."
     },
     "banner": {
-      "noPaymentMethodTitle": "Add a card to create Droplets",
-      "noPaymentMethod": "The team has no payment method yet. Droplet creation is blocked until a card is added.",
-      "noPaymentMethodAsk": "The team has no payment method yet. Ask an owner or finance member to add a card.",
+      "droplets": {
+        "noPaymentMethodTitle": "Add a card to create Droplets",
+        "noPaymentMethod": "The team has no payment method yet. Droplet creation is blocked until a card is added.",
+        "noPaymentMethodAsk": "The team has no payment method yet. Ask an owner or finance member to add a card.",
+        "suspended": "An invoice is unpaid: your Droplets are powered off and creation is blocked. Pay the invoice to power them back on.",
+        "suspendedDeletion": "Unless it is paid, the Droplets are deleted on {date}."
+      },
+      "mail": {
+        "noPaymentMethodTitle": "Add a card to use Mail",
+        "noPaymentMethod": "The team has no payment method yet. A Mail Package can be chosen once a card is added.",
+        "noPaymentMethodAsk": "The team has no payment method yet, so no Mail Package can be chosen. Ask an owner or finance member to add a card.",
+        "suspended": "An invoice is unpaid: Mail sending is stopped and Packages cannot be chosen until it is paid.",
+        "suspendedDeletion": "Unless it is paid, the team's Mail Packages end on {date}."
+      },
       "addCard": "Add a card",
       "paymentFailedTitle": "Payment failed",
       "paymentFailed": "The charge for the open invoice failed. It is retried on {date}; pay now to settle it earlier.",
       "openInvoiceTitle": "An invoice is awaiting payment",
       "openInvoice": "The open invoice has not been paid yet.",
       "suspendedTitle": "The team is suspended",
-      "suspended": "An invoice is unpaid: your Droplets are powered off and creation is blocked. Pay the invoice to power them back on.",
-      "suspendedDeletion": "Unless it is paid, the Droplets are deleted on {date}.",
       "payNow": "Pay now",
       "paymentFailedAsk": "The charge for the open invoice failed. It is retried on {date}; ask an owner or finance member to pay it sooner.",
       "askToPay": "Ask an owner or finance member of the team to pay it."
@@ -971,7 +1038,19 @@
     },
     "teamNotFoundTitle": "Team not found",
     "teamNotFound": "This link belongs to a team you are not a member of, or the team no longer exists.",
-    "openCurrentTeam": "Open billing of your current team"
+    "openCurrentTeam": "Open billing of your current team",
+    "lines": {
+      "mail": "Mail · {project} · {package}",
+      "columns": {
+        "item": "Item",
+        "droplet": "Droplet",
+        "plan": "Plan",
+        "hours": "Hours",
+        "hourlyPrice": "Hourly price",
+        "amount": "Amount"
+      },
+      "hoursValue": "{hours} h"
+    }
   },
   "notifications": {
     "label": "Notifications",
@@ -981,7 +1060,7 @@
     "seeAll": "See all notifications",
     "empty": "No notifications yet.",
     "emptyTitle": "No notifications yet",
-    "emptyDescription": "Droplet updates, invoices and payments, and changes to your teams show up here.",
+    "emptyDescription": "Droplet and Mail updates, invoices and payments, and changes to your teams show up here.",
     "loadMore": "Load more",
     "retry": "Try again",
     "unread": "Unread",
@@ -1035,6 +1114,576 @@
       },
       "unknown": {
         "title": "You have a new notification"
+      },
+      "mail_domain_verified": {
+        "title": "{domain} is verified",
+        "description": "Mail can now be sent from it in {project}."
+      },
+      "mail_domain_unverified": {
+        "title": "{domain} is no longer verified",
+        "description": "Its DNS records in {project} stopped answering; sending from it is stopped until they are back."
+      },
+      "mail_package_near_limit": {
+        "title": "Mail in {project} is nearly used up",
+        "description": "{used} of {allowance} emails of the {package} Package used in {month}."
+      },
+      "mail_package_exhausted": {
+        "title": "Mail in {project} has run out",
+        "description": "All {allowance} emails of the {package} Package are used for {month}. Sending is stopped until you upgrade or the month ends."
+      },
+      "mail_rates_warning": {
+        "title": "Bounces or complaints are high in {project}",
+        "description": "Over the last {days} days: {bounce} bounced, {complaint} complained. Clean your list before sending is paused."
+      },
+      "mail_paused": {
+        "title": "Mail sending in {project} is paused",
+        "description": "Its bounce or complaint rate crossed the limit. Contact support to resume.",
+        "reasons": {
+          "bounce": "The bounce rate reached {rate}. Clean your list and contact support to resume.",
+          "complaint": "The complaint rate reached {rate}. Clean your list and contact support to resume."
+        }
+      }
+    }
+  },
+  "apps": {
+    "label": "Apps",
+    "droplets": {
+      "name": "Droplets",
+      "description": "Bare-metal servers, billed by the hour"
+    },
+    "mail": {
+      "name": "Mail",
+      "description": "Email sent from your own domains"
+    }
+  },
+  "apiKeys": {
+    "title": "API keys",
+    "description": "Keys of {project}. Your software presents one to send Mail over the HTTP API or SMTP.",
+    "create": "Create key",
+    "retry": "Try again",
+    "notFound": "This project is not in your current team.",
+    "empty": "No API keys.",
+    "emptyTitle": "Create your first API key",
+    "emptyDescription": "An API key lets your software send email from this project, over the HTTP API or as the SMTP password. Its secret is shown only once.",
+    "limitReached": "A project can have at most {max} active keys. Revoke one to create another.",
+    "usageHint": "Software sends with the header Authorization: Bearer followed by the key, or over SMTP with the user apikey and the key as the password. A revoked key is refused on its very next request.",
+    "revoke": "Revoke",
+    "revokeTitle": "Revoke “{name}”?",
+    "revokeConfirm": "Software using this key is refused from its very next request. This cannot be undone; create a new key to replace it.",
+    "revoked": "Key “{name}” revoked.",
+    "cancel": "Cancel",
+    "you": "(you)",
+    "formerMember": "Former member",
+    "copyPrefix": "Copy the key prefix",
+    "neverUsed": "Never",
+    "columns": {
+      "name": "Name",
+      "key": "Key",
+      "permissions": "Permissions",
+      "createdBy": "Created by",
+      "created": "Created",
+      "lastUsed": "Last used"
+    },
+    "permissions": {
+      "mail": {
+        "send": {
+          "label": "Send mail",
+          "description": "Send email from this project over the HTTP API and SMTP."
+        }
+      }
+    },
+    "secret": {
+      "title": "Copy your new key “{name}”",
+      "description": "Store it where your software reads its secrets, such as an environment variable. It carries the permission to send from this project.",
+      "warning": "This is the only time the key is shown. Nodera keeps only a hash of it, so you will not see it again; if you lose it, revoke it and create a new one."
+    },
+    "form": {
+      "modalTitle": "Create API key",
+      "name": "Name",
+      "namePlaceholder": "e.g. Production backend",
+      "nameHint": "Helps you tell keys apart; your software never sees it.",
+      "nameRequired": "Enter a name for the key.",
+      "nameTooLong": "The name can have at most {max} characters.",
+      "permissions": "Permissions",
+      "permissionsRequired": "Choose at least one permission.",
+      "permissionNotHeld": "Your role does not hold this permission, so a key cannot carry it.",
+      "cancel": "Cancel",
+      "submit": "Create key"
+    }
+  },
+  "mail": {
+    "access": {
+      "title": "Mail",
+      "deniedTitle": "Your role cannot see Mail",
+      "denied": "As {role} in {team}, Mail is not open to you. Ask an owner of the team if you need it.",
+      "deniedGeneric": "Your role in this team does not include Mail. Ask an owner of the team if you need it."
+    },
+    "gate": {
+      "title": "Mail",
+      "retry": "Try again"
+    },
+    "landing": {
+      "title": "Mail",
+      "description": "Send email from your own domains, with logs, Webhooks and a monthly Package.",
+      "teamNotFoundTitle": "Team not found",
+      "teamNotFound": "This link belongs to a team you are not a member of, or the team no longer exists.",
+      "openCurrent": "Open Mail of your current project",
+      "noTeam": "Your account has no team yet.",
+      "retry": "Try again",
+      "projectNotFoundTitle": "Project not found",
+      "projectNotFound": "This link belongs to a project that is not in {team}, or the project no longer exists.",
+      "noProjectTitle": "Mail lives in a project",
+      "noProject": "Create a project to choose a Package, add a sending domain and create API keys for it.",
+      "noProjectReadOnly": "This team has no project yet, and your role cannot create one. Ask an owner or a developer.",
+      "createProject": "Create a project"
+    },
+    "overview": {
+      "title": "Mail overview",
+      "description": "Package, usage, limits and sending of {project}.",
+      "accessPendingTitle": "Mail is getting ready for this project",
+      "accessPending": "This project was created a moment ago and Mail does not know it yet. Try again in a few seconds.",
+      "unavailable": "The overview could not be loaded.",
+      "retry": "Try again"
+    },
+    "package": {
+      "title": "Package",
+      "noneTitle": "No Package yet",
+      "none": "Mail is off for this project. Choose a Package below to start sending.",
+      "emailsPerMonth": "{count} emails a month",
+      "pricePerMonth": "{price} a month",
+      "taxNote": "USD, excl. taxes",
+      "since": "Since {date}",
+      "cancellationTitle": "Mail stops on {date}",
+      "cancellation": "{package} stays until this month ends; sending stops after it.",
+      "changeTitle": "Moving to {package} on {date}",
+      "change": "From then on the allowance is {count} emails a month.",
+      "undo": "Undo"
+    },
+    "packages": {
+      "chooseTitle": "Choose a Package",
+      "changeTitle": "Change Package",
+      "description": "Monthly email allowances. Each recipient of an accepted message counts once.",
+      "current": "Current",
+      "currentUntil": "Until {date}",
+      "from": "From {date}",
+      "actions": {
+        "choose": "Choose",
+        "upgrade": "Upgrade",
+        "downgrade": "Downgrade",
+        "keep": "Keep"
+      },
+      "emailsPerMonth": "{count} emails / month",
+      "pricePerMonth": "{price} / month",
+      "rules": "Prices in USD per month, excl. taxes. An upgrade takes effect at once and keeps what was sent counted; a month costs the price of the largest Package held in it.",
+      "downgradeRule": "A downgrade or a cancellation starts on {date}.",
+      "cancelMail": "Cancel Mail",
+      "readOnly": "Your role can see the Packages but not change them.",
+      "blocked": {
+        "no_payment_method": "A card is required before a Package can be chosen or changed.",
+        "suspended": "The team is suspended over an unpaid invoice; Packages cannot be chosen or changed until it is paid."
+      },
+      "addCard": "Add a card",
+      "payInvoice": "Pay the invoice",
+      "back": "Back",
+      "confirm": {
+        "choose": {
+          "title": "Switch Mail on with {package}?",
+          "description": "{count} emails a month for {price} a month, on the team's monthly invoice. Sending can start once a sending domain is verified.",
+          "ok": "Choose Package"
+        },
+        "upgrade": {
+          "title": "Upgrade to {package} now?",
+          "description": "It takes effect at once: this month's allowance becomes {count} emails and what was already sent stays counted. This month is charged at {price}, the largest Package held in it.",
+          "ok": "Upgrade now"
+        },
+        "downgrade": {
+          "title": "Move to {package} on {date}?",
+          "description": "Your current Package stays until the month ends. From {date} the allowance is {count} emails for {price} a month. You can undo this until then.",
+          "ok": "Schedule the change"
+        },
+        "cancel": {
+          "title": "Cancel Mail?",
+          "description": "{package} stays until the month ends; sending stops on {date}. You can undo this until then.",
+          "ok": "Cancel Mail"
+        }
+      },
+      "done": {
+        "choose": "Mail is on with {package}.",
+        "upgrade": "Upgraded to {package}.",
+        "downgrade": "{package} starts on {date}.",
+        "keep": "You stay on {package}.",
+        "cancel": "Mail stops on {date}."
+      }
+    },
+    "usage": {
+      "title": "Usage",
+      "description": "This month's allowance and today's Daily limit.",
+      "periodLabel": "This month",
+      "usedOf": "{used} of {total}",
+      "renews": "Renews on {date}.",
+      "noPeriod": "Nothing is counted until a Package is chosen.",
+      "dailyLabel": "Today",
+      "resets": "Resets {date}.",
+      "dailyRule": "The Daily limit grows after days of clean sending, never beyond what the Package has left."
+    },
+    "rates": {
+      "title": "Last {days} days",
+      "description": "Bounce and complaint rates decide whether sending is warned or paused.",
+      "sent": "Messages sent",
+      "bounce": "Bounce rate",
+      "complaint": "Complaint rate",
+      "limits": "Warning above {warning}, pause at {pause}.",
+      "minimum": "Rates count once at least {count} messages were sent in the window."
+    },
+    "sendingState": {
+      "active": {
+        "title": "Sending is on",
+        "description": "Your software can send from verified domains, within today's Daily limit and this month's allowance."
+      },
+      "no_package": {
+        "title": "Mail is off",
+        "description": "Choose a Package to start sending from this project."
+      },
+      "exhausted": {
+        "title": "This month's emails are used up",
+        "description": "Sending is stopped until you upgrade, or until the allowance renews on {renews}."
+      },
+      "daily_limit": {
+        "title": "Today's Daily limit is reached",
+        "description": "Sending resumes at {resets}. The limit grows after days of clean sending."
+      },
+      "suspended": {
+        "title": "Sending is stopped",
+        "description": "The team has an unpaid invoice. Sending resumes as soon as it is paid."
+      }
+    },
+    "pause": {
+      "title": "Sending was paused on {date}",
+      "bounce": "The bounce rate of the last {days} days reached {rate}; sending pauses at {limit}.",
+      "complaint": "The complaint rate of the last {days} days reached {rate}; sending pauses at {limit}.",
+      "lift": "Only Nodera can lift a Pause. Clean your recipient list, then contact support."
+    },
+    "smtp": {
+      "title": "SMTP settings",
+      "description": "For ready-made applications such as WordPress, Laravel or Django.",
+      "host": "Host",
+      "hostUnknown": "Not configured",
+      "ports": "Ports",
+      "security": {
+        "starttls": "STARTTLS",
+        "tls": "TLS"
+      },
+      "username": "Username",
+      "password": "Password",
+      "passwordValue": "An API key of this project.",
+      "manageKeys": "Manage API keys",
+      "askForKey": "Ask an owner or a developer for one.",
+      "tls": "Credentials are accepted only over an encrypted connection: STARTTLS on 587 and 2525, TLS from the start on 465."
+    },
+    "api": {
+      "title": "HTTP API",
+      "description": "Send from your own software with an API key of this project.",
+      "notConfigured": "The API address is not configured for this build.",
+      "keyHint": "The command reads the key from {variable}: set it first with export {variable}=…, or paste the key in its place.",
+      "manageKeys": "Manage API keys",
+      "askForKey": "Ask an owner or a developer for a key.",
+      "needsDomain": "This project has no verified Sending domain yet, so the command is refused until its From address is on one.",
+      "addDomain": "Add a domain",
+      "watch": "Watch for a test message",
+      "stopWatching": "Stop watching",
+      "example": {
+        "subject": "Hello from Nodera",
+        "text": "It works: this message was sent through the Nodera Mail API.",
+        "copy": "Copy command"
+      }
+    },
+    "testMessage": {
+      "title": "Send a test message",
+      "description": "Run this command in a terminal. The message shows up here the moment Nodera accepts it.",
+      "needsDomain": "This project has no verified Sending domain yet, so the command is refused until its From address is on one.",
+      "addDomain": "Add a domain",
+      "waiting": "Waiting for a message…",
+      "waitingHint": "The next message this project accepts appears here, followed by what became of each recipient.",
+      "received": "Message received",
+      "noSubject": "(no subject)",
+      "from": "From {from}",
+      "openInLogs": "Open in logs",
+      "watchAgain": "Watch for another",
+      "expired": "No message arrived in {minutes} minutes.",
+      "expiredHint": "If the command answered with an error, its message says why, such as a From address outside a verified Sending domain.",
+      "keepWaiting": "Keep waiting",
+      "stalled": "New messages could not be checked.",
+      "retry": "Try again"
+    },
+    "domains": {
+      "title": "Sending domains",
+      "description": "Domains {project} sends from. Each is verified through three DNS records.",
+      "breadcrumbMail": "Mail",
+      "add": "Add domain",
+      "retry": "Try again",
+      "limitReached": "A project can have at most {max} sending domains.",
+      "emptyTitle": "Add your first sending domain",
+      "emptyDescription": "Mail leaves only from a verified domain. Add yours and Nodera shows the three DNS records to create.",
+      "emptyReadOnly": "No sending domain yet. Owners and developers can add one.",
+      "dmarcMissingShort": "No DMARC record found",
+      "notCheckedYet": "Not checked yet",
+      "columns": {
+        "domain": "Domain",
+        "status": "Status",
+        "lastChecked": "Last checked",
+        "added": "Added"
+      },
+      "status": {
+        "pending": "Pending",
+        "verified": "Verified",
+        "unverified": "Not verified"
+      },
+      "form": {
+        "modalTitle": "Add sending domain",
+        "description": "Enter the domain your addresses use, such as example.com or mail.example.com. You then add three CNAME records at your DNS provider.",
+        "name": "Domain",
+        "namePlaceholder": "example.com",
+        "nameHint": "Without http:// or an address; a subdomain works too.",
+        "nameRequired": "Enter a domain.",
+        "nameTooLong": "The domain can have at most {max} characters.",
+        "nameFormat": "Enter a domain like example.com, without http:// or an address.",
+        "duplicate": "This domain is already in this project.",
+        "cancel": "Cancel",
+        "submit": "Add domain",
+        "created": "{name} added. Create its DNS records next."
+      },
+      "detail": {
+        "title": "Sending domain",
+        "description": "Add the records below at your DNS provider; Nodera verifies the domain as soon as they answer.",
+        "added": "Added",
+        "lastChecked": "Last checked",
+        "verifiedAt": "Verified",
+        "notYet": "Not yet",
+        "explanation": {
+          "pending": "Waiting for the DNS records. Nodera checks them every 10 minutes during the first 72 hours, then daily; {domain} is verified the moment all three answer.",
+          "verified": "All three records answer. Mail can be sent from any address at {domain}.",
+          "unverified": "A record no longer answers as expected, so sending from {domain} is stopped. Fix the record marked below; the domain is verified again once all three answer."
+        },
+        "verified": "The domain is verified.",
+        "stillMissing": "Checked: a record is still missing or points elsewhere.",
+        "deleteTitle": "Delete {name}?",
+        "deleteConfirm": "Nothing more is sent from it, from this moment. Its messages stay in the logs until they expire.",
+        "delete": "Delete",
+        "cancel": "Cancel",
+        "deleted": "{name} deleted.",
+        "notFoundTitle": "Sending domain not found",
+        "notFoundDescription": "It may have been deleted, or it belongs to another project.",
+        "backToDomains": "Back to domains",
+        "verifyNow": "Verify now",
+        "recordsTitle": "DNS records",
+        "recordsDescription": "Create these three CNAME records at your DNS provider. They are unique to this project.",
+        "recordsHint": "Some DNS providers add {domain} to the host on their own; there, enter only the part before .{domain}."
+      },
+      "records": {
+        "notChecked": "Not checked yet",
+        "valid": "Found",
+        "invalid": "Missing or wrong",
+        "columns": {
+          "purpose": "Purpose",
+          "type": "Type",
+          "host": "Host",
+          "value": "Points to",
+          "state": "State"
+        },
+        "purpose": {
+          "returnPath": "Return path",
+          "dkim": "DKIM"
+        },
+        "copyHost": "Copy the host",
+        "copyValue": "Copy the target",
+        "checkedAt": "Checked {date}"
+      },
+      "dmarc": {
+        "title": "No DMARC record found",
+        "description": "Large mailbox providers such as Gmail and Yahoo may refuse or junk mail from domains without one. Sending is not blocked; add a TXT record like this one:",
+        "host": "Host",
+        "value": "Value"
+      }
+    },
+    "events": {
+      "accepted": "Accepted",
+      "delivered": "Delivered",
+      "deferred": "Deferred",
+      "bounced": "Bounced",
+      "suppressed": "Suppressed",
+      "complained": "Complained"
+    },
+    "eventDescriptions": {
+      "accepted": "Nodera took the message for this recipient.",
+      "delivered": "The receiving server accepted it.",
+      "deferred": "The receiving server asked to try later; Nodera retries.",
+      "bounced": "The receiving server refused it.",
+      "suppressed": "Not sent: the address is on the project's Suppressions.",
+      "complained": "The recipient marked it as spam."
+    },
+    "logs": {
+      "title": "Logs",
+      "description": "Messages of {project} in the last {days} days, newest first.",
+      "breadcrumbMail": "Mail",
+      "retry": "Try again",
+      "loadMore": "Load more",
+      "empty": "No messages.",
+      "emptyFiltered": "No message matches these filters.",
+      "emptyHint": "Messages your software sends show up here within seconds.",
+      "noSubject": "(no subject)",
+      "moreRecipients": "+{count}",
+      "columns": {
+        "sent": "Sent",
+        "subject": "Subject",
+        "recipients": "Recipients",
+        "status": "Status",
+        "tags": "Tags",
+        "source": "Via"
+      },
+      "filters": {
+        "anyStatus": "Any status",
+        "status": "Recipient status",
+        "recipient": "Recipient",
+        "recipientPlaceholder": "name@example.com",
+        "from": "Sender",
+        "fromPlaceholder": "no-reply@yourdomain.com",
+        "tag": "Tag",
+        "tagPlaceholder": "e.g. password-reset",
+        "dates": "Dates",
+        "datesHint": "Within the last {days} days.",
+        "search": "Search",
+        "reset": "Clear"
+      },
+      "detail": {
+        "title": "Message",
+        "notFound": "Message not found. Logs are kept for 30 days.",
+        "retry": "Try again",
+        "from": "From",
+        "sent": "Sent",
+        "source": "Sent via",
+        "size": "Size",
+        "messageIdHeader": "Message-ID",
+        "tags": "Tags",
+        "recipientsTitle": "Recipients",
+        "recipientsDescription": "What happened to each recipient, with the receiving server's answer.",
+        "retention": "Nodera keeps no message body once delivery is handed over; logs are deleted after 30 days.",
+        "noEvents": "No events yet.",
+        "sources": {
+          "api": "HTTP API",
+          "smtp": "SMTP"
+        },
+        "kinds": {
+          "to": "To",
+          "cc": "Cc",
+          "bcc": "Bcc"
+        }
+      }
+    },
+    "suppressions": {
+      "title": "Suppressions",
+      "description": "Addresses {project} no longer sends to, after a permanent bounce or a complaint.",
+      "breadcrumbMail": "Mail",
+      "search": "Search suppressions",
+      "searchPlaceholder": "Search by address",
+      "retry": "Try again",
+      "loadMore": "Load more",
+      "empty": "No suppressed addresses.",
+      "columns": {
+        "address": "Address",
+        "reason": "Reason",
+        "message": "Message",
+        "added": "Added"
+      },
+      "reasons": {
+        "bounce": "Bounced",
+        "complaint": "Complaint"
+      },
+      "viewMessage": "View in logs",
+      "remove": "Remove",
+      "removeTitle": "Remove {address}?",
+      "removeConfirm": "Mail to this address is sent again. Remove it only once the address works again.",
+      "removed": "{address} can receive mail again.",
+      "cancel": "Cancel",
+      "complaintLocked": "The recipient complained, so only Nodera can remove this address. Contact support if it was a mistake.",
+      "complaintLockedShort": "Only Nodera can remove it",
+      "rules": "An address that bounces for good, or whose recipient complains, is added here and skipped from then on. A send to it lists the address as suppressed in its answer."
+    },
+    "webhooks": {
+      "title": "Webhooks",
+      "description": "Addresses on your servers that receive the message events of {project}, signed. Up to {max} per project.",
+      "breadcrumbMail": "Mail",
+      "add": "Add webhook",
+      "retry": "Try again",
+      "limitReached": "A project can have at most {max} webhooks.",
+      "emptyTitle": "Add your first webhook",
+      "emptyDescription": "Nodera posts message events (delivered, bounced, complained…) to your server in signed batches.",
+      "emptyReadOnly": "No webhook yet. Owners and developers can add one.",
+      "columns": {
+        "url": "URL",
+        "events": "Events",
+        "active": "Active",
+        "created": "Created"
+      },
+      "allEvents": "All events",
+      "enable": "Enable",
+      "disable": "Disable",
+      "activeOn": "On",
+      "activeOff": "Off",
+      "viewDeliveries": "Deliveries",
+      "deliveries": {
+        "title": "Deliveries",
+        "columns": {
+          "created": "Created",
+          "status": "Status",
+          "events": "Events",
+          "attempts": "Attempts",
+          "lastAttempt": "Last attempt"
+        },
+        "statusCode": "HTTP {code}",
+        "nextAttempt": "Next attempt {date}",
+        "retry": "Try again",
+        "empty": "No deliveries in the last 30 days.",
+        "loadMore": "Load more",
+        "rules": "A failed delivery is retried after 1, 2, 5, 10 and 30 minutes, then 1, 2, 4 and 8 hours, and dropped 24 hours after its first attempt."
+      },
+      "edit": "Edit",
+      "delete": "Delete",
+      "deleteTitle": "Delete this webhook?",
+      "deleteConfirm": "Events stop going to {url}. Deliveries waiting for a retry are dropped.",
+      "deleted": "Webhook deleted.",
+      "cancel": "Cancel",
+      "updated": "Webhook saved.",
+      "enabled": "Webhook enabled.",
+      "disabled": "Webhook disabled.",
+      "signatureHint": "Each delivery is a JSON array signed in its Nodera-Signature header: a timestamp and an HMAC-SHA256 of the timestamp and the body, keyed with the webhook's secret. A failed delivery is retried for 24 hours.",
+      "secret": {
+        "title": "Copy the signing secret",
+        "description": "Your server checks each delivery's Nodera-Signature header with it.",
+        "warning": "This is the only time the secret is shown; you will not see it again. Without it, delete the webhook and add it again."
+      },
+      "deliveryStatus": {
+        "pending": "Pending",
+        "succeeded": "Delivered",
+        "failed": "Failed"
+      },
+      "form": {
+        "createTitle": "Add webhook",
+        "editTitle": "Edit webhook",
+        "url": "URL",
+        "urlPlaceholder": "https://example.com/nodera/events",
+        "urlHint": "A public HTTPS address of your server.",
+        "urlRequired": "Enter the URL.",
+        "urlTooLong": "The URL can have at most {max} characters.",
+        "urlInvalid": "Enter a full URL starting with https://.",
+        "events": "Events",
+        "eventsRequired": "Choose at least one event.",
+        "selectAll": "Select all",
+        "selectNone": "Clear",
+        "active": "Active",
+        "activeHint": "A disabled webhook keeps its settings but receives nothing.",
+        "cancel": "Cancel",
+        "save": "Save",
+        "submit": "Add webhook"
       }
     }
   }

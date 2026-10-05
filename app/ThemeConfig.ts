@@ -62,6 +62,14 @@ const ThemeConfig: AntdThemeConfig = {
       hoverBorderColor: colors.brand[400],
       activeOutlineColor: colors.brand[100],
     },
+    DatePicker: {
+      borderRadius: radius.input,
+      borderRadiusLG: radius.input,
+      activeBorderColor: colors.brand[600],
+      hoverBorderColor: colors.brand[400],
+      activeShadow: `0 0 0 3px ${colors.brand[100]}`,
+      paddingInline: 14,
+    },
     Checkbox: {
       colorPrimary: colors.brand[600],
       colorPrimaryHover: colors.brand[700],

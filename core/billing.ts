@@ -55,7 +55,9 @@ export interface PendingCardVerification {
   teamId: string;
 }
 
-export interface UsageLine {
+/** A Droplet's hours in the Period at its locked price. */
+export interface DropletBillingLine {
+  kind: "droplet";
   dropletId: string;
   hostname: string;
   planCode: string;
@@ -63,6 +65,31 @@ export interface UsageLine {
   hourlyPrice: string;
   amount: string;
 }
+
+/** A Project's Mail Package for the Period: the largest it held, less what was already charged. */
+export interface MailBillingLine {
+  kind: "mail";
+  projectId: string;
+  projectName: string;
+  packageCode: string;
+  amount: string;
+}
+
+/**
+ * One line of the Period's usage or of an invoice, product-neutral since Mail joined Droplets:
+ * the Droplet fields come only on Droplet lines, the Project and Package only on Mail lines.
+ */
+export type BillingLine = DropletBillingLine | MailBillingLine;
+
+export const isMailLine = (line: BillingLine): line is MailBillingLine => line.kind === "mail";
+
+/** A row key: a Droplet appears once per Period, and so does a Project's Mail Package. */
+export const billingLineKey = (line: BillingLine): string =>
+  isMailLine(line)
+    ? `mail:${line.projectId}:${line.packageCode}`
+    : `droplet:${line.dropletId}`;
+
+export type UsageLine = BillingLine;
 
 export type ThresholdKind = "new" | "established";
 
@@ -100,7 +127,7 @@ export interface InvoiceSummary {
   paidAt: string | null;
 }
 
-export type InvoiceLine = UsageLine;
+export type InvoiceLine = BillingLine;
 
 export interface TaxLine {
   label: string;

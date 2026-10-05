@@ -1,9 +1,9 @@
 "use client";
 
 import { useCallback } from "react";
+import { DEFAULT_APP, appLandingPath } from "@/core/apps";
 import { acceptInvitationPath } from "@/core/invitation";
-import { DASHBOARD_PATH } from "@/core/routes";
-import { getPendingInvitation } from "@/core/storage";
+import { getLastApp, getPendingInvitation } from "@/core/storage";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
 
 /**
@@ -22,6 +22,6 @@ export const useAfterSignIn = () => {
       navigate(acceptInvitationPath(pending.token), { replace: true });
       return;
     }
-    navigate(DASHBOARD_PATH, { replace: true });
+    navigate(appLandingPath(getLastApp() ?? DEFAULT_APP), { replace: true });
   }, [navigate]);
 };

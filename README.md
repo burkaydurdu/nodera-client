@@ -11,7 +11,7 @@ locale check.
 ## Run
 
 ```bash
-cp .env.example .env      # optional — every variable has a dev default
+cp .env.example .env      # optional — only the SMTP host has no dev default
 yarn install
 yarn dev                  # http://localhost:3002
 ```
@@ -19,7 +19,8 @@ yarn dev                  # http://localhost:3002
 The app talks to the customer gateway (`GATEWAY_API_URL`, default `http://localhost:3460`).
 Every request carries `X-Target-Server`, chosen by `api/proxy.ts` from the path: catalog and
 Droplet routes go to `droplet`, `/v1/teams/:id/billing/*` and `/v1/billing/*` to `billing`,
-everything else to `customer`. Start the Go backend from the
+`/v1/notifications/*` to `notification`, `/v1/mail/*` and `/v1/projects/:id/mail/*` to `mail`,
+everything else (a Project's API keys included) to `customer`. Start the Go backend from the
 sibling `nodera` repository first.
 
 Other scripts:
@@ -40,10 +41,12 @@ The husky pre-commit hook runs format, lint, type and locale checks (not the bui
 Variables are inlined at build time through `next.config.mjs` (`env`), so a change needs a
 rebuild. See `.env.example`.
 
-| Variable          | Default                 | Meaning                                       |
-| ----------------- | ----------------------- | --------------------------------------------- |
-| `ENV`             | `dev`                   | Deployment environment name                   |
-| `GATEWAY_API_URL` | `http://localhost:3460` | Customer gateway base URL (no trailing slash) |
+| Variable              | Default                                   | Meaning                                                                           |
+| --------------------- | ----------------------------------------- | --------------------------------------------------------------------------------- |
+| `ENV`                 | `dev`                                     | Deployment environment name                                                       |
+| `GATEWAY_API_URL`     | `http://localhost:3460`                   | Customer gateway base URL (no trailing slash)                                     |
+| `MAIL_SMTP_HOST`      | none                                      | Mail's SMTP host, shown in the SMTP settings; unset, "Not configured"             |
+| `INTEGRATION_API_URL` | `http://localhost:3470` in dev, else none | Integration gateway base URL the Mail send example calls; unset, "not configured" |
 
 ## Structure
 
@@ -54,10 +57,19 @@ app/                     App Router pages — orchestration only (data, routing,
   globals.css            Tailwind layers + @theme mapping of the tokens
   actions/locale.ts      server action that writes the NEXT_LOCALE cookie
   login, register, verify-email, otp, forgot-password, reset-password
-  dashboard/             projects list (empty state = create first project)
+  dashboard/             the Droplets App's projects list (empty state = create first project)
   dashboard/projects/new full-page create form
   dashboard/projects/[projectId]              the Project page: its Droplet list (polls while provisioning)
   dashboard/projects/[projectId]/droplets/new create-Droplet flow (Region, Plan, Image, hostname, SSH keys)
+  dashboard/projects/[projectId]/settings     Project settings: details, and the API keys tab
+  dashboard/projects/[projectId]/api-keys     the Project's API keys (apikey.write), secret shown once
+  dashboard/mail         the Mail App's entry: opens the remembered Project's overview; email links
+                         carry `?team=&project=`
+  dashboard/projects/[projectId]/mail         Mail overview: Package, usage, Daily limit, rates, SMTP
+  dashboard/projects/[projectId]/mail/domains Sending domains (`/[domainId]`: DNS records, verify now)
+  dashboard/projects/[projectId]/mail/logs    Messages of 30 days with filters and a detail drawer;
+                                              `?message=` opens one (a Suppression links its own)
+  dashboard/projects/[projectId]/mail/suppressions, …/mail/webhooks
   dashboard/droplets/[dropletId]              Droplet detail: IPs, locked price, timeline, power/delete
   dashboard/catalog      Regions and Plans with hourly / monthly prices
   dashboard/team         Team settings: Members (roles, remove, leave) and Invitations tabs
@@ -77,7 +89,9 @@ components/              design-system primitives (Nodera*, Card, FormSection, P
 components/<Feature>/    feature components: Auth/, Teams/, Members/, Invitations/, Projects/,
                          Droplets/, SSHKeys/, Billing/, Profile/
 contexts/                AuthContext (session + current user), TeamContext (teams + selected
-                         team), InvitationContext (pending invitations badge), RoutingContext
+                         team), ProjectContext (the Team's Projects for the shared selector),
+                         MailProjectContext (the Mail pages' confirmed Project),
+                         InvitationContext (pending invitations badge), RoutingContext
                          (auth guard)
 core/                    shared types and pure helpers (error codes, password rule, countries,
                          storage keys, locale, authz role matrix)
@@ -113,8 +127,11 @@ under `:root[data-theme="dark"]`.
 ## Auth behaviour
 
 - Tokens live in `localStorage` (`nodera.access_token`, `nodera.refresh_token`); the selected
-  team in `nodera.last_team_id`, the last used project in `nodera.last_project_id`; the pending
-  MFA challenge in `sessionStorage`.
+  team in `nodera.last_team_id`, the last used project in `nodera.last_project_id`, the last
+  App (Droplets or Mail) in `nodera.last_app`; the pending MFA challenge in `sessionStorage`.
+- The top bar carries the Team switcher (with Team settings and Billing), the shared Project
+  selector, the App switcher and the account menu; the side menu belongs to the current App.
+  A page both Apps share (Team settings, a Project's API keys) keeps the last App's menu.
 - `TeamContext` loads `/v1/teams` once the user is known, restores the stored team (or the
   first one) and exposes `selectTeam`/`addTeam`; the `TeamSwitcher` in the navbar switches or
   creates teams. Switching a team clears the remembered project.

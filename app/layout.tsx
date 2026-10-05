@@ -6,6 +6,7 @@ import { getLocale, getMessages } from "next-intl/server";
 import { AuthProvider } from "@/contexts/AuthContext/AuthContext";
 import { InboxProvider } from "@/contexts/InboxContext/InboxContext";
 import { InvitationProvider } from "@/contexts/InvitationContext/InvitationContext";
+import { ProjectProvider } from "@/contexts/ProjectContext/ProjectContext";
 import { RealtimeProvider } from "@/contexts/RealtimeContext/RealtimeContext";
 import { RoutingProvider } from "@/contexts/RoutingContext/RoutingContext";
 import { TeamProvider } from "@/contexts/TeamContext/TeamContext";
@@ -39,17 +40,19 @@ export default async function RootLayout({
           <AntdProvider>
             <AuthProvider>
               <TeamProvider>
-                <InvitationProvider>
-                  <RealtimeProvider>
-                    <InboxProvider>
-                      <RoutingProvider>
-                        <Suspense fallback={<Loading fullScreen />}>
-                          <div className="min-h-screen">{children}</div>
-                        </Suspense>
-                      </RoutingProvider>
-                    </InboxProvider>
-                  </RealtimeProvider>
-                </InvitationProvider>
+                <ProjectProvider>
+                  <InvitationProvider>
+                    <RealtimeProvider>
+                      <InboxProvider>
+                        <RoutingProvider>
+                          <Suspense fallback={<Loading fullScreen />}>
+                            <div className="min-h-screen">{children}</div>
+                          </Suspense>
+                        </RoutingProvider>
+                      </InboxProvider>
+                    </RealtimeProvider>
+                  </InvitationProvider>
+                </ProjectProvider>
               </TeamProvider>
             </AuthProvider>
           </AntdProvider>

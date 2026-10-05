@@ -5,12 +5,15 @@ import type { MenuProps } from "antd";
 import { LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
 import { useTranslations } from "next-intl";
 import Link from "next/link";
+import { appLandingPath } from "@/core/apps";
 import useAuth from "@/contexts/AuthContext/useAuth";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
+import AppSwitcher from "@/components/AppSwitcher";
 import PendingInvitationsMenu from "@/components/Invitations/PendingInvitationsMenu";
 import LanguageSwitch from "@/components/LanguageSwitch";
 import NoderaLogo from "@/components/NoderaLogo";
 import NotificationBell from "@/components/Notifications/NotificationBell";
+import ProjectSelector from "@/components/Projects/ProjectSelector";
 import TeamSwitcher from "@/components/Teams/TeamSwitcher";
 import type { NavbarProps } from "./type";
 
@@ -22,7 +25,7 @@ const initialsOf = (name: string) =>
     .map((part) => part[0]?.toUpperCase() ?? "")
     .join("");
 
-export default function Navbar({ onToggleMenu }: NavbarProps) {
+export default function Navbar({ app, onToggleMenu }: NavbarProps) {
   const t = useTranslations("navbar");
   const { currentUser, logout } = useAuth();
   const { navigate } = useNavigate();
@@ -60,17 +63,22 @@ export default function Navbar({ onToggleMenu }: NavbarProps) {
             <MenuOutlined />
           </button>
         )}
-        <Link href="/dashboard" className="flex items-center">
+        <Link href={appLandingPath(app)} className="flex items-center">
           <NoderaLogo size={26} />
         </Link>
         {currentUser && (
-          <>
-            <span className="hidden h-6 w-px bg-border sm:block" aria-hidden />
-            <TeamSwitcher className="hidden sm:flex" />
-          </>
+          <div className="hidden items-center gap-2 xl:flex">
+            <span className="mr-1 h-6 w-px bg-border" aria-hidden />
+            <TeamSwitcher />
+            <span className="text-text-muted" aria-hidden>
+              /
+            </span>
+            <ProjectSelector app={app} />
+          </div>
         )}
       </div>
       <div className="flex items-center gap-4">
+        {currentUser && <AppSwitcher app={app} className="hidden sm:flex" />}
         <LanguageSwitch />
         {currentUser && <PendingInvitationsMenu />}
         {currentUser && <NotificationBell />}

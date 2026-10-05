@@ -2,15 +2,10 @@
 
 import { createContext, ReactNode, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
+import { DEFAULT_APP, appLandingPath } from "@/core/apps";
 import { INVITATION_QUERY_PARAM, acceptInvitationPath } from "@/core/invitation";
-import {
-  DASHBOARD_PATH,
-  LOGIN_PATH,
-  NO_AUTH_PATHS,
-  OPEN_PATHS,
-  isOpenPath,
-} from "@/core/routes";
-import { getPendingInvitation } from "@/core/storage";
+import { LOGIN_PATH, NO_AUTH_PATHS, OPEN_PATHS, isOpenPath } from "@/core/routes";
+import { getLastApp, getPendingInvitation } from "@/core/storage";
 import useAuth from "../AuthContext/useAuth";
 import Loading from "@/components/Loading";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
@@ -39,6 +34,9 @@ const pendingInvitationToken = (): string | null => {
   return pending && !pending.autoAccepted ? pending.token : null;
 };
 
+/** A signed-in user lands in the App used last, where they left off. */
+const homePath = (): string => appLandingPath(getLastApp() ?? DEFAULT_APP);
+
 /** Client-side guard: public pages for signed-out users, everything else for signed-in ones. */
 export const RoutingProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -52,7 +50,7 @@ export const RoutingProvider = ({ children }: { children: ReactNode }) => {
     const isPublicPath = NO_AUTH_PATHS.includes(pathName);
 
     if (pathName === ROOT_PATH) {
-      navigate(currentUser ? DASHBOARD_PATH : LOGIN_PATH, { replace: true });
+      navigate(currentUser ? homePath() : LOGIN_PATH, { replace: true });
       return;
     }
     if (isOpenPath(pathName)) {
@@ -61,7 +59,7 @@ export const RoutingProvider = ({ children }: { children: ReactNode }) => {
     }
     if (currentUser && isPublicPath) {
       const invitation = pendingInvitationToken();
-      navigate(invitation ? acceptInvitationPath(invitation) : DASHBOARD_PATH, {
+      navigate(invitation ? acceptInvitationPath(invitation) : homePath(), {
         replace: true,
       });
       return;

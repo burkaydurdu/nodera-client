@@ -8,11 +8,10 @@ import { ListDroplets } from "@/api/droplets";
 import {
   DROPLET_FALLBACK_POLL_INTERVAL_MS,
   type Droplet,
-  PROJECT_ACCESS_RETRY_INTERVAL_MS,
-  PROJECT_ACCESS_RETRY_MS,
   isTransitional,
 } from "@/core/droplet";
 import { ErrorCode } from "@/core/error";
+import { PROJECT_ACCESS_RETRY_INTERVAL_MS, PROJECT_ACCESS_RETRY_MS } from "@/core/project";
 import useTeam from "@/contexts/TeamContext/useTeam";
 import { useCan } from "@/hooks/Authz/useCan";
 import { useErrorMessage } from "@/hooks/Error/useErrorMessage";

@@ -1,65 +1,22 @@
 "use client";
 
 import { Table } from "antd";
-import type { ColumnsType } from "antd/es/table";
 import { useLocale, useTranslations } from "next-intl";
-import type { InvoiceLine } from "@/core/billing";
+import { type InvoiceLine, billingLineKey } from "@/core/billing";
+import { useBillingLineColumns } from "@/hooks/Billing/useBillingLineColumns";
 import { formatUtcDate } from "@/utils/date";
 import { formatMoney, formatRateBps } from "@/utils/price";
 import type { InvoiceBreakdownProps } from "./type";
 
-/** One line per Droplet, the tax lines and the totals as the invoice states them. */
+/**
+ * One line per Droplet and per Project's Mail Package, the tax lines and the totals as the
+ * invoice states them.
+ */
 export default function InvoiceBreakdown({ invoice }: InvoiceBreakdownProps) {
   const t = useTranslations("billing.invoices.detail");
   const locale = useLocale();
   const { currency } = invoice;
-
-  const columns: ColumnsType<InvoiceLine> = [
-    {
-      title: t("columns.droplet"),
-      dataIndex: "hostname",
-      key: "hostname",
-      ellipsis: true,
-      render: (hostname: string) => <span className="font-mono text-sm">{hostname}</span>,
-    },
-    {
-      title: t("columns.plan"),
-      dataIndex: "planCode",
-      key: "plan",
-      width: 140,
-      render: (code: string) => <span className="font-mono text-sm">{code}</span>,
-    },
-    {
-      title: t("columns.hours"),
-      dataIndex: "hours",
-      key: "hours",
-      width: 90,
-      align: "right",
-      render: (hours: number) => t("hoursValue", { hours }),
-    },
-    {
-      title: t("columns.hourlyPrice"),
-      dataIndex: "hourlyPrice",
-      key: "hourlyPrice",
-      width: 140,
-      align: "right",
-      render: (price: string) => (
-        <span className="font-mono text-sm">{formatMoney(price, currency)}</span>
-      ),
-    },
-    {
-      title: t("columns.amount"),
-      dataIndex: "amount",
-      key: "amount",
-      width: 140,
-      align: "right",
-      render: (amount: string) => (
-        <span className="font-mono text-sm font-medium text-text">
-          {formatMoney(amount, currency)}
-        </span>
-      ),
-    },
-  ];
+  const columns = useBillingLineColumns(invoice.lines, currency);
 
   const totals: Array<{ label: string; value: string; strong?: boolean; muted?: boolean }> = [
     { label: t("subtotal"), value: formatMoney(invoice.subtotal, currency) },
@@ -85,7 +42,7 @@ export default function InvoiceBreakdown({ invoice }: InvoiceBreakdownProps) {
   return (
     <div className="flex flex-col gap-4">
       <Table<InvoiceLine>
-        rowKey="dropletId"
+        rowKey={billingLineKey}
         columns={columns}
         dataSource={invoice.lines}
         pagination={false}

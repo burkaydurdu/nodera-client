@@ -7,13 +7,8 @@ import { GetPlans } from "@/api/catalog";
 import { CreateDroplet } from "@/api/droplets";
 import type { Plan } from "@/core/catalog";
 import { ErrorCode } from "@/core/error";
-import {
-  MAX_SSH_KEYS,
-  MIN_SSH_KEYS,
-  PROJECT_ACCESS_RETRY_INTERVAL_MS,
-  PROJECT_ACCESS_RETRY_MS,
-  validateHostname,
-} from "@/core/droplet";
+import { MAX_SSH_KEYS, MIN_SSH_KEYS, validateHostname } from "@/core/droplet";
+import { PROJECT_ACCESS_RETRY_INTERVAL_MS, PROJECT_ACCESS_RETRY_MS } from "@/core/project";
 import type { SSHKey } from "@/core/sshKey";
 import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
 import { GetStatus, IsErrorCode } from "@/utils/error";

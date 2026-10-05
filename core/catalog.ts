@@ -30,3 +30,6 @@ export interface Image {
   family: string;
   version: string;
 }
+
+/** Regions and Plans with their prices, a page of the Droplets App. */
+export const CATALOG_PATH = "/dashboard/catalog";

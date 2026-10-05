@@ -47,10 +47,6 @@ export const TeamProvider = ({ children }: { children: ReactNode }) => {
   // Read after mount so server and client render the same markup.
   const [lastProjectId, setLastProjectIdState] = useState<string | null>(null);
 
-  useEffect(() => {
-    setLastProjectIdState(getLastProjectId());
-  }, []);
-
   const rememberProject = useCallback((projectId: string) => {
     setLastProjectId(projectId);
     setLastProjectIdState(projectId);
@@ -104,6 +100,10 @@ export const TeamProvider = ({ children }: { children: ReactNode }) => {
   // on every language change, so the effect keys on the user only.
   useEffect(() => {
     if (currentUser) {
+      // Read once the user is known, never on mount: no one is signed in on the first render and
+      // the branch below would clear it, leaving this apart from storage, which the Project list
+      // checks while the current Project reads this.
+      setLastProjectIdState(getLastProjectId());
       reload();
       return;
     }

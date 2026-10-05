@@ -7,6 +7,7 @@ import { GetMe } from "@/api/users";
 import type { Session } from "@/core/session";
 import type { User } from "@/core/user";
 import {
+  clearLastApp,
   clearLastProjectId,
   clearLastTeamId,
   clearMfaChallenge,
@@ -85,6 +86,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     clearMfaChallenge();
     clearLastTeamId();
     clearLastProjectId();
+    clearLastApp();
     if (!options?.keepInvitation) clearPendingInvitation();
     setCurrentUserState(null);
   }, []);

@@ -1,8 +1,9 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { GetProjects } from "@/api/projects";
 import type { Project } from "@/core/project";
+import { DASHBOARD_PATH } from "@/core/routes";
+import useProjects from "@/contexts/ProjectContext/useProjects";
 import useTeam from "@/contexts/TeamContext/useTeam";
 import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
@@ -10,7 +11,7 @@ import { useNavigate } from "@/hooks/Navigation/useNavigate";
 export interface ProjectInTeam {
   /** The Project once confirmed to belong to the current Team; null before, or when it does not. */
   project: Project | null;
-  /** The Project is not the current Team's; the user is being sent back to the dashboard. */
+  /** The Project is not the current Team's; the user is being sent to the fallback page. */
   missing: boolean;
   /** i18n-resolved message when the Team's Project list could not be loaded. */
   error: string | null;
@@ -20,10 +21,16 @@ export interface ProjectInTeam {
 /**
  * Confirms that a Project route belongs to the selected Team and remembers it as the Team's
  * last Project. A Team switch (or a URL of another Team's Project) fails the check and
- * redirects, so a Project page never shows or creates under a foreign Team.
+ * redirects to `fallbackPath`, so a Project page never shows or creates under a foreign Team.
+ * The list is read through the shared Project context, so the Project selector learns a
+ * Project created elsewhere the moment its page opens.
  */
-export const useProjectInTeam = (projectId: string): ProjectInTeam => {
-  const { currentTeam, rememberProject, forgetProject } = useTeam();
+export const useProjectInTeam = (
+  projectId: string,
+  fallbackPath: string = DASHBOARD_PATH
+): ProjectInTeam => {
+  const { currentTeam, rememberProject } = useTeam();
+  const { reload } = useProjects();
   const { navigate } = useNavigate();
   const { getErrorMessage } = useErrorMessage();
 
@@ -34,22 +41,24 @@ export const useProjectInTeam = (projectId: string): ProjectInTeam => {
 
   const teamId = currentTeam?.id ?? null;
 
-  // Remembered at once so the sidebar's Droplets entry points here before the check answers.
+  // Remembered at once so the side menu and the selector point here before the check answers.
   useEffect(() => {
     rememberProject(projectId);
   }, [projectId, rememberProject]);
 
+  // `reload` follows the selected Team, which is in the keys; a language switch must not refetch.
   useEffect(() => {
     if (!teamId) return;
     let cancelled = false;
     setError(null);
-    GetProjects(teamId)
-      .then((response) => {
+    reload()
+      .then((list) => {
         if (cancelled) return;
-        const found = (response.data ?? []).find((item) => item.id === projectId) ?? null;
+        const found = list.find((item) => item.id === projectId) ?? null;
         setProject(found);
         setMissing(!found);
-        if (!found) forgetProject();
+        // A Team switch forgets the remembered Project; one the new Team holds is kept.
+        if (found) rememberProject(found.id);
       })
       .catch((err) => {
         if (!cancelled) setError(getErrorMessage(err));
@@ -57,10 +66,10 @@ export const useProjectInTeam = (projectId: string): ProjectInTeam => {
     return () => {
       cancelled = true;
     };
-  }, [teamId, projectId, attempt, getErrorMessage, forgetProject]);
+  }, [teamId, projectId, attempt]);
 
   useEffect(() => {
-    if (missing) navigate("/dashboard", { replace: true });
+    if (missing) navigate(fallbackPath, { replace: true });
   }, [missing, navigate]);
 
   const retry = useCallback(() => setAttempt((count) => count + 1), []);

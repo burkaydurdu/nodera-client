@@ -10,7 +10,14 @@ import {
   notificationKind,
 } from "@/core/notification";
 import { useDropletFailure } from "@/hooks/Droplet/useDropletFailure";
-import { formatDate, formatDateTime, formatPeriodEnd, formatUtcDate } from "@/utils/date";
+import {
+  formatDate,
+  formatDateTime,
+  formatMonth,
+  formatPeriodEnd,
+  formatUtcDate,
+} from "@/utils/date";
+import { formatCount, formatPercentString } from "@/utils/number";
 import { formatMoney } from "@/utils/price";
 
 /** Resolves a Notification's text in the user's language; an unknown type gets the generic one. */
@@ -35,6 +42,9 @@ export const useNotificationText = () => {
           end: formatPeriodEnd(end, locale),
         }),
       money: formatMoney,
+      count: (value) => formatCount(value, locale),
+      percent: (value) => formatPercentString(value, locale),
+      month: (period) => formatMonth(period, locale),
     }),
     [t, tRoles, tInvoices, locale, describeDropletFailure]
   );

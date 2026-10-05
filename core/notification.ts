@@ -1,4 +1,11 @@
 import { billingPath } from "./billing";
+import {
+  MAIL_LANDING_PATH,
+  RATE_RULES,
+  mailPath,
+  pausedRate,
+  sendingDomainPath,
+} from "./mail";
 import { DASHBOARD_PATH, TEAM_PATH } from "./routes";
 import type { Team } from "./team";
 
@@ -80,6 +87,12 @@ export interface NotificationWording {
   /** A billing Period as the invoice list shows it. */
   period: (start: string, end: string) => string;
   money: (amount: string, currency: string) => string;
+  /** A whole number with the locale's grouping ("10,000"). */
+  count: (value: string) => string;
+  /** A rate sent as a two-decimal percentage string ("2.40" is 2.40%). */
+  percent: (value: string) => string;
+  /** A Mail Period sent as `YYYY-MM`, named as its month. */
+  month: (period: string) => string;
 }
 
 /** Everything the app does differently per Notification type. */
@@ -102,6 +115,33 @@ const dropletPath = (notification: Notification): string | null => {
   const dropletId = notificationParam(notification, "dropletId");
   return dropletId ? `/dashboard/droplets/${dropletId}` : null;
 };
+
+/** Mail's in-app texts name the Project; the params carry its name, never a sentence. */
+const mailProject = (notification: Notification): string =>
+  notificationParam(notification, "projectName");
+
+const mailOverviewPath = (notification: Notification): string => {
+  const projectId = notificationParam(notification, "projectId");
+  return projectId ? mailPath(projectId) : MAIL_LANDING_PATH;
+};
+
+const mailDomainPath = (notification: Notification): string => {
+  const projectId = notificationParam(notification, "projectId");
+  const domainId = notificationParam(notification, "sendingDomainId");
+  if (!projectId) return MAIL_LANDING_PATH;
+  return domainId ? sendingDomainPath(projectId, domainId) : mailPath(projectId, "domains");
+};
+
+const packageUsage = (
+  notification: Notification,
+  wording: NotificationWording
+): Record<string, string> => ({
+  project: mailProject(notification),
+  package: notificationParam(notification, "packageCode"),
+  used: wording.count(notificationParam(notification, "used")),
+  allowance: wording.count(notificationParam(notification, "allowance")),
+  month: wording.month(notificationParam(notification, "period")),
+});
 
 /** The emails link an invoice the same way; the billing page selects the Team it names. */
 const invoicePath = (notification: Notification): string =>
@@ -286,6 +326,83 @@ const NOTIFICATION_KINDS = {
     // Nothing of the Team is open to the user any more.
     path: () => null,
     teamNameParam: "teamName",
+  },
+  mail_domain_verified: {
+    tone: "success",
+    text: (notification, wording) => ({
+      title: wording.t("mail_domain_verified.title", {
+        domain: notificationParam(notification, "domain"),
+      }),
+      description: wording.t("mail_domain_verified.description", {
+        project: mailProject(notification),
+      }),
+    }),
+    path: mailDomainPath,
+  },
+  mail_domain_unverified: {
+    tone: "error",
+    text: (notification, wording) => ({
+      title: wording.t("mail_domain_unverified.title", {
+        domain: notificationParam(notification, "domain"),
+      }),
+      description: wording.t("mail_domain_unverified.description", {
+        project: mailProject(notification),
+      }),
+    }),
+    path: mailDomainPath,
+  },
+  mail_package_near_limit: {
+    tone: "warning",
+    text: (notification, wording) => ({
+      title: wording.t("mail_package_near_limit.title", {
+        project: mailProject(notification),
+      }),
+      description: wording.t(
+        "mail_package_near_limit.description",
+        packageUsage(notification, wording)
+      ),
+    }),
+    path: mailOverviewPath,
+  },
+  mail_package_exhausted: {
+    tone: "error",
+    text: (notification, wording) => ({
+      title: wording.t("mail_package_exhausted.title", { project: mailProject(notification) }),
+      description: wording.t(
+        "mail_package_exhausted.description",
+        packageUsage(notification, wording)
+      ),
+    }),
+    path: mailOverviewPath,
+  },
+  mail_rates_warning: {
+    tone: "warning",
+    text: (notification, wording) => ({
+      title: wording.t("mail_rates_warning.title", { project: mailProject(notification) }),
+      description: wording.t("mail_rates_warning.description", {
+        bounce: wording.percent(notificationParam(notification, "bounceRate")),
+        complaint: wording.percent(notificationParam(notification, "complaintRate")),
+        days: notificationParam(notification, "windowDays") || "7",
+      }),
+    }),
+    path: mailOverviewPath,
+  },
+  mail_paused: {
+    tone: "error",
+    text: (notification, wording) => {
+      const rateKind = pausedRate(notificationParam(notification, "reason"));
+      return {
+        title: wording.t("mail_paused.title", { project: mailProject(notification) }),
+        description: rateKind
+          ? wording.t(`mail_paused.reasons.${rateKind}`, {
+              rate: wording.percent(
+                notificationParam(notification, RATE_RULES[rateKind].field)
+              ),
+            })
+          : wording.t("mail_paused.description"),
+      };
+    },
+    path: mailOverviewPath,
   },
 } satisfies Record<string, NotificationKind>;
 
