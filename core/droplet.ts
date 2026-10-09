@@ -32,6 +32,16 @@ export interface DropletTransition {
   reason: string;
 }
 
+/**
+ * Which Cluster and Node pool a Node Droplet belongs to; null for a Droplet the customer
+ * opened. A Node Droplet takes no power action and no deletion here: its Cluster releases it.
+ */
+export interface DropletNode {
+  clusterId: string;
+  nodeId: string;
+  pool: string;
+}
+
 export interface Droplet {
   id: string;
   projectId: string;
@@ -46,6 +56,7 @@ export interface Droplet {
   hourlyPrice: string;
   monthlyPrice: string;
   sshKeys: DropletSSHKey[];
+  node: DropletNode | null;
   /**
    * Set once failed. The service may add a code before the web app learns it; one this build
    * does not know reads as `unavailable`.
@@ -87,6 +98,9 @@ export const isTransitional = (status: DropletStatus): boolean =>
 export const ACTIONABLE_STATUSES: readonly DropletStatus[] = ["active", "off"];
 
 export const canAct = (status: DropletStatus): boolean => ACTIONABLE_STATUSES.includes(status);
+
+/** A Node Droplet is managed through its Cluster; the Droplet pages only show it. */
+export const isNodeDroplet = (droplet: Droplet): boolean => droplet.node !== null;
 
 export const HOSTNAME_MIN_LENGTH = 1;
 export const HOSTNAME_MAX_LENGTH = 63;

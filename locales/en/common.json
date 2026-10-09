@@ -35,6 +35,18 @@
       "suppressions": "Suppressions",
       "webhooks": "Webhooks",
       "apiKeys": "API keys"
+    },
+    "storage": {
+      "storages": "Storages",
+      "files": "Files",
+      "accessKeys": "Access keys",
+      "usage": "Usage",
+      "settings": "Settings"
+    },
+    "kubernetes": {
+      "clusters": "Clusters",
+      "overview": "Overview",
+      "settings": "Settings"
     }
   },
   "validation": {
@@ -390,7 +402,59 @@
     "57-10004": "One of the chosen events is not known.",
     "57-10005": "The webhook could not be saved. Please try again.",
     "57-10006": "This URL resolves to a private address, which cannot receive events.",
-    "57-10007": "The list could not continue from here. Open the deliveries again."
+    "57-10007": "The list could not continue from here. Open the deliveries again.",
+    "60-10001": "Storage does not know this project yet. Try again in a few seconds.",
+    "60-10004": "Your role in this team does not allow that.",
+    "61-10003": "The team needs a card before a Storage can be opened or its Package changed. Add one under Team → Billing.",
+    "61-10004": "The team is suspended over an unpaid invoice. Pay it to open a Storage or change a Package.",
+    "62-10001": "This Region is not offered.",
+    "62-10002": "This Package is not offered.",
+    "63-10001": "Storage not found.",
+    "63-10002": "A Bucket name is 3 to 63 lower-case letters, digits and hyphens, and starts and ends with a letter or a digit.",
+    "63-10003": "This Bucket name is reserved. Choose another.",
+    "63-10004": "This Bucket name is already taken in the Region. Choose another.",
+    "63-10005": "A project can have at most 100 Storages.",
+    "63-10006": "The Storage holds more than this Package. Make room first.",
+    "63-10007": "The Bucket name you typed does not match this Storage.",
+    "63-10008": "The Storage is paused. Only Nodera can resume it.",
+    "63-10009": "The Storage is being deleted.",
+    "63-10010": "Storage is temporarily unavailable. Nothing was changed; try again in a moment.",
+    "63-10011": "The Storage could not be saved. Please try again.",
+    "63-10012": "Unknown pause reason.",
+    "64-10001": "Access key not found. It may have been revoked already.",
+    "64-10002": "A Storage can have at most 20 Access keys.",
+    "64-10003": "The Access key could not be saved. Please try again.",
+    "65-10001": "The list could not continue from here. Open the folder again.",
+    "65-10002": "This file name cannot be used as an object key.",
+    "66-10001": "Usage could not be saved. Please try again.",
+    "70-10001": "Kubernetes does not know this project yet. Try again in a few seconds.",
+    "70-10004": "Your role in this team does not allow that.",
+    "71-10003": "The team needs a card before a cluster can be opened or nodes added. Add one under Team → Billing.",
+    "71-10004": "The team is suspended over an unpaid invoice. Pay it to open a cluster or add nodes.",
+    "72-10001": "This Region is not offered.",
+    "72-10002": "This Plan is not offered.",
+    "72-10003": "A node needs a Plan with at least 2 CPUs and 4 GB of RAM.",
+    "72-10004": "This Plan is sold out right now. Choose another.",
+    "72-10005": "Kubernetes is not sold in this Region yet.",
+    "72-10006": "This Kubernetes version is not offered.",
+    "72-10009": "No Kubernetes version is offered right now. Try again later.",
+    "73-10001": "Cluster not found.",
+    "73-10002": "A name is 1 to 63 lower-case letters, digits and hyphens, starting and ending with a letter or a digit.",
+    "73-10003": "A cluster with this name already exists in the project. Choose another.",
+    "73-10004": "The project holds as many clusters as it may.",
+    "73-10005": "Node pool not found.",
+    "73-10006": "A node pool name is 1 to 32 lower-case letters, digits and hyphens, starting and ending with a letter or a digit.",
+    "73-10007": "A node pool with this name already exists in the cluster.",
+    "73-10008": "The cluster holds as many node pools as it may.",
+    "73-10009": "A node pool holds between 1 and the allowed number of nodes.",
+    "73-10010": "A cluster keeps at least one node pool.",
+    "73-10011": "One of the labels is not a valid Kubernetes label.",
+    "73-10012": "One of the taints is not a valid Kubernetes taint.",
+    "73-10013": "The cluster is being deleted.",
+    "73-10014": "The cluster's control plane is not ready yet. Try again in a moment.",
+    "73-10017": "Kubernetes is temporarily unavailable. Try again.",
+    "73-10018": "Kubernetes refused the request. Contact support.",
+    "73-10019": "The cluster has failed; delete it and open a new one."
   },
   "teams": {
     "switcher": {
@@ -497,7 +561,8 @@
       "accessPendingTitle": "The project is being set up",
       "accessPending": "This project was created a moment ago and is not ready for Droplets yet. Try again in a few seconds.",
       "retry": "Try again",
-      "emptyReadOnly": "Your role cannot create Droplets in this team. Ask an owner or a developer to create one."
+      "emptyReadOnly": "Your role cannot create Droplets in this team. Ask an owner or a developer to create one.",
+      "node": "Node · {pool}"
     },
     "create": {
       "title": "Create Droplet",
@@ -620,7 +685,12 @@
       "notFoundTitle": "Droplet not found",
       "notFoundDescription": "It may have been deleted, or it belongs to another team.",
       "backToProjects": "Back to projects",
-      "retry": "Try again"
+      "retry": "Try again",
+      "node": {
+        "title": "This Droplet is a node of a Kubernetes cluster ({pool} pool)",
+        "description": "It is managed through its cluster: power actions and deletion happen there, not here. Removing nodes from the pool releases it.",
+        "openCluster": "Open the cluster"
+      }
     },
     "failureCodes": {
       "rejected": "The order was refused.",
@@ -974,7 +1044,21 @@
       "suspendedTitle": "The team is suspended",
       "payNow": "Pay now",
       "paymentFailedAsk": "The charge for the open invoice failed. It is retried on {date}; ask an owner or finance member to pay it sooner.",
-      "askToPay": "Ask an owner or finance member of the team to pay it."
+      "askToPay": "Ask an owner or finance member of the team to pay it.",
+      "storage": {
+        "noPaymentMethodTitle": "Add a card to use Storage",
+        "noPaymentMethod": "The team has no payment method yet. A Storage can be opened once a card is added.",
+        "noPaymentMethodAsk": "The team has no payment method yet, so no Storage can be opened. Ask an owner or finance member to add a card.",
+        "suspended": "An invoice is unpaid: every Storage of the team is stopped and Packages cannot be changed until it is paid.",
+        "suspendedDeletion": "Unless it is paid, the team's Storages are deleted on {date}."
+      },
+      "kubernetes": {
+        "noPaymentMethodTitle": "Add a card to use Kubernetes",
+        "noPaymentMethod": "The team has no payment method yet. A cluster can be opened once a card is added.",
+        "noPaymentMethodAsk": "The team has no payment method yet, so no cluster can be opened. Ask an owner or finance member to add a card.",
+        "suspended": "An invoice is unpaid: the team's nodes are powered off and clusters take no change until it is paid.",
+        "suspendedDeletion": "Unless it is paid, the team's clusters are deleted on {date}."
+      }
     },
     "blocked": {
       "paymentMethodRequiredTitle": "A payment method is required",
@@ -1142,6 +1226,35 @@
           "bounce": "The bounce rate reached {rate}. Clean your list and contact support to resume.",
           "complaint": "The complaint rate reached {rate}. Clean your list and contact support to resume."
         }
+      },
+      "storage_nearly_full": {
+        "title": "{bucket} is nearly full",
+        "description": "It holds {used} of the {size} of its {package} Package. Make room or move to a larger Package before writes stop."
+      },
+      "storage_full": {
+        "title": "{bucket} is full",
+        "description": "It holds the {size} of its {package} Package. Writes are refused until room is made or a larger Package is chosen; reads keep working."
+      },
+      "storage_paused": {
+        "title": "Nodera paused {bucket}",
+        "description": "Every request to it is refused. Contact support.",
+        "reasons": {
+          "abuse_complaint": "An abuse complaint about its content was received. Every request to it is refused; contact support.",
+          "malware": "Malware was found among its files. Every request to it is refused; contact support.",
+          "phishing": "Phishing content was found among its files. Every request to it is refused; contact support.",
+          "legal": "A legal order requires it. Every request to it is refused; contact support."
+        }
+      },
+      "storage_downgrade_skipped": {
+        "title": "{bucket} stays on {package}",
+        "description": "The move to {skipped} ({skippedSize}) was dropped: the Storage holds {used}, more than that Package. Make room and schedule it again if you still want it."
+      },
+      "kubernetes_cluster_running": {
+        "title": "Cluster {name} is running",
+        "description": "Its control plane answers and a node is ready, in {project}."
+      },
+      "kubernetes_cluster_failed": {
+        "title": "Cluster {name} could not be set up"
       }
     }
   },
@@ -1154,6 +1267,14 @@
     "mail": {
       "name": "Mail",
       "description": "Email sent from your own domains"
+    },
+    "storage": {
+      "name": "Storage",
+      "description": "S3-compatible object storage by the month"
+    },
+    "kubernetes": {
+      "name": "Kubernetes",
+      "description": "Managed clusters on your own Droplets"
     }
   },
   "apiKeys": {
@@ -1684,6 +1805,608 @@
         "cancel": "Cancel",
         "save": "Save",
         "submit": "Add webhook"
+      }
+    }
+  },
+  "storage": {
+    "access": {
+      "title": "Storage",
+      "deniedTitle": "Your role cannot see Storage",
+      "denied": "As {role} in {team}, Storage is not open to you. Ask an owner of the team if you need it.",
+      "deniedGeneric": "Your role in this team does not include Storage. Ask an owner of the team if you need it."
+    },
+    "gate": {
+      "title": "Storage",
+      "retry": "Try again"
+    },
+    "landing": {
+      "title": "Storage",
+      "description": "S3-compatible object storage on a monthly Package, with Access keys and a file browser.",
+      "teamNotFoundTitle": "Team not found",
+      "teamNotFound": "This link belongs to a team you are not a member of, or the team no longer exists.",
+      "openCurrent": "Open Storage of your current project",
+      "noTeam": "Your account has no team yet.",
+      "retry": "Try again",
+      "projectNotFoundTitle": "Project not found",
+      "projectNotFound": "This link belongs to a project that is not in {team}, or the project no longer exists.",
+      "noProjectTitle": "Storage lives in a project",
+      "noProject": "Create a project to open a Storage, make Access keys and browse your files.",
+      "noProjectReadOnly": "This team has no project yet, and your role cannot create one. Ask an owner or a developer.",
+      "createProject": "Create a project"
+    },
+    "state": {
+      "active": "Active",
+      "full": "Full",
+      "paused": "Paused",
+      "suspended": "Suspended",
+      "deleting": "Deleting"
+    },
+    "fullness": {
+      "label": "Used",
+      "usedOf": "{used} of {total}"
+    },
+    "tabs": {
+      "files": "Files",
+      "access-keys": "Access keys",
+      "usage": "Usage",
+      "settings": "Settings"
+    },
+    "stateAlert": {
+      "deleting": {
+        "title": "This Storage is being deleted",
+        "description": "Its Access keys are revoked and its Package has ended. Nodera is removing its files; the Bucket name is free once they are gone."
+      },
+      "suspended": {
+        "title": "This Storage is stopped",
+        "description": "The team has an unpaid invoice. Every request to the Storage is refused until it is paid; the files are kept."
+      },
+      "paused": {
+        "title": "Nodera paused this Storage on {date}",
+        "titleNoDate": "Nodera paused this Storage",
+        "reasons": {
+          "abuse_complaint": "An abuse complaint about its content was received.",
+          "malware": "Malware was found among its files.",
+          "phishing": "Phishing content was found among its files.",
+          "legal": "A legal order requires it.",
+          "unknown": "Every request to it is refused."
+        },
+        "lift": "Only Nodera can lift a Pause. Contact support."
+      },
+      "full": {
+        "title": "This Storage is full",
+        "description": "It holds the {size} of its {package} Package. Writes are refused; reads and deletes keep working. Move to a larger Package or make room.",
+        "changePackage": "Change Package"
+      }
+    },
+    "list": {
+      "title": "Storages",
+      "description": "The Storages of {project}: each one a bucket with its own Package.",
+      "open": "Open a Storage",
+      "retry": "Try again",
+      "accessPendingTitle": "Storage is learning this project",
+      "accessPending": "The project was created a moment ago. Try again in a few seconds.",
+      "limitReached": "A project can have at most {max} Storages.",
+      "emptyTitle": "No Storage yet",
+      "emptyDescription": "Open a Storage to get an S3 bucket with a Bucket name, a Region and a monthly Package.",
+      "emptyReadOnly": "This project has no Storage yet. Your role can see Storages but not open one.",
+      "packageTerms": "{size} · {price} / month",
+      "columns": {
+        "bucketName": "Bucket name",
+        "region": "Region",
+        "package": "Package",
+        "fullness": "Used",
+        "state": "State"
+      }
+    },
+    "open": {
+      "title": "Open a Storage",
+      "description": "A bucket in {project}, usable the moment it is opened.",
+      "readOnlyTitle": "Your role cannot open a Storage",
+      "readOnly": "Only owners and developers open Storages. Ask one of them.",
+      "backToList": "Back to Storages",
+      "retry": "Try again",
+      "bucketName": {
+        "label": "Bucket name",
+        "placeholder": "my-assets",
+        "hint": "Part of the Storage's address; it never changes and is unique in its Region.",
+        "rules": {
+          "length": "{min} to {max} characters",
+          "charset": "Lower-case letters, digits and hyphens; no dots",
+          "edge": "Starts and ends with a letter or a digit"
+        },
+        "issues": {
+          "required": "Enter a Bucket name.",
+          "tooShort": "A Bucket name has at least {min} characters.",
+          "tooLong": "A Bucket name has at most {max} characters.",
+          "charset": "Only lower-case letters, digits and hyphens.",
+          "edge": "It must start and end with a letter or a digit.",
+          "dots": "Dots are not allowed; use hyphens."
+        }
+      },
+      "region": "Region",
+      "regionPlaceholder": "Choose a Region",
+      "regionHint": "Where the files are kept. It cannot be changed later.",
+      "regionOption": "{code} — {city}, {country}",
+      "regionRequired": "Choose a Region.",
+      "package": "Package",
+      "packagePlaceholder": "Choose a Package",
+      "packageHint": "Prices in USD per month, excl. taxes. A larger Package can be chosen at any time.",
+      "packageOption": "{code} — {size} for {price} / month",
+      "packageChosen": "{size} of room for {price} a month, on the team's monthly invoice.",
+      "packageRequired": "Choose a Package.",
+      "addCard": "Add a card",
+      "payInvoice": "Pay the invoice",
+      "askBilling": "Ask an owner or finance member of the team.",
+      "cancel": "Cancel",
+      "submit": "Open the Storage",
+      "opened": "{name} is open."
+    },
+    "detail": {
+      "title": "Storage",
+      "description": "Region {region} · Package {package}",
+      "notFoundTitle": "Storage not found",
+      "notFoundDescription": "This Storage was deleted or belongs to another project.",
+      "backToList": "Back to Storages",
+      "retry": "Try again",
+      "url": "URL",
+      "copyUrl": "Copy URL"
+    },
+    "files": {
+      "breadcrumbs": "Folders",
+      "refresh": "Refresh",
+      "upload": "Upload files",
+      "deleteSelected": "Delete {count, plural, one {# file} other {# files}}",
+      "download": "Download",
+      "loadMore": "Show more",
+      "retry": "Try again",
+      "cancel": "Cancel",
+      "deleteTitle": "Delete {count, plural, one {# file} other {# files}}?",
+      "deleteConfirm": "The files are removed from the Storage at once. This cannot be undone.",
+      "deleteOk": "Delete",
+      "deleted": "{count, plural, one {# file} other {# files}} deleted.",
+      "emptyTitle": "This Storage is empty",
+      "emptyFolderTitle": "This folder is empty",
+      "emptyDescription": "Upload files from here, or put them in with any S3 tool using an Access key.",
+      "emptyReadOnly": "Nothing has been uploaded here yet.",
+      "unavailableTitle": "The files cannot be browsed right now",
+      "unavailableDeleting": "The Storage is being deleted and its files are being removed.",
+      "unavailableStopped": "The Storage is stopped. Browsing resumes when it is active again.",
+      "fullHint": "The Storage is full: uploads are refused until room is made or a larger Package is chosen. Downloads and deletes still work.",
+      "tools": "Files up to 5 GB can be uploaded from the browser. For more, or for many files, use an S3 tool with an Access key.",
+      "columns": {
+        "name": "Name",
+        "size": "Size",
+        "modified": "Modified"
+      },
+      "uploads": {
+        "title": "Uploads",
+        "titleActive": "Uploading {count, plural, one {# file} other {# files}}",
+        "clear": "Clear",
+        "blockedTitle": "The browser could not reach the Storage",
+        "blocked": "The upload was refused before it started. If the Storage's CORS rules were changed, Nodera's rule for this web app is gone; restore it and the uploads are sent again.",
+        "restoreAccess": "Restore browser access",
+        "restored": "Browser access restored.",
+        "retryFailed": "Retry {count, plural, one {# upload} other {# uploads}}",
+        "failures": {
+          "blocked": "The browser could not send the file.",
+          "tooLarge": "Larger than {max}; use an S3 tool for this file.",
+          "refused": "The Storage refused the file."
+        }
+      },
+      "copyUrl": "Copy URL",
+      "access": {
+        "reading": "…",
+        "public": "Public",
+        "private": "Private",
+        "publicHint": "Anyone can read this file at its URL. Writing still needs an Access key.",
+        "privateHint": "Only an Access key reads this file.",
+        "switchHint": "Let anyone read this file, or take that back. Uploads are always private.",
+        "published": "The file can now be read by anyone.",
+        "unpublished": "The file is private again."
+      }
+    },
+    "accessKeys": {
+      "title": "Access keys",
+      "description": "Credentials for S3 tools and software. Each key reaches only this Storage.",
+      "create": "Make an Access key",
+      "retry": "Try again",
+      "cancel": "Cancel",
+      "limitReached": "A Storage can have at most {max} Access keys.",
+      "emptyTitle": "No Access key yet",
+      "emptyDescription": "Make an Access key to connect an S3 tool or your software to this Storage.",
+      "emptyReadOnly": "This Storage has no Access key yet. Your role can see keys but not make them.",
+      "you": "You",
+      "revoke": "Revoke",
+      "revokeTitle": "Revoke {name}?",
+      "revokeConfirm": "Software using this key is refused on its next request. This cannot be undone.",
+      "revoked": "{name} is revoked.",
+      "columns": {
+        "name": "Name",
+        "accessKeyId": "Access key ID",
+        "permission": "Access",
+        "createdBy": "Made by",
+        "createdAt": "Made"
+      },
+      "permissions": {
+        "read": "Read only",
+        "read_write": "Read and write"
+      },
+      "form": {
+        "modalTitle": "Make an Access key",
+        "description": "The secret key is shown once, when the key is made; Nodera does not keep it.",
+        "name": "Name",
+        "namePlaceholder": "backup-server",
+        "nameHint": "To tell your keys apart, for example by the software or server using it.",
+        "nameRequired": "Enter a name.",
+        "nameTooLong": "A name has at most {max} characters.",
+        "permission": "What the key may do",
+        "permissionHints": {
+          "read": "List and download files.",
+          "read_write": "List, download, upload and delete files."
+        },
+        "cancel": "Cancel",
+        "submit": "Make the key"
+      },
+      "created": {
+        "title": "{name} is ready",
+        "description": "Copy the secret key now and configure your S3 tool with these values.",
+        "fields": {
+          "accessKeyId": "Access key ID",
+          "secretKey": "Secret key",
+          "endpoint": "Endpoint",
+          "bucketName": "Bucket name",
+          "region": "Region"
+        },
+        "warning": "The secret key is shown only this once. If you lose it, revoke this key and make a new one."
+      }
+    },
+    "usage": {
+      "sizeTitle": "Size",
+      "sizeDescription": "How much of the Package the Storage holds, as last measured.",
+      "measuredAt": "Measured {date}.",
+      "notMeasured": "Not measured yet.",
+      "objects": "Files",
+      "package": "Package",
+      "trafficTitle": "Traffic",
+      "trafficDescription": "Bytes sent and received per day over the last {days} days, in UTC.",
+      "trafficNote": "Traffic is read from the storage servers' logs with a delay of up to an hour. It is not billed.",
+      "noTrafficTitle": "No traffic yet",
+      "noTraffic": "The first day's traffic appears once the Storage has been used.",
+      "retry": "Try again",
+      "columns": {
+        "day": "Day",
+        "traffic": "Traffic",
+        "sent": "Sent",
+        "received": "Received",
+        "requests": "Requests",
+        "size": "Size",
+        "objects": "Files"
+      }
+    },
+    "package": {
+      "title": "Package",
+      "size": "{size} of room",
+      "pricePerMonth": "{price} a month",
+      "taxNote": "USD, excl. taxes",
+      "since": "Since {date}",
+      "changeTitle": "Moving to {package} on {date}",
+      "change": "From then on the Storage has {size} of room for {price} a month. The move is dropped if the Storage no longer fits.",
+      "undo": "Undo"
+    },
+    "packages": {
+      "title": "Change Package",
+      "description": "How much the Storage may hold. Each Package is billed monthly on the team's invoice.",
+      "current": "Current",
+      "currentUntil": "Until {date}",
+      "from": "From {date}",
+      "size": "{size} of room",
+      "pricePerMonth": "{price} / month",
+      "actions": {
+        "upgrade": "Upgrade",
+        "downgrade": "Downgrade",
+        "keep": "Keep"
+      },
+      "tooSmall": "The Storage holds {used}, more than this Package.",
+      "rules": "Prices in USD per month, excl. taxes. A larger Package takes effect at once. A smaller one starts with the next month, only if the Storage fits it by then; you can undo it until then.",
+      "readOnly": "Your role can see the Packages but not change them.",
+      "blocked": {
+        "no_payment_method": "A card is required before the Package can be changed.",
+        "suspended": "The team is suspended over an unpaid invoice; the Package cannot be changed until it is paid."
+      },
+      "addCard": "Add a card",
+      "payInvoice": "Pay the invoice",
+      "back": "Back",
+      "confirm": {
+        "upgrade": {
+          "title": "Upgrade to {package} now?",
+          "description": "It takes effect at once: the Storage has {size} of room and writes resume if it was full. From now on it is charged at {price} a month.",
+          "ok": "Upgrade now"
+        },
+        "downgrade": {
+          "title": "Move to {package} next month?",
+          "description": "Your current Package stays until the month ends. From the first day of the next month the Storage has {size} of room for {price} a month, if it still fits. You can undo this until then.",
+          "ok": "Schedule the change"
+        }
+      },
+      "done": {
+        "upgrade": "Upgraded to {package}.",
+        "downgrade": "{package} starts next month.",
+        "keep": "You stay on {package}."
+      }
+    },
+    "settings": {
+      "retry": "Try again",
+      "connection": {
+        "title": "Connection details",
+        "description": "What any S3 tool asks for. Credentials are the Storage's Access keys.",
+        "endpoint": "Endpoint",
+        "region": "Region",
+        "bucketName": "Bucket name",
+        "url": "Bucket URL",
+        "credentials": "Credentials",
+        "credentialsValue": "An Access key of this Storage.",
+        "manageKeys": "Manage Access keys",
+        "pathStyle": "Both addressing styles work: the bucket as a subdomain of the endpoint, or as the first path segment."
+      },
+      "delete": {
+        "title": "Delete this Storage",
+        "description": "The Storage and every file in it are removed. Its Access keys stop working at once and its Package ends; nothing is charged for it afterwards.",
+        "frees": "The Bucket name {name} becomes free again once the files are gone.",
+        "button": "Delete Storage",
+        "done": "{name} is being deleted."
+      },
+      "deleteDialog": {
+        "title": "Delete Storage?",
+        "warningTitle": "This cannot be undone",
+        "warning": "Every file in the Storage is removed and its Access keys stop working the moment you confirm.",
+        "inputLabel": "Type {name} to confirm",
+        "mismatch": "The Bucket name does not match.",
+        "confirm": "Delete Storage",
+        "cancel": "Cancel"
+      }
+    }
+  },
+  "kubernetes": {
+    "access": {
+      "title": "Kubernetes",
+      "deniedTitle": "Your role cannot see Kubernetes",
+      "denied": "As {role} in {team}, Kubernetes is not open to you. Ask an owner of the team if you need it.",
+      "deniedGeneric": "Your role in this team does not include Kubernetes. Ask an owner of the team if you need it."
+    },
+    "gate": {
+      "title": "Kubernetes",
+      "retry": "Try again"
+    },
+    "landing": {
+      "title": "Kubernetes",
+      "description": "Managed Kubernetes clusters: Nodera runs the control plane, your Droplets are the nodes.",
+      "teamNotFoundTitle": "Team not found",
+      "teamNotFound": "This link belongs to a team you are not a member of, or the team no longer exists.",
+      "openCurrent": "Open Kubernetes of your current project",
+      "noTeam": "Your account has no team yet.",
+      "retry": "Try again",
+      "projectNotFoundTitle": "Project not found",
+      "projectNotFound": "This link belongs to a project that is not in {team}, or the project no longer exists.",
+      "noProjectTitle": "Kubernetes lives in a project",
+      "noProject": "Create a project to open a cluster, add node pools and download a kubeconfig.",
+      "noProjectReadOnly": "This team has no project yet, and your role cannot create one. Ask an owner or a developer.",
+      "createProject": "Create a project"
+    },
+    "status": {
+      "provisioning": "Provisioning",
+      "running": "Running",
+      "degraded": "Degraded",
+      "deleting": "Deleting",
+      "failed": "Failed"
+    },
+    "nodeStatus": {
+      "requested": "Requested",
+      "joining": "Joining",
+      "ready": "Ready",
+      "not_ready": "Not ready",
+      "releasing": "Releasing",
+      "failed": "Failed"
+    },
+    "failureCodes": {
+      "control_plane_failed": "The control plane was not ready in time.",
+      "node_rejected": "The node's server could not be opened.",
+      "timed_out": "The node did not join the cluster in time."
+    },
+    "name": {
+      "hint": "Up to {max} lower-case letters, digits and hyphens.",
+      "issues": {
+        "required": "Enter a name.",
+        "tooLong": "A name has at most {max} characters.",
+        "charset": "Only lower-case letters, digits and hyphens.",
+        "edge": "It must start and end with a letter or a digit."
+      }
+    },
+    "tabs": {
+      "overview": "Overview",
+      "settings": "Settings"
+    },
+    "list": {
+      "title": "Clusters",
+      "description": "The Kubernetes clusters of {project}: each one a control plane Nodera runs and node pools of your Droplets.",
+      "open": "Open a cluster",
+      "retry": "Try again",
+      "accessPendingTitle": "Kubernetes is learning this project",
+      "accessPending": "The project was created a moment ago. Try again in a few seconds.",
+      "limitReached": "A project can have at most {max} clusters.",
+      "emptyTitle": "No cluster yet",
+      "emptyDescription": "Open a cluster to get a managed control plane and a first node pool of Droplets.",
+      "emptyReadOnly": "This project has no cluster yet. Your role can see clusters but not open one.",
+      "nodesSummary": "{nodes} nodes in {pools} pools",
+      "columns": {
+        "name": "Name",
+        "status": "Status",
+        "version": "Version",
+        "region": "Region",
+        "nodes": "Nodes",
+        "created": "Created"
+      }
+    },
+    "open": {
+      "title": "Open a cluster",
+      "description": "A Kubernetes cluster in {project}. The control plane is free; each node is billed as the Droplet it is.",
+      "readOnlyTitle": "Your role cannot open a cluster",
+      "readOnly": "Only owners and developers open clusters. Ask one of them.",
+      "backToList": "Back to clusters",
+      "retry": "Try again",
+      "notSoldTitle": "Kubernetes is not sold right now",
+      "notSold": "No Region or version is offered at the moment. Try again later.",
+      "name": "Name",
+      "namePlaceholder": "prod",
+      "nameHint": "Unique in the project; you can change it later.",
+      "region": "Region",
+      "regionPlaceholder": "Choose a Region",
+      "regionHint": "Where the control plane and the nodes run. It cannot be changed later.",
+      "regionOption": "{code} — {city}, {country}",
+      "regionRequired": "Choose a Region.",
+      "version": "Kubernetes version",
+      "versionPlaceholder": "Choose a version",
+      "versionHint": "Locked for the cluster; every node joins at this version.",
+      "versionRequired": "Choose a version.",
+      "poolTitle": "First node pool",
+      "poolDescription": "Nodes of one Plan. You can add more pools and change the count later; a pool's Plan never changes.",
+      "planRequired": "Choose a Plan.",
+      "countRange": "Between {min} and {max} nodes.",
+      "noteTitle": "What a cluster comes with",
+      "note": "Cilium networking, a kubeconfig good for seven days per download, and your nodes listed as Droplets of the project. Persistent volumes and load balancers are not offered yet.",
+      "addCard": "Add a card",
+      "payInvoice": "Pay the invoice",
+      "askBilling": "Ask an owner or finance member of the team.",
+      "cancel": "Cancel",
+      "submit": "Open the cluster",
+      "opened": "{name} is being set up."
+    },
+    "pool": {
+      "name": "Pool name",
+      "namePlaceholder": "workers",
+      "nameHint": "Becomes the start of each node's hostname.",
+      "plan": "Plan",
+      "planPlaceholder": "Choose a Plan",
+      "planHint": "Every node of the pool has this Plan. Prices per node, USD excl. taxes.",
+      "planOption": "{code} — {cpus} CPU · {ram} GB RAM · {price} / hour",
+      "planChosen": "{monthly} a month per node; {total} a month for {count} nodes, capped at 672 hours each.",
+      "planSoldOut": "This Plan is sold out right now; another may be chosen.",
+      "count": "Nodes",
+      "countHint": "{min} to {max} nodes."
+    },
+    "addPool": {
+      "title": "Add a node pool",
+      "planRequired": "Choose a Plan.",
+      "countRange": "Between {min} and {max} nodes.",
+      "cancel": "Cancel",
+      "submit": "Add the pool"
+    },
+    "poolCard": {
+      "description": "Plan {plan} · {ready} of {count} nodes ready",
+      "count": "Count",
+      "addNodes": "Add nodes",
+      "removeNodes": "Remove nodes",
+      "replaceNodes": "Replace failed nodes",
+      "deletePool": "Delete pool",
+      "lastPool": "A cluster keeps at least one node pool.",
+      "standing": "{standing} of {count} nodes stand; the rest failed or are being released."
+    },
+    "nodes": {
+      "columns": {
+        "hostname": "Node",
+        "status": "Status",
+        "ipv4": "IPv4",
+        "readyAt": "Ready since"
+      },
+      "pendingIp": "Not assigned yet",
+      "since": "Asked {date}",
+      "failedNoReason": "The node failed without a recorded reason.",
+      "empty": "No node yet."
+    },
+    "detail": {
+      "title": "Cluster",
+      "description": "Region {region} · Kubernetes v{version}",
+      "notFoundTitle": "Cluster not found",
+      "notFoundDescription": "This cluster was deleted or belongs to another project.",
+      "backToList": "Back to clusters",
+      "retry": "Try again",
+      "endpoint": "Endpoint",
+      "copyEndpoint": "Copy endpoint"
+    },
+    "statusAlert": {
+      "provisioning": {
+        "title": "The cluster is being set up",
+        "description": "Nodera is bringing the control plane up; the nodes are then opened as Droplets and join by themselves. This takes a few minutes."
+      },
+      "deleting": {
+        "title": "This cluster is being deleted",
+        "description": "Its nodes are being released and their Droplets deleted; the control plane goes last."
+      },
+      "suspended": {
+        "title": "The team is suspended",
+        "description": "An invoice is unpaid: the nodes are powered off and the cluster takes no change until it is paid."
+      },
+      "degraded": {
+        "title": "No node is ready",
+        "description": "The control plane answers, but no node reports ready. Workloads are not running; check the nodes below."
+      },
+      "failed": {
+        "title": "The cluster could not be set up",
+        "noReason": "No reason was recorded."
+      }
+    },
+    "overview": {
+      "poolsTitle": "Node pools ({count})",
+      "addPool": "Add a node pool",
+      "poolLimit": "A cluster can have at most {max} node pools.",
+      "poolAdded": "The node pool was added; its nodes are being opened.",
+      "grown": "{pool} grows to {count} nodes.",
+      "shrunk": "{pool} shrinks to {count} nodes; the newest are released.",
+      "blocked": {
+        "no_payment_method": "The team has no card: nodes can be removed, not added.",
+        "suspended": "The team is suspended: nodes can be removed, not added."
+      },
+      "deletePool": {
+        "title": "Delete the {pool} pool?",
+        "content": "Its {count} nodes are drained, released and their Droplets deleted.",
+        "confirm": "Delete pool",
+        "cancel": "Cancel",
+        "done": "The {pool} pool is being removed."
+      }
+    },
+    "kubeconfig": {
+      "title": "Access",
+      "description": "A kubeconfig is cut for you on download and is good for {days} days; Nodera keeps no copy. Download a new one when it expires.",
+      "endpoint": "API server",
+      "notReady": "The control plane is not ready yet; a kubeconfig can be downloaded once it answers.",
+      "holderHint": "The file holds a certificate in your name with cluster-admin rights. Keep it to yourself.",
+      "expires": "Your last kubeconfig expires {date}.",
+      "download": "Download kubeconfig",
+      "downloaded": "The kubeconfig was downloaded.",
+      "readOnly": "Your role can see the cluster but not download a kubeconfig."
+    },
+    "settings": {
+      "rename": {
+        "title": "Name",
+        "description": "The name is yours to change; the endpoint stays the same.",
+        "label": "Cluster name",
+        "button": "Rename",
+        "done": "The cluster is now {name}."
+      },
+      "delete": {
+        "title": "Delete this cluster",
+        "description": "Every node is released and its Droplet deleted, then the control plane goes. Nothing is charged afterwards.",
+        "frees": "The name {name} becomes free again once the cluster is gone.",
+        "button": "Delete cluster",
+        "done": "{name} is being deleted."
+      },
+      "deleteDialog": {
+        "title": "Delete cluster?",
+        "warningTitle": "This cannot be undone",
+        "warning": "Every workload stops, every node's Droplet is deleted and the control plane is removed.",
+        "inputLabel": "Type {name} to confirm",
+        "mismatch": "The name does not match.",
+        "confirm": "Delete cluster",
+        "cancel": "Cancel"
       }
     }
   }

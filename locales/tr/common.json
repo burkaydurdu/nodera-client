@@ -35,6 +35,18 @@
       "suppressions": "Gönderim dışı",
       "webhooks": "Webhook'lar",
       "apiKeys": "API anahtarları"
+    },
+    "storage": {
+      "storages": "Storage'lar",
+      "files": "Dosyalar",
+      "accessKeys": "Erişim anahtarları",
+      "usage": "Kullanım",
+      "settings": "Ayarlar"
+    },
+    "kubernetes": {
+      "clusters": "Cluster'lar",
+      "overview": "Genel bakış",
+      "settings": "Ayarlar"
     }
   },
   "validation": {
@@ -390,7 +402,59 @@
     "57-10004": "Seçilen olaylardan biri tanınmıyor.",
     "57-10005": "Webhook kaydedilemedi. Lütfen tekrar deneyin.",
     "57-10006": "Bu URL özel bir adrese çözümleniyor; oraya olay gönderilemez.",
-    "57-10007": "Liste buradan devam ettirilemedi. Teslimatları yeniden açın."
+    "57-10007": "Liste buradan devam ettirilemedi. Teslimatları yeniden açın.",
+    "60-10001": "Storage bu projeyi henüz tanımıyor. Birkaç saniye içinde tekrar deneyin.",
+    "60-10004": "Bu ekipteki rolünüz buna izin vermiyor.",
+    "61-10003": "Storage açmak veya paketini değiştirmek için ekibin bir kartı olmalı. Ekip → Faturalama altından ekleyin.",
+    "61-10004": "Ödenmemiş bir fatura nedeniyle ekip askıya alındı. Storage açmak veya paket değiştirmek için faturayı ödeyin.",
+    "62-10001": "Bu bölge sunulmuyor.",
+    "62-10002": "Bu paket sunulmuyor.",
+    "63-10001": "Storage bulunamadı.",
+    "63-10002": "Bucket adı 3 ile 63 karakter arasında küçük harf, rakam ve tireden oluşur; harf veya rakamla başlar ve biter.",
+    "63-10003": "Bu bucket adı ayrılmış. Başka bir ad seçin.",
+    "63-10004": "Bu bucket adı bölgede zaten alınmış. Başka bir ad seçin.",
+    "63-10005": "Bir projede en fazla 100 Storage olabilir.",
+    "63-10006": "Storage bu paketten daha fazla veri tutuyor. Önce yer açın.",
+    "63-10007": "Yazdığınız bucket adı bu Storage ile eşleşmiyor.",
+    "63-10008": "Storage duraklatıldı. Yalnızca Nodera yeniden başlatabilir.",
+    "63-10009": "Storage siliniyor.",
+    "63-10010": "Storage geçici olarak kullanılamıyor. Hiçbir şey değişmedi; biraz sonra tekrar deneyin.",
+    "63-10011": "Storage kaydedilemedi. Lütfen tekrar deneyin.",
+    "63-10012": "Bilinmeyen duraklatma nedeni.",
+    "64-10001": "Erişim anahtarı bulunamadı. Zaten iptal edilmiş olabilir.",
+    "64-10002": "Bir Storage'da en fazla 20 erişim anahtarı olabilir.",
+    "64-10003": "Erişim anahtarı kaydedilemedi. Lütfen tekrar deneyin.",
+    "65-10001": "Liste buradan devam edemedi. Klasörü yeniden açın.",
+    "65-10002": "Bu dosya adı nesne anahtarı olarak kullanılamaz.",
+    "66-10001": "Kullanım kaydedilemedi. Lütfen tekrar deneyin.",
+    "70-10001": "Kubernetes bu projeyi henüz tanımıyor. Birkaç saniye içinde tekrar deneyin.",
+    "70-10004": "Bu ekipteki rolünüz buna izin vermiyor.",
+    "71-10003": "Cluster açmak veya node eklemek için ekibin bir kartı olmalı. Ekip → Faturalama altından ekleyin.",
+    "71-10004": "Ödenmemiş bir fatura nedeniyle ekip askıya alındı. Cluster açmak veya node eklemek için faturayı ödeyin.",
+    "72-10001": "Bu bölge sunulmuyor.",
+    "72-10002": "Bu plan sunulmuyor.",
+    "72-10003": "Bir node için en az 2 CPU ve 4 GB RAM'li bir plan gerekir.",
+    "72-10004": "Bu plan şu anda stokta yok. Başka bir plan seçin.",
+    "72-10005": "Kubernetes bu bölgede henüz satılmıyor.",
+    "72-10006": "Bu Kubernetes sürümü sunulmuyor.",
+    "72-10009": "Şu anda sunulan bir Kubernetes sürümü yok. Daha sonra tekrar deneyin.",
+    "73-10001": "Cluster bulunamadı.",
+    "73-10002": "Ad 1 ile 63 karakter arası küçük harf, rakam ve tire içerir; harf veya rakamla başlar ve biter.",
+    "73-10003": "Projede bu adda bir cluster zaten var. Başka bir ad seçin.",
+    "73-10004": "Proje izin verilen sayıda cluster'a ulaştı.",
+    "73-10005": "Node havuzu bulunamadı.",
+    "73-10006": "Node havuzu adı 1 ile 32 karakter arası küçük harf, rakam ve tire içerir; harf veya rakamla başlar ve biter.",
+    "73-10007": "Cluster'da bu adda bir node havuzu zaten var.",
+    "73-10008": "Cluster izin verilen sayıda node havuzuna ulaştı.",
+    "73-10009": "Bir node havuzunda 1 ile izin verilen sayı arasında node bulunur.",
+    "73-10010": "Bir cluster'da en az bir node havuzu kalır.",
+    "73-10011": "Etiketlerden biri geçerli bir Kubernetes etiketi değil.",
+    "73-10012": "Taint'lerden biri geçerli bir Kubernetes taint'i değil.",
+    "73-10013": "Cluster siliniyor.",
+    "73-10014": "Cluster'ın control plane'i henüz hazır değil. Biraz sonra tekrar deneyin.",
+    "73-10017": "Kubernetes geçici olarak kullanılamıyor. Tekrar deneyin.",
+    "73-10018": "Kubernetes isteği reddetti. Destek ile iletişime geçin.",
+    "73-10019": "Cluster başarısız oldu; silip yenisini açın."
   },
   "teams": {
     "switcher": {
@@ -497,7 +561,8 @@
       "accessPendingTitle": "Proje hazırlanıyor",
       "accessPending": "Bu proje az önce oluşturuldu ve henüz droplet için hazır değil. Birkaç saniye sonra tekrar deneyin.",
       "retry": "Tekrar dene",
-      "emptyReadOnly": "Rolünüz bu ekipte Droplet oluşturamaz. Bir sahip veya geliştiriciden oluşturmasını isteyin."
+      "emptyReadOnly": "Rolünüz bu ekipte Droplet oluşturamaz. Bir sahip veya geliştiriciden oluşturmasını isteyin.",
+      "node": "Node · {pool}"
     },
     "create": {
       "title": "Droplet oluştur",
@@ -620,7 +685,12 @@
       "notFoundTitle": "Droplet bulunamadı",
       "notFoundDescription": "Silinmiş olabilir veya başka bir ekibe ait olabilir.",
       "backToProjects": "Projelere dön",
-      "retry": "Tekrar dene"
+      "retry": "Tekrar dene",
+      "node": {
+        "title": "Bu Droplet bir Kubernetes cluster'ının node'u ({pool} havuzu)",
+        "description": "Cluster'ı üzerinden yönetilir: güç işlemleri ve silme orada yapılır, burada değil. Havuzdan node çıkarılınca serbest bırakılır.",
+        "openCluster": "Cluster'ı aç"
+      }
     },
     "failureCodes": {
       "rejected": "Sipariş reddedildi.",
@@ -974,7 +1044,21 @@
       "suspendedTitle": "Ekip askıya alındı",
       "payNow": "Şimdi öde",
       "paymentFailedAsk": "Açık faturanın tahsilatı başarısız oldu. {date} tarihinde yeniden denenecek; daha erken ödemesi için bir sahip veya finans üyesinden yardım isteyin.",
-      "askToPay": "Ödemesi için ekibin bir sahibinden veya finans üyesinden yardım isteyin."
+      "askToPay": "Ödemesi için ekibin bir sahibinden veya finans üyesinden yardım isteyin.",
+      "storage": {
+        "noPaymentMethodTitle": "Storage kullanmak için bir kart ekleyin",
+        "noPaymentMethod": "Ekibin henüz ödeme yöntemi yok. Bir kart eklendiğinde Storage açılabilir.",
+        "noPaymentMethodAsk": "Ekibin henüz ödeme yöntemi yok, bu yüzden Storage açılamıyor. Kart eklemesi için bir sahip veya finans üyesinden yardım isteyin.",
+        "suspended": "Ödenmemiş bir fatura var: fatura ödenene kadar ekibin tüm Storage'ları durduruldu ve paket değiştirilemez.",
+        "suspendedDeletion": "Ödenmezse ekibin Storage'ları {date} tarihinde silinir."
+      },
+      "kubernetes": {
+        "noPaymentMethodTitle": "Kubernetes kullanmak için bir kart ekleyin",
+        "noPaymentMethod": "Ekibin henüz ödeme yöntemi yok. Bir kart eklendiğinde cluster açılabilir.",
+        "noPaymentMethodAsk": "Ekibin henüz ödeme yöntemi yok, bu yüzden cluster açılamıyor. Kart eklemesi için bir sahip veya finans üyesinden yardım isteyin.",
+        "suspended": "Ödenmemiş bir fatura var: fatura ödenene kadar ekibin node'ları kapalı ve cluster'larda değişiklik yapılamaz.",
+        "suspendedDeletion": "Ödenmezse ekibin cluster'ları {date} tarihinde silinir."
+      }
     },
     "blocked": {
       "paymentMethodRequiredTitle": "Ödeme yöntemi gerekli",
@@ -1142,6 +1226,35 @@
           "bounce": "Geri dönme oranı {rate} seviyesine ulaştı. Listenizi temizleyip yeniden başlatmak için destek ekibiyle iletişime geçin.",
           "complaint": "Şikâyet oranı {rate} seviyesine ulaştı. Listenizi temizleyip yeniden başlatmak için destek ekibiyle iletişime geçin."
         }
+      },
+      "storage_nearly_full": {
+        "title": "{bucket} dolmaya yakın",
+        "description": "{package} paketinin {size} alanının {used} kadarı kullanıldı. Yazma durmadan önce yer açın veya daha büyük bir pakete geçin."
+      },
+      "storage_full": {
+        "title": "{bucket} doldu",
+        "description": "{package} paketinin {size} alanının tamamı kullanıldı. Yer açılana veya daha büyük bir paket seçilene kadar yazma istekleri reddedilir; okuma çalışmaya devam eder."
+      },
+      "storage_paused": {
+        "title": "Nodera {bucket} Storage'ını duraklattı",
+        "description": "Ona yapılan her istek reddediliyor. Destek ekibiyle iletişime geçin.",
+        "reasons": {
+          "abuse_complaint": "İçeriğiyle ilgili bir kötüye kullanım şikâyeti alındı. Her istek reddediliyor; destek ekibiyle iletişime geçin.",
+          "malware": "Dosyaları arasında zararlı yazılım bulundu. Her istek reddediliyor; destek ekibiyle iletişime geçin.",
+          "phishing": "Dosyaları arasında oltalama içeriği bulundu. Her istek reddediliyor; destek ekibiyle iletişime geçin.",
+          "legal": "Yasal bir karar gerektiriyor. Her istek reddediliyor; destek ekibiyle iletişime geçin."
+        }
+      },
+      "storage_downgrade_skipped": {
+        "title": "{bucket} {package} paketinde kalıyor",
+        "description": "{skipped} ({skippedSize}) paketine geçiş iptal edildi: Storage {used} tutuyor, bu o paketten fazla. Hâlâ istiyorsanız yer açıp geçişi yeniden planlayın."
+      },
+      "kubernetes_cluster_running": {
+        "title": "{name} cluster'ı çalışıyor",
+        "description": "{project} projesinde control plane yanıt veriyor ve bir node hazır."
+      },
+      "kubernetes_cluster_failed": {
+        "title": "{name} cluster'ı kurulamadı"
       }
     }
   },
@@ -1154,6 +1267,14 @@
     "mail": {
       "name": "Mail",
       "description": "Kendi alan adlarınızdan e-posta gönderimi"
+    },
+    "storage": {
+      "name": "Storage",
+      "description": "Aylık paketle S3 uyumlu nesne depolama"
+    },
+    "kubernetes": {
+      "name": "Kubernetes",
+      "description": "Kendi Droplet'leriniz üzerinde yönetilen cluster'lar"
     }
   },
   "apiKeys": {
@@ -1684,6 +1805,608 @@
         "cancel": "Vazgeç",
         "save": "Kaydet",
         "submit": "Webhook ekle"
+      }
+    }
+  },
+  "storage": {
+    "access": {
+      "title": "Storage",
+      "deniedTitle": "Rolünüz Storage'ı göremez",
+      "denied": "{team} ekibindeki {role} rolünüz Storage'a erişemez. İhtiyacınız varsa ekibin bir sahibine başvurun.",
+      "deniedGeneric": "Bu ekipteki rolünüz Storage'ı kapsamıyor. İhtiyacınız varsa ekibin bir sahibine başvurun."
+    },
+    "gate": {
+      "title": "Storage",
+      "retry": "Tekrar dene"
+    },
+    "landing": {
+      "title": "Storage",
+      "description": "Aylık paketle S3 uyumlu nesne depolama; erişim anahtarları ve dosya tarayıcısıyla.",
+      "teamNotFoundTitle": "Ekip bulunamadı",
+      "teamNotFound": "Bu bağlantı üyesi olmadığınız bir ekibe ait ya da ekip artık yok.",
+      "openCurrent": "Mevcut projenizin Storage sayfasını aç",
+      "noTeam": "Hesabınıza bağlı bir ekip yok.",
+      "retry": "Tekrar dene",
+      "projectNotFoundTitle": "Proje bulunamadı",
+      "projectNotFound": "Bu bağlantı {team} ekibinde olmayan bir projeye ait ya da proje artık yok.",
+      "noProjectTitle": "Storage bir projenin içinde yer alır",
+      "noProject": "Storage açmak, erişim anahtarı oluşturmak ve dosyalarınıza göz atmak için bir proje oluşturun.",
+      "noProjectReadOnly": "Bu ekipte henüz proje yok ve rolünüz proje oluşturamaz. Bir sahip veya geliştiriciden yardım isteyin.",
+      "createProject": "Proje oluştur"
+    },
+    "state": {
+      "active": "Etkin",
+      "full": "Dolu",
+      "paused": "Duraklatıldı",
+      "suspended": "Askıda",
+      "deleting": "Siliniyor"
+    },
+    "fullness": {
+      "label": "Kullanılan",
+      "usedOf": "{total} içinde {used}"
+    },
+    "tabs": {
+      "files": "Dosyalar",
+      "access-keys": "Erişim anahtarları",
+      "usage": "Kullanım",
+      "settings": "Ayarlar"
+    },
+    "stateAlert": {
+      "deleting": {
+        "title": "Bu Storage siliniyor",
+        "description": "Erişim anahtarları iptal edildi ve paketi sona erdi. Nodera dosyalarını kaldırıyor; dosyalar gidince bucket adı yeniden kullanılabilir."
+      },
+      "suspended": {
+        "title": "Bu Storage durduruldu",
+        "description": "Ekibin ödenmemiş bir faturası var. Fatura ödenene kadar Storage'a yapılan her istek reddedilir; dosyalar korunur."
+      },
+      "paused": {
+        "title": "Nodera bu Storage'ı {date} tarihinde duraklattı",
+        "titleNoDate": "Nodera bu Storage'ı duraklattı",
+        "reasons": {
+          "abuse_complaint": "İçeriğiyle ilgili bir kötüye kullanım şikâyeti alındı.",
+          "malware": "Dosyaları arasında zararlı yazılım bulundu.",
+          "phishing": "Dosyaları arasında oltalama içeriği bulundu.",
+          "legal": "Yasal bir karar gerektiriyor.",
+          "unknown": "Ona yapılan her istek reddediliyor."
+        },
+        "lift": "Duraklatmayı yalnızca Nodera kaldırabilir. Destek ekibiyle iletişime geçin."
+      },
+      "full": {
+        "title": "Bu Storage dolu",
+        "description": "{package} paketinin {size} alanının tamamı kullanıldı. Yazma istekleri reddediliyor; okuma ve silme çalışmaya devam ediyor. Daha büyük bir pakete geçin veya yer açın.",
+        "changePackage": "Paketi değiştir"
+      }
+    },
+    "list": {
+      "title": "Storage'lar",
+      "description": "{project} projesinin Storage'ları: her biri kendi paketiyle bir bucket.",
+      "open": "Storage aç",
+      "retry": "Tekrar dene",
+      "accessPendingTitle": "Storage bu projeyi henüz öğreniyor",
+      "accessPending": "Proje az önce oluşturuldu. Birkaç saniye içinde tekrar deneyin.",
+      "limitReached": "Bir projede en fazla {max} Storage olabilir.",
+      "emptyTitle": "Henüz Storage yok",
+      "emptyDescription": "Bucket adı, bölge ve aylık paketle bir S3 bucket'ı almak için Storage açın.",
+      "emptyReadOnly": "Bu projede henüz Storage yok. Rolünüz Storage'ları görebilir ama açamaz.",
+      "packageTerms": "{size} · aylık {price}",
+      "columns": {
+        "bucketName": "Bucket adı",
+        "region": "Bölge",
+        "package": "Paket",
+        "fullness": "Kullanılan",
+        "state": "Durum"
+      }
+    },
+    "open": {
+      "title": "Storage aç",
+      "description": "{project} projesinde, açıldığı anda kullanılabilen bir bucket.",
+      "readOnlyTitle": "Rolünüz Storage açamaz",
+      "readOnly": "Storage'ları yalnızca sahipler ve geliştiriciler açar. Onlardan birine başvurun.",
+      "backToList": "Storage'lara dön",
+      "retry": "Tekrar dene",
+      "bucketName": {
+        "label": "Bucket adı",
+        "placeholder": "my-assets",
+        "hint": "Storage'ın adresinin bir parçasıdır; hiç değişmez ve bölgesinde benzersizdir.",
+        "rules": {
+          "length": "{min} ile {max} karakter arası",
+          "charset": "Küçük harf, rakam ve tire; nokta yok",
+          "edge": "Harf veya rakamla başlar ve biter"
+        },
+        "issues": {
+          "required": "Bir bucket adı girin.",
+          "tooShort": "Bucket adı en az {min} karakter olmalı.",
+          "tooLong": "Bucket adı en fazla {max} karakter olabilir.",
+          "charset": "Yalnızca küçük harf, rakam ve tire kullanılabilir.",
+          "edge": "Harf veya rakamla başlamalı ve bitmeli.",
+          "dots": "Nokta kullanılamaz; tire kullanın."
+        }
+      },
+      "region": "Bölge",
+      "regionPlaceholder": "Bölge seçin",
+      "regionHint": "Dosyaların tutulduğu yer. Sonradan değiştirilemez.",
+      "regionOption": "{code} — {city}, {country}",
+      "regionRequired": "Bir bölge seçin.",
+      "package": "Paket",
+      "packagePlaceholder": "Paket seçin",
+      "packageHint": "Fiyatlar aylık, USD ve vergiler hariçtir. İstediğiniz zaman daha büyük bir pakete geçebilirsiniz.",
+      "packageOption": "{code} — aylık {price} karşılığında {size}",
+      "packageChosen": "Aylık {price} karşılığında {size} alan; ücret ekibin aylık faturasına eklenir.",
+      "packageRequired": "Bir paket seçin.",
+      "addCard": "Kart ekle",
+      "payInvoice": "Faturayı öde",
+      "askBilling": "Ekibin bir sahibine veya finans üyesine başvurun.",
+      "cancel": "Vazgeç",
+      "submit": "Storage'ı aç",
+      "opened": "{name} açıldı."
+    },
+    "detail": {
+      "title": "Storage",
+      "description": "Bölge {region} · Paket {package}",
+      "notFoundTitle": "Storage bulunamadı",
+      "notFoundDescription": "Bu Storage silinmiş ya da başka bir projeye ait.",
+      "backToList": "Storage'lara dön",
+      "retry": "Tekrar dene",
+      "url": "URL",
+      "copyUrl": "URL'yi kopyala"
+    },
+    "files": {
+      "breadcrumbs": "Klasörler",
+      "refresh": "Yenile",
+      "upload": "Dosya yükle",
+      "deleteSelected": "{count} dosyayı sil",
+      "download": "İndir",
+      "loadMore": "Daha fazla göster",
+      "retry": "Tekrar dene",
+      "cancel": "Vazgeç",
+      "deleteTitle": "{count} dosya silinsin mi?",
+      "deleteConfirm": "Dosyalar Storage'dan hemen kaldırılır. Bu işlem geri alınamaz.",
+      "deleteOk": "Sil",
+      "deleted": "{count} dosya silindi.",
+      "emptyTitle": "Bu Storage boş",
+      "emptyFolderTitle": "Bu klasör boş",
+      "emptyDescription": "Buradan dosya yükleyin ya da bir erişim anahtarıyla herhangi bir S3 aracından ekleyin.",
+      "emptyReadOnly": "Buraya henüz dosya yüklenmedi.",
+      "unavailableTitle": "Dosyalara şu anda göz atılamıyor",
+      "unavailableDeleting": "Storage siliniyor ve dosyaları kaldırılıyor.",
+      "unavailableStopped": "Storage durduruldu. Yeniden etkin olduğunda göz atmaya devam edebilirsiniz.",
+      "fullHint": "Storage dolu: yer açılana veya daha büyük bir paket seçilene kadar yüklemeler reddedilir. İndirme ve silme çalışmaya devam eder.",
+      "tools": "Tarayıcıdan 5 GB'a kadar dosya yüklenebilir. Daha büyük veya çok sayıda dosya için bir erişim anahtarıyla S3 aracı kullanın.",
+      "columns": {
+        "name": "Ad",
+        "size": "Boyut",
+        "modified": "Değiştirilme"
+      },
+      "uploads": {
+        "title": "Yüklemeler",
+        "titleActive": "{count} dosya yükleniyor",
+        "clear": "Temizle",
+        "blockedTitle": "Tarayıcı Storage'a ulaşamadı",
+        "blocked": "Yükleme başlamadan reddedildi. Storage'ın CORS kuralları değiştirildiyse Nodera'nın bu web uygulaması için kuralı silinmiştir; kuralı geri yükleyin, yüklemeler yeniden gönderilir.",
+        "restoreAccess": "Tarayıcı erişimini geri yükle",
+        "restored": "Tarayıcı erişimi geri yüklendi.",
+        "retryFailed": "{count} yüklemeyi yeniden dene",
+        "failures": {
+          "blocked": "Tarayıcı dosyayı gönderemedi.",
+          "tooLarge": "{max} sınırından büyük; bu dosya için bir S3 aracı kullanın.",
+          "refused": "Storage dosyayı reddetti."
+        }
+      },
+      "copyUrl": "URL'yi kopyala",
+      "access": {
+        "reading": "…",
+        "public": "Herkese açık",
+        "private": "Özel",
+        "publicHint": "Bu dosyayı URL'sinden herkes okuyabilir. Yazmak için yine Access key gerekir.",
+        "privateHint": "Bu dosyayı yalnızca bir Access key okur.",
+        "switchHint": "Dosyayı herkesin okumasına aç ya da geri al. Yüklemeler her zaman özeldir.",
+        "published": "Dosya artık herkes tarafından okunabilir.",
+        "unpublished": "Dosya yeniden özel."
+      }
+    },
+    "accessKeys": {
+      "title": "Erişim anahtarları",
+      "description": "S3 araçları ve yazılımınız için kimlik bilgileri. Her anahtar yalnızca bu Storage'a erişir.",
+      "create": "Erişim anahtarı oluştur",
+      "retry": "Tekrar dene",
+      "cancel": "Vazgeç",
+      "limitReached": "Bir Storage'da en fazla {max} erişim anahtarı olabilir.",
+      "emptyTitle": "Henüz erişim anahtarı yok",
+      "emptyDescription": "Bir S3 aracını veya yazılımınızı bu Storage'a bağlamak için erişim anahtarı oluşturun.",
+      "emptyReadOnly": "Bu Storage'ın henüz erişim anahtarı yok. Rolünüz anahtarları görebilir ama oluşturamaz.",
+      "you": "Siz",
+      "revoke": "İptal et",
+      "revokeTitle": "{name} iptal edilsin mi?",
+      "revokeConfirm": "Bu anahtarı kullanan yazılım bir sonraki isteğinde reddedilir. Bu işlem geri alınamaz.",
+      "revoked": "{name} iptal edildi.",
+      "columns": {
+        "name": "Ad",
+        "accessKeyId": "Erişim anahtarı kimliği",
+        "permission": "Erişim",
+        "createdBy": "Oluşturan",
+        "createdAt": "Oluşturulma"
+      },
+      "permissions": {
+        "read": "Salt okunur",
+        "read_write": "Okuma ve yazma"
+      },
+      "form": {
+        "modalTitle": "Erişim anahtarı oluştur",
+        "description": "Gizli anahtar yalnızca oluşturulduğu anda gösterilir; Nodera onu saklamaz.",
+        "name": "Ad",
+        "namePlaceholder": "yedek-sunucu",
+        "nameHint": "Anahtarlarınızı ayırt etmek için; örneğin kullanan yazılım veya sunucuya göre.",
+        "nameRequired": "Bir ad girin.",
+        "nameTooLong": "Ad en fazla {max} karakter olabilir.",
+        "permission": "Anahtarın yetkisi",
+        "permissionHints": {
+          "read": "Dosyaları listeler ve indirir.",
+          "read_write": "Dosyaları listeler, indirir, yükler ve siler."
+        },
+        "cancel": "Vazgeç",
+        "submit": "Anahtarı oluştur"
+      },
+      "created": {
+        "title": "{name} hazır",
+        "description": "Gizli anahtarı şimdi kopyalayın ve S3 aracınızı bu değerlerle yapılandırın.",
+        "fields": {
+          "accessKeyId": "Erişim anahtarı kimliği",
+          "secretKey": "Gizli anahtar",
+          "endpoint": "Uç nokta",
+          "bucketName": "Bucket adı",
+          "region": "Bölge"
+        },
+        "warning": "Gizli anahtar yalnızca bu kez gösterilir. Kaybederseniz bu anahtarı iptal edip yenisini oluşturun."
+      }
+    },
+    "usage": {
+      "sizeTitle": "Boyut",
+      "sizeDescription": "Son ölçüme göre Storage'ın paketinin ne kadarını kullandığı.",
+      "measuredAt": "Ölçüm: {date}.",
+      "notMeasured": "Henüz ölçülmedi.",
+      "objects": "Dosya",
+      "package": "Paket",
+      "trafficTitle": "Trafik",
+      "trafficDescription": "Son {days} günde gün başına gönderilen ve alınan veri, UTC'ye göre.",
+      "trafficNote": "Trafik, depolama sunucularının kayıtlarından en fazla bir saat gecikmeyle okunur. Ücretlendirilmez.",
+      "noTrafficTitle": "Henüz trafik yok",
+      "noTraffic": "Storage kullanılmaya başlandığında ilk günün trafiği burada görünür.",
+      "retry": "Tekrar dene",
+      "columns": {
+        "day": "Gün",
+        "traffic": "Trafik",
+        "sent": "Gönderilen",
+        "received": "Alınan",
+        "requests": "İstek",
+        "size": "Boyut",
+        "objects": "Dosya"
+      }
+    },
+    "package": {
+      "title": "Paket",
+      "size": "{size} alan",
+      "pricePerMonth": "aylık {price}",
+      "taxNote": "USD, vergiler hariç",
+      "since": "{date} tarihinden beri",
+      "changeTitle": "{date} tarihinde {package} paketine geçiliyor",
+      "change": "O tarihten itibaren Storage aylık {price} karşılığında {size} alana sahip olur. Storage o paket için fazla büyükse geçiş iptal edilir.",
+      "undo": "Geri al"
+    },
+    "packages": {
+      "title": "Paketi değiştir",
+      "description": "Storage'ın ne kadar veri tutabileceği. Her paket ekibin faturasında aylık ücretlendirilir.",
+      "current": "Mevcut",
+      "currentUntil": "{date} tarihine kadar",
+      "from": "{date} tarihinden itibaren",
+      "size": "{size} alan",
+      "pricePerMonth": "aylık {price}",
+      "actions": {
+        "upgrade": "Yükselt",
+        "downgrade": "Düşür",
+        "keep": "Koru"
+      },
+      "tooSmall": "Storage {used} tutuyor; bu paketten daha fazla.",
+      "rules": "Fiyatlar aylık, USD ve vergiler hariçtir. Daha büyük bir paket hemen geçerli olur. Daha küçük bir paket gelecek ayın başında, Storage o zaman ona sığıyorsa başlar; o tarihe kadar geri alabilirsiniz.",
+      "readOnly": "Rolünüz paketleri görebilir ama değiştiremez.",
+      "blocked": {
+        "no_payment_method": "Paketi değiştirmek için bir kart gerekir.",
+        "suspended": "Ödenmemiş bir fatura nedeniyle ekip askıya alındı; fatura ödenene kadar paket değiştirilemez."
+      },
+      "addCard": "Kart ekle",
+      "payInvoice": "Faturayı öde",
+      "back": "Geri",
+      "confirm": {
+        "upgrade": {
+          "title": "Şimdi {package} paketine yükseltilsin mi?",
+          "description": "Hemen geçerli olur: Storage {size} alana sahip olur ve doluysa yazma yeniden başlar. Bundan sonra aylık {price} üzerinden ücretlendirilir.",
+          "ok": "Şimdi yükselt"
+        },
+        "downgrade": {
+          "title": "Gelecek ay {package} paketine geçilsin mi?",
+          "description": "Mevcut paketiniz ay sonuna kadar sürer. Gelecek ayın ilk gününden itibaren, hâlâ sığıyorsa, Storage aylık {price} karşılığında {size} alana sahip olur. O tarihe kadar geri alabilirsiniz.",
+          "ok": "Değişikliği planla"
+        }
+      },
+      "done": {
+        "upgrade": "{package} paketine yükseltildi.",
+        "downgrade": "{package} gelecek ay başlar.",
+        "keep": "{package} paketinde kalıyorsunuz."
+      }
+    },
+    "settings": {
+      "retry": "Tekrar dene",
+      "connection": {
+        "title": "Bağlantı bilgileri",
+        "description": "Herhangi bir S3 aracının istediği bilgiler. Kimlik bilgileri Storage'ın erişim anahtarlarıdır.",
+        "endpoint": "Uç nokta",
+        "region": "Bölge",
+        "bucketName": "Bucket adı",
+        "url": "Bucket adresi",
+        "credentials": "Kimlik bilgileri",
+        "credentialsValue": "Bu Storage'ın bir erişim anahtarı.",
+        "manageKeys": "Erişim anahtarlarını yönet",
+        "pathStyle": "İki adresleme biçimi de çalışır: bucket uç noktanın alt alan adı olarak ya da yolun ilk parçası olarak."
+      },
+      "delete": {
+        "title": "Bu Storage'ı sil",
+        "description": "Storage ve içindeki her dosya kaldırılır. Erişim anahtarları hemen çalışmayı bırakır ve paketi sona erer; sonrasında ücretlendirilmez.",
+        "frees": "Dosyalar gidince {name} bucket adı yeniden kullanılabilir.",
+        "button": "Storage'ı sil",
+        "done": "{name} siliniyor."
+      },
+      "deleteDialog": {
+        "title": "Storage silinsin mi?",
+        "warningTitle": "Bu işlem geri alınamaz",
+        "warning": "Onayladığınız anda Storage'daki her dosya kaldırılır ve erişim anahtarları çalışmayı bırakır.",
+        "inputLabel": "Onaylamak için {name} yazın",
+        "mismatch": "Bucket adı eşleşmiyor.",
+        "confirm": "Storage'ı sil",
+        "cancel": "Vazgeç"
+      }
+    }
+  },
+  "kubernetes": {
+    "access": {
+      "title": "Kubernetes",
+      "deniedTitle": "Rolünüz Kubernetes'i göremez",
+      "denied": "{team} ekibindeki {role} rolünüz Kubernetes'e erişemez. İhtiyacınız varsa ekibin bir sahibine başvurun.",
+      "deniedGeneric": "Bu ekipteki rolünüz Kubernetes'i kapsamıyor. İhtiyacınız varsa ekibin bir sahibine başvurun."
+    },
+    "gate": {
+      "title": "Kubernetes",
+      "retry": "Tekrar dene"
+    },
+    "landing": {
+      "title": "Kubernetes",
+      "description": "Yönetilen Kubernetes cluster'ları: control plane'i Nodera çalıştırır, node'lar sizin Droplet'lerinizdir.",
+      "teamNotFoundTitle": "Ekip bulunamadı",
+      "teamNotFound": "Bu bağlantı üyesi olmadığınız bir ekibe ait ya da ekip artık yok.",
+      "openCurrent": "Mevcut projenizin Kubernetes'ini aç",
+      "noTeam": "Hesabınızın henüz bir ekibi yok.",
+      "retry": "Tekrar dene",
+      "projectNotFoundTitle": "Proje bulunamadı",
+      "projectNotFound": "Bu bağlantı {team} ekibinde olmayan bir projeye ait ya da proje artık yok.",
+      "noProjectTitle": "Kubernetes bir projede yaşar",
+      "noProject": "Cluster açmak, node havuzu eklemek ve kubeconfig indirmek için bir proje oluşturun.",
+      "noProjectReadOnly": "Bu ekibin henüz projesi yok ve rolünüz proje oluşturamıyor. Bir sahip veya geliştiriciden yardım isteyin.",
+      "createProject": "Proje oluştur"
+    },
+    "status": {
+      "provisioning": "Kuruluyor",
+      "running": "Çalışıyor",
+      "degraded": "Zayıflamış",
+      "deleting": "Siliniyor",
+      "failed": "Başarısız"
+    },
+    "nodeStatus": {
+      "requested": "İstendi",
+      "joining": "Katılıyor",
+      "ready": "Hazır",
+      "not_ready": "Hazır değil",
+      "releasing": "Serbest bırakılıyor",
+      "failed": "Başarısız"
+    },
+    "failureCodes": {
+      "control_plane_failed": "Control plane zamanında hazır olmadı.",
+      "node_rejected": "Node'un sunucusu açılamadı.",
+      "timed_out": "Node cluster'a zamanında katılmadı."
+    },
+    "name": {
+      "hint": "En fazla {max} karakter: küçük harf, rakam ve tire.",
+      "issues": {
+        "required": "Bir ad girin.",
+        "tooLong": "Ad en fazla {max} karakter olabilir.",
+        "charset": "Yalnızca küçük harf, rakam ve tire.",
+        "edge": "Harf veya rakamla başlamalı ve bitmeli."
+      }
+    },
+    "tabs": {
+      "overview": "Genel bakış",
+      "settings": "Ayarlar"
+    },
+    "list": {
+      "title": "Cluster'lar",
+      "description": "{project} projesinin Kubernetes cluster'ları: her biri Nodera'nın çalıştırdığı bir control plane ve Droplet'lerinizden node havuzları.",
+      "open": "Cluster aç",
+      "retry": "Tekrar dene",
+      "accessPendingTitle": "Kubernetes bu projeyi öğreniyor",
+      "accessPending": "Proje az önce oluşturuldu. Birkaç saniye içinde tekrar deneyin.",
+      "limitReached": "Bir projede en fazla {max} cluster olabilir.",
+      "emptyTitle": "Henüz cluster yok",
+      "emptyDescription": "Yönetilen bir control plane ve Droplet'lerden ilk node havuzunu almak için bir cluster açın.",
+      "emptyReadOnly": "Bu projede henüz cluster yok. Rolünüz cluster'ları görebilir ama açamaz.",
+      "nodesSummary": "{pools} havuzda {nodes} node",
+      "columns": {
+        "name": "Ad",
+        "status": "Durum",
+        "version": "Sürüm",
+        "region": "Bölge",
+        "nodes": "Node'lar",
+        "created": "Oluşturuldu"
+      }
+    },
+    "open": {
+      "title": "Cluster aç",
+      "description": "{project} projesinde bir Kubernetes cluster'ı. Control plane ücretsizdir; her node, olduğu Droplet olarak faturalanır.",
+      "readOnlyTitle": "Rolünüz cluster açamaz",
+      "readOnly": "Cluster'ları yalnızca sahipler ve geliştiriciler açar. Onlardan birine başvurun.",
+      "backToList": "Cluster'lara dön",
+      "retry": "Tekrar dene",
+      "notSoldTitle": "Kubernetes şu anda satılmıyor",
+      "notSold": "Şu anda sunulan bir bölge veya sürüm yok. Daha sonra tekrar deneyin.",
+      "name": "Ad",
+      "namePlaceholder": "prod",
+      "nameHint": "Projede benzersizdir; sonradan değiştirebilirsiniz.",
+      "region": "Bölge",
+      "regionPlaceholder": "Bir bölge seçin",
+      "regionHint": "Control plane'in ve node'ların çalıştığı yer. Sonradan değiştirilemez.",
+      "regionOption": "{code} — {city}, {country}",
+      "regionRequired": "Bir bölge seçin.",
+      "version": "Kubernetes sürümü",
+      "versionPlaceholder": "Bir sürüm seçin",
+      "versionHint": "Cluster'a kilitlenir; her node bu sürümle katılır.",
+      "versionRequired": "Bir sürüm seçin.",
+      "poolTitle": "İlk node havuzu",
+      "poolDescription": "Tek bir planın node'ları. Sonradan havuz ekleyip sayıyı değiştirebilirsiniz; bir havuzun planı değişmez.",
+      "planRequired": "Bir plan seçin.",
+      "countRange": "{min} ile {max} node arası.",
+      "noteTitle": "Bir cluster neyle gelir",
+      "note": "Cilium ağı, her indirmede yedi gün geçerli bir kubeconfig ve projenin Droplet'leri olarak listelenen node'lar. Kalıcı disk ve yük dengeleyici henüz sunulmuyor.",
+      "addCard": "Kart ekle",
+      "payInvoice": "Faturayı öde",
+      "askBilling": "Ekibin bir sahibine veya finans üyesine başvurun.",
+      "cancel": "İptal",
+      "submit": "Cluster'ı aç",
+      "opened": "{name} kuruluyor."
+    },
+    "pool": {
+      "name": "Havuz adı",
+      "namePlaceholder": "workers",
+      "nameHint": "Her node'un hostname'inin başına gelir.",
+      "plan": "Plan",
+      "planPlaceholder": "Bir plan seçin",
+      "planHint": "Havuzdaki her node bu plana sahiptir. Fiyatlar node başına, USD, vergiler hariç.",
+      "planOption": "{code} — {cpus} CPU · {ram} GB RAM · {price} / saat",
+      "planChosen": "Node başına ayda {monthly}; {count} node için ayda {total}, her biri 672 saatle sınırlı.",
+      "planSoldOut": "Bu plan şu anda stokta yok; başka bir plan seçilebilir.",
+      "count": "Node sayısı",
+      "countHint": "{min} ile {max} node arası."
+    },
+    "addPool": {
+      "title": "Node havuzu ekle",
+      "planRequired": "Bir plan seçin.",
+      "countRange": "{min} ile {max} node arası.",
+      "cancel": "İptal",
+      "submit": "Havuzu ekle"
+    },
+    "poolCard": {
+      "description": "Plan {plan} · {count} node'un {ready} tanesi hazır",
+      "count": "Sayı",
+      "addNodes": "Node ekle",
+      "removeNodes": "Node çıkar",
+      "replaceNodes": "Başarısız node'ları yenile",
+      "deletePool": "Havuzu sil",
+      "lastPool": "Bir cluster'da en az bir node havuzu kalır.",
+      "standing": "{count} node'un {standing} tanesi ayakta; kalanlar başarısız oldu veya serbest bırakılıyor."
+    },
+    "nodes": {
+      "columns": {
+        "hostname": "Node",
+        "status": "Durum",
+        "ipv4": "IPv4",
+        "readyAt": "Hazır olduğu an"
+      },
+      "pendingIp": "Henüz atanmadı",
+      "since": "{date} tarihinde istendi",
+      "failedNoReason": "Node kayıtlı bir sebep olmadan başarısız oldu.",
+      "empty": "Henüz node yok."
+    },
+    "detail": {
+      "title": "Cluster",
+      "description": "Bölge {region} · Kubernetes v{version}",
+      "notFoundTitle": "Cluster bulunamadı",
+      "notFoundDescription": "Bu cluster silindi ya da başka bir projeye ait.",
+      "backToList": "Cluster'lara dön",
+      "retry": "Tekrar dene",
+      "endpoint": "Uç nokta",
+      "copyEndpoint": "Uç noktayı kopyala"
+    },
+    "statusAlert": {
+      "provisioning": {
+        "title": "Cluster kuruluyor",
+        "description": "Nodera control plane'i ayağa kaldırıyor; ardından node'lar Droplet olarak açılır ve kendiliğinden katılır. Bu birkaç dakika sürer."
+      },
+      "deleting": {
+        "title": "Bu cluster siliniyor",
+        "description": "Node'ları serbest bırakılıyor ve Droplet'leri siliniyor; control plane en son gider."
+      },
+      "suspended": {
+        "title": "Ekip askıda",
+        "description": "Ödenmemiş bir fatura var: node'lar kapalı ve fatura ödenene kadar cluster'da değişiklik yapılamaz."
+      },
+      "degraded": {
+        "title": "Hazır node yok",
+        "description": "Control plane yanıt veriyor ama hiçbir node hazır değil. İş yükleri çalışmıyor; aşağıdaki node'ları kontrol edin."
+      },
+      "failed": {
+        "title": "Cluster kurulamadı",
+        "noReason": "Bir sebep kaydedilmedi."
+      }
+    },
+    "overview": {
+      "poolsTitle": "Node havuzları ({count})",
+      "addPool": "Node havuzu ekle",
+      "poolLimit": "Bir cluster'da en fazla {max} node havuzu olabilir.",
+      "poolAdded": "Node havuzu eklendi; node'ları açılıyor.",
+      "grown": "{pool} {count} node'a büyüyor.",
+      "shrunk": "{pool} {count} node'a küçülüyor; en yeniler serbest bırakılıyor.",
+      "blocked": {
+        "no_payment_method": "Ekibin kartı yok: node çıkarılabilir, eklenemez.",
+        "suspended": "Ekip askıda: node çıkarılabilir, eklenemez."
+      },
+      "deletePool": {
+        "title": "{pool} havuzu silinsin mi?",
+        "content": "{count} node'u boşaltılır, serbest bırakılır ve Droplet'leri silinir.",
+        "confirm": "Havuzu sil",
+        "cancel": "İptal",
+        "done": "{pool} havuzu kaldırılıyor."
+      }
+    },
+    "kubeconfig": {
+      "title": "Erişim",
+      "description": "Kubeconfig indirdiğiniz anda sizin için kesilir ve {days} gün geçerlidir; Nodera kopyasını tutmaz. Süresi dolunca yenisini indirin.",
+      "endpoint": "API sunucusu",
+      "notReady": "Control plane henüz hazır değil; yanıt vermeye başlayınca kubeconfig indirilebilir.",
+      "holderHint": "Dosya, adınıza kesilmiş cluster-admin yetkili bir sertifika taşır. Kimseyle paylaşmayın.",
+      "expires": "Son kubeconfig'inizin süresi {date} tarihinde dolar.",
+      "download": "Kubeconfig indir",
+      "downloaded": "Kubeconfig indirildi.",
+      "readOnly": "Rolünüz cluster'ı görebilir ama kubeconfig indiremez."
+    },
+    "settings": {
+      "rename": {
+        "title": "Ad",
+        "description": "Adı değiştirebilirsiniz; uç nokta aynı kalır.",
+        "label": "Cluster adı",
+        "button": "Yeniden adlandır",
+        "done": "Cluster'ın adı artık {name}."
+      },
+      "delete": {
+        "title": "Bu cluster'ı sil",
+        "description": "Her node serbest bırakılır ve Droplet'i silinir, ardından control plane gider. Sonrasında ücret alınmaz.",
+        "frees": "Cluster gittikten sonra {name} adı yeniden kullanılabilir.",
+        "button": "Cluster'ı sil",
+        "done": "{name} siliniyor."
+      },
+      "deleteDialog": {
+        "title": "Cluster silinsin mi?",
+        "warningTitle": "Bu geri alınamaz",
+        "warning": "Tüm iş yükleri durur, her node'un Droplet'i silinir ve control plane kaldırılır.",
+        "inputLabel": "Onaylamak için {name} yazın",
+        "mismatch": "Ad eşleşmiyor.",
+        "confirm": "Cluster'ı sil",
+        "cancel": "İptal"
       }
     }
   }

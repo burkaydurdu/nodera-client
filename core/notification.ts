@@ -6,7 +6,9 @@ import {
   pausedRate,
   sendingDomainPath,
 } from "./mail";
+import { KUBERNETES_LANDING_PATH, clusterPath } from "./kubernetesApp";
 import { DASHBOARD_PATH, TEAM_PATH } from "./routes";
+import { STORAGE_LANDING_PATH, isStoragePauseReason, storagePath } from "./storageApp";
 import type { Team } from "./team";
 
 /**
@@ -82,6 +84,8 @@ export interface NotificationWording {
   role: (role: string) => string;
   /** Why a Droplet failed, from its failure code. */
   dropletFailure: (code: string) => string;
+  /** Why a Cluster failed, from its failure code. */
+  kubernetesFailure: (code: string) => string;
   date: (value: string) => string;
   dateTime: (value: string) => string;
   /** A billing Period as the invoice list shows it. */
@@ -93,6 +97,8 @@ export interface NotificationWording {
   percent: (value: string) => string;
   /** A Mail Period sent as `YYYY-MM`, named as its month. */
   month: (period: string) => string;
+  /** A Storage size in bytes, in decimal units ("10 GB"). */
+  size: (bytes: string) => string;
 }
 
 /** Everything the app does differently per Notification type. */
@@ -142,6 +148,44 @@ const packageUsage = (
   allowance: wording.count(notificationParam(notification, "allowance")),
   month: wording.month(notificationParam(notification, "period")),
 });
+
+/** Storage's in-app texts name the Storage by its Bucket name; the params carry it, never a sentence. */
+const bucketName = (notification: Notification): string =>
+  notificationParam(notification, "bucketName");
+
+const storageDetailPath = (notification: Notification): string => {
+  const projectId = notificationParam(notification, "projectId");
+  const storageId = notificationParam(notification, "storageId");
+  return projectId && storageId ? storagePath(projectId, storageId) : STORAGE_LANDING_PATH;
+};
+
+const storageSettingsPath = (notification: Notification): string => {
+  const projectId = notificationParam(notification, "projectId");
+  const storageId = notificationParam(notification, "storageId");
+  return projectId && storageId
+    ? storagePath(projectId, storageId, "settings")
+    : STORAGE_LANDING_PATH;
+};
+
+const storageFill = (
+  notification: Notification,
+  wording: NotificationWording
+): Record<string, string> => ({
+  bucket: bucketName(notification),
+  package: notificationParam(notification, "packageCode"),
+  used: wording.size(notificationParam(notification, "usedBytes")),
+  size: wording.size(notificationParam(notification, "sizeBytes")),
+});
+
+/** Kubernetes' in-app texts name the Cluster; the params carry its name, never a sentence. */
+const clusterName = (notification: Notification): string =>
+  notificationParam(notification, "name");
+
+const clusterDetailPath = (notification: Notification): string => {
+  const projectId = notificationParam(notification, "projectId");
+  const clusterId = notificationParam(notification, "clusterId");
+  return projectId && clusterId ? clusterPath(projectId, clusterId) : KUBERNETES_LANDING_PATH;
+};
 
 /** The emails link an invoice the same way; the billing page selects the Team it names. */
 const invoicePath = (notification: Notification): string =>
@@ -403,6 +447,73 @@ const NOTIFICATION_KINDS = {
       };
     },
     path: mailOverviewPath,
+  },
+  storage_nearly_full: {
+    tone: "warning",
+    text: (notification, wording) => ({
+      title: wording.t("storage_nearly_full.title", { bucket: bucketName(notification) }),
+      description: wording.t(
+        "storage_nearly_full.description",
+        storageFill(notification, wording)
+      ),
+    }),
+    path: storageSettingsPath,
+  },
+  storage_full: {
+    tone: "error",
+    text: (notification, wording) => ({
+      title: wording.t("storage_full.title", { bucket: bucketName(notification) }),
+      description: wording.t("storage_full.description", storageFill(notification, wording)),
+    }),
+    path: storageSettingsPath,
+  },
+  storage_paused: {
+    tone: "error",
+    text: (notification, wording) => {
+      const reason = notificationParam(notification, "reason");
+      return {
+        title: wording.t("storage_paused.title", { bucket: bucketName(notification) }),
+        description: isStoragePauseReason(reason)
+          ? wording.t(`storage_paused.reasons.${reason}`)
+          : wording.t("storage_paused.description"),
+      };
+    },
+    path: storageDetailPath,
+  },
+  storage_downgrade_skipped: {
+    tone: "warning",
+    text: (notification, wording) => ({
+      title: wording.t("storage_downgrade_skipped.title", {
+        bucket: bucketName(notification),
+      }),
+      description: wording.t("storage_downgrade_skipped.description", {
+        package: notificationParam(notification, "packageCode"),
+        skipped: notificationParam(notification, "skippedPackageCode"),
+        skippedSize: wording.size(notificationParam(notification, "skippedSizeBytes")),
+        used: wording.size(notificationParam(notification, "usedBytes")),
+      }),
+    }),
+    path: storageSettingsPath,
+  },
+  kubernetes_cluster_running: {
+    tone: "success",
+    text: (notification, wording) => ({
+      title: wording.t("kubernetes_cluster_running.title", {
+        name: clusterName(notification),
+      }),
+      description: wording.t("kubernetes_cluster_running.description", {
+        project: notificationParam(notification, "projectName"),
+      }),
+    }),
+    path: clusterDetailPath,
+  },
+  kubernetes_cluster_failed: {
+    tone: "error",
+    text: (notification, wording) => ({
+      title: wording.t("kubernetes_cluster_failed.title", { name: clusterName(notification) }),
+      description: wording.kubernetesFailure(notificationParam(notification, "failureCode")),
+    }),
+    path: clusterDetailPath,
   },
 } satisfies Record<string, NotificationKind>;
 

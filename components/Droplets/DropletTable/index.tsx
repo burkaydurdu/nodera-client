@@ -1,6 +1,6 @@
 "use client";
 
-import { Table } from "antd";
+import { Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useLocale, useTranslations } from "next-intl";
 import type { Droplet } from "@/core/droplet";
@@ -23,8 +23,15 @@ export default function DropletTable({
       dataIndex: "hostname",
       key: "hostname",
       ellipsis: true,
-      render: (hostname: string) => (
-        <span className="font-mono text-sm font-medium text-brand-600">{hostname}</span>
+      render: (hostname: string, droplet) => (
+        <span className="flex items-center gap-2">
+          <span className="font-mono text-sm font-medium text-brand-600">{hostname}</span>
+          {droplet.node && (
+            <Tag color="blue" className="m-0">
+              {t("node", { pool: droplet.node.pool })}
+            </Tag>
+          )}
+        </span>
       ),
     },
     {

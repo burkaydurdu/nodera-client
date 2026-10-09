@@ -10,6 +10,7 @@ import {
   notificationKind,
 } from "@/core/notification";
 import { useDropletFailure } from "@/hooks/Droplet/useDropletFailure";
+import { useKubernetesFailure } from "@/hooks/Kubernetes/useKubernetesFailure";
 import {
   formatDate,
   formatDateTime,
@@ -17,7 +18,7 @@ import {
   formatPeriodEnd,
   formatUtcDate,
 } from "@/utils/date";
-import { formatCount, formatPercentString } from "@/utils/number";
+import { formatCount, formatPercentString, formatStorageSize } from "@/utils/number";
 import { formatMoney } from "@/utils/price";
 
 /** Resolves a Notification's text in the user's language; an unknown type gets the generic one. */
@@ -27,12 +28,14 @@ export const useNotificationText = () => {
   const tInvoices = useTranslations("billing.invoices");
   const locale = useLocale();
   const { describeDropletFailure } = useDropletFailure();
+  const { describeKubernetesFailure } = useKubernetesFailure();
 
   const wording = useMemo<NotificationWording>(
     () => ({
       t: (key, values) => t(key, values),
       role: (role) => (isRole(role) ? tRoles(role) : role),
       dropletFailure: describeDropletFailure,
+      kubernetesFailure: describeKubernetesFailure,
       date: (value) => formatDate(value, locale),
       dateTime: (value) => formatDateTime(value, locale),
       // The same days the invoice shows: a Period is UTC months with an exclusive end.
@@ -45,8 +48,9 @@ export const useNotificationText = () => {
       count: (value) => formatCount(value, locale),
       percent: (value) => formatPercentString(value, locale),
       month: (period) => formatMonth(period, locale),
+      size: (bytes) => formatStorageSize(Number(bytes), locale),
     }),
-    [t, tRoles, tInvoices, locale, describeDropletFailure]
+    [t, tRoles, tInvoices, locale, describeDropletFailure, describeKubernetesFailure]
   );
 
   return useCallback(

@@ -18,6 +18,10 @@ export const PERMISSIONS = [
   "mail.write",
   "mail.send",
   "apikey.write",
+  "storage.read",
+  "storage.write",
+  "kubernetes.read",
+  "kubernetes.write",
 ] as const;
 export type Permission = (typeof PERMISSIONS)[number];
 
@@ -33,8 +37,20 @@ const MATRIX: Record<Role, readonly Permission[]> = {
     "mail.write",
     "mail.send",
     "apikey.write",
+    "storage.read",
+    "storage.write",
+    "kubernetes.read",
+    "kubernetes.write",
   ],
-  finance: ["team.read", "droplet.read", "billing.read", "billing.write", "mail.read"],
+  finance: [
+    "team.read",
+    "droplet.read",
+    "billing.read",
+    "billing.write",
+    "mail.read",
+    "storage.read",
+    "kubernetes.read",
+  ],
 };
 
 /** The Permissions an API key may carry (`authz.KeyPermissions`); never wider than its creator's. */

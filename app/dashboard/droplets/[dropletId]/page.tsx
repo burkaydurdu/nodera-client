@@ -9,8 +9,10 @@ import {
   DROPLET_FALLBACK_POLL_INTERVAL_MS,
   type Droplet,
   type DropletActionType,
+  isNodeDroplet,
   isTransitional,
 } from "@/core/droplet";
+import { clusterPath } from "@/core/kubernetesApp";
 import { useCan } from "@/hooks/Authz/useCan";
 import { useErrorMessage } from "@/hooks/Error/useErrorMessage";
 import { useNavigate } from "@/hooks/Navigation/useNavigate";
@@ -28,6 +30,7 @@ import EmptyBox from "@/components/EmptyBox";
 import Loading from "@/components/Loading";
 import NoderaAlert from "@/components/NoderaAlert";
 import NoderaButton from "@/components/NoderaButton";
+import NoderaLink from "@/components/NoderaLink";
 import PageHeader from "@/components/PageHeader";
 
 /**
@@ -189,8 +192,22 @@ export default function Page() {
         <NoderaAlert variant="info" message={t("deletedTitle")} description={t("deleted")} />
       )}
       {polling.stalled && <PollingStalledAlert onRetry={polling.retry} />}
+      {droplet.node && (
+        <NoderaAlert
+          variant="info"
+          message={t("node.title", { pool: droplet.node.pool })}
+          description={
+            <span>
+              {t("node.description")}{" "}
+              <NoderaLink href={clusterPath(droplet.projectId, droplet.node.clusterId)}>
+                {t("node.openCluster")}
+              </NoderaLink>
+            </span>
+          }
+        />
+      )}
       <DropletOverview droplet={droplet} />
-      {canAct && (
+      {canAct && !isNodeDroplet(droplet) && (
         <DropletActions
           droplet={droplet}
           busy={busy}

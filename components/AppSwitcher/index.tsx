@@ -6,6 +6,8 @@ import {
   AppstoreOutlined,
   CheckOutlined,
   CloudServerOutlined,
+  ClusterOutlined,
+  DatabaseOutlined,
   MailOutlined,
 } from "@ant-design/icons";
 import { useTranslations } from "next-intl";
@@ -18,9 +20,11 @@ import type { AppSwitcherProps } from "./type";
 const appIcons: Record<AppKey, ReactNode> = {
   droplets: <CloudServerOutlined />,
   mail: <MailOutlined />,
+  storage: <DatabaseOutlined />,
+  kubernetes: <ClusterOutlined />,
 };
 
-/** Moves between the products like between two apps, staying in the same Project. */
+/** Moves between the products like between apps, staying in the same Project. */
 export default function AppSwitcher({ app, className }: AppSwitcherProps) {
   const t = useTranslations("apps");
   const { lastProjectId } = useTeam();

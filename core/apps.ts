@@ -9,12 +9,14 @@ import {
   projectSettingsPath,
 } from "./project";
 import { DASHBOARD_PATH } from "./routes";
+import { KUBERNETES_LANDING_PATH, clustersPath } from "./kubernetesApp";
+import { STORAGE_LANDING_PATH, storagesPath } from "./storageApp";
 
 /**
  * An App is one product's own area of the web app, with its own side menu. Nodera keeps no
  * record of it: the path says which one a page belongs to, and the last one is remembered.
  */
-export const APPS = ["droplets", "mail"] as const;
+export const APPS = ["droplets", "mail", "storage", "kubernetes"] as const;
 export type AppKey = (typeof APPS)[number];
 
 export const DEFAULT_APP: AppKey = "droplets";
@@ -66,10 +68,26 @@ const APP_ROUTES: Record<AppKey, AppRoutes> = {
       return isUnder(pathname, projectId ? mailPath(projectId) : MAIL_LANDING_PATH);
     },
   },
+  storage: {
+    landing: STORAGE_LANDING_PATH,
+    home: (projectId) => storagesPath(projectId),
+    owns: (pathname) => {
+      const projectId = projectOfPath(pathname);
+      return isUnder(pathname, projectId ? storagesPath(projectId) : STORAGE_LANDING_PATH);
+    },
+  },
+  kubernetes: {
+    landing: KUBERNETES_LANDING_PATH,
+    home: (projectId) => clustersPath(projectId),
+    owns: (pathname) => {
+      const projectId = projectOfPath(pathname);
+      return isUnder(pathname, projectId ? clustersPath(projectId) : KUBERNETES_LANDING_PATH);
+    },
+  },
 };
 
 /**
- * The App a page belongs to; null for the pages both Apps share (Team settings, Billing,
+ * The App a page belongs to; null for the pages the Apps share (Team settings, Billing,
  * Profile, Notifications, a Project's settings and API keys), which keep the last App's menu.
  */
 export const appOfPath = (pathname: string): AppKey | null =>
@@ -85,13 +103,16 @@ export const appHomePath = (app: AppKey, projectId: string | null): string =>
 const PROJECT_SECTIONS: ReadonlyArray<(projectId: string) => string> = [
   ...MAIL_SECTIONS.map((section) => (projectId: string) => mailPath(projectId, section)),
   (projectId) => mailPath(projectId),
+  (projectId) => storagesPath(projectId),
+  (projectId) => clustersPath(projectId),
   projectApiKeysPath,
   projectSettingsPath,
 ];
 
 /**
  * The page a Project switch leads to: the same section of the other Project. A detail (a
- * Sending domain, a Droplet) belongs to the old Project, so its section's list is opened;
+ * Sending domain, a Droplet, a Storage) belongs to the old Project, so its section's list is
+ * opened;
  * null when the page is not about a Project and only the remembered one changes.
  */
 export function switchProjectPath(pathname: string, projectId: string): string | null {
@@ -102,5 +123,7 @@ export function switchProjectPath(pathname: string, projectId: string): string |
   }
   if (isUnder(pathname, DROPLETS_PATH)) return projectPath(projectId);
   if (pathname === MAIL_LANDING_PATH) return mailPath(projectId);
+  if (pathname === STORAGE_LANDING_PATH) return storagesPath(projectId);
+  if (pathname === KUBERNETES_LANDING_PATH) return clustersPath(projectId);
   return null;
 }

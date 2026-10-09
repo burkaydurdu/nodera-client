@@ -29,6 +29,18 @@ export interface MailSendingChanged {
   projectId: string;
 }
 
+/** A Storage moved (state, Package, size, Pause); a page showing it, or its Project's list, refetches. */
+export interface StorageChanged {
+  projectId: string;
+  storageId: string;
+}
+
+/** A Cluster moved (status, a pool, a Node); a page showing it, or its Project's list, refetches. */
+export interface ClusterChanged {
+  projectId: string;
+  clusterId: string;
+}
+
 /** Reads made in one of the user's tabs: the listed Notifications, or every one. */
 export interface NotificationsRead {
   notificationIds?: string[];
@@ -43,6 +55,8 @@ export interface RealtimeMessages {
   "billing.status_changed": BillingStatusChanged;
   "mail.domain_changed": MailDomainChanged;
   "mail.sending_changed": MailSendingChanged;
+  "storage.changed": StorageChanged;
+  "kubernetes.cluster_changed": ClusterChanged;
 }
 
 export type RealtimeMessageType = keyof RealtimeMessages;
